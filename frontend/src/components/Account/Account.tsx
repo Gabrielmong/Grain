@@ -81,7 +81,7 @@ export default function Account() {
   });
 
   // Fetch settings from backend
-  const { data: settingsData, loading: settingsLoading } = useQuery(GET_SETTINGS, {
+  const { loading: settingsLoading } = useQuery(GET_SETTINGS, {
     onCompleted: (data) => {
       if (data.settings) {
         dispatch(setCurrency(data.settings.currency as Currency));

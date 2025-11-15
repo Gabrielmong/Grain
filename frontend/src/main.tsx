@@ -23,7 +23,7 @@ function AppInitializer() {
   }, [dispatch]);
 
   // Query settings from backend on first render and apply them
-  const { data } = useQuery(GET_SETTINGS, {
+  useQuery(GET_SETTINGS, {
     skip: !store.getState().auth.isAuthenticated,
     onCompleted: (data) => {
       if (data?.settings) {

@@ -11,6 +11,7 @@ const prisma = new PrismaClient();
 const app = express();
 
 const PORT = process.env.PORT || 4000;
+const BACKEND_URL = process.env.BACKEND_URL || 'localhost';
 
 // Context interface
 interface Context {
@@ -74,8 +75,8 @@ async function startServer() {
 
   // Start Express server
   app.listen(PORT, () => {
-    console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
-    console.log(`💚 Health check at http://localhost:${PORT}/health`);
+    console.log(`🚀 Server ready at http://${BACKEND_URL}:${PORT}/graphql`);
+    console.log(`💚 Health check at http://${BACKEND_URL}:${PORT}/health`);
   });
 }
 

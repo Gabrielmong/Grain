@@ -39,14 +39,12 @@ export default function BoardInput({
   const boardFootage = calculateBoardFootage({
     id: '',
     ...board,
+    boardFeet: 0,
   });
   const materialCost = selectedLumber ? boardFootage * selectedLumber.costPerBoardFoot : 0;
 
   const handleBoardLumberChange = (lumberId: string) => {
-    const selectedLumber = lumberOptions.find((l) => l.id === lumberId);
-    if (selectedLumber) {
-      onChange(index, { ...board, lumber: selectedLumber });
-    }
+    onChange(index, { ...board, lumberId });
   };
 
   return (

@@ -94,7 +94,7 @@ export function ProjectTable({ projects, onEdit, onDelete, onRestore }: ProjectT
       headerName: 'Board Feet',
       width: 120,
       type: 'number',
-      valueGetter: (value, row) => calculateTotalBoardFootage(row.boards),
+      valueGetter: (_value, row) => calculateTotalBoardFootage(row.boards),
       renderCell: (params: GridRenderCellParams) => (
         <Box sx={{ fontWeight: 600, color: 'primary.main' }}>{params.value.toFixed(2)} BF</Box>
       ),
@@ -134,7 +134,7 @@ export function ProjectTable({ projects, onEdit, onDelete, onRestore }: ProjectT
       headerName: 'Total Cost',
       width: 130,
       type: 'number',
-      valueGetter: (value, row) => calculateProjectCost(row),
+      valueGetter: (_value, row) => calculateProjectCost(row),
       renderCell: (params: GridRenderCellParams) => {
         const totalSum = params.value.totalCost;
         return <Box sx={{ fontWeight: 700, color: 'success.main' }}>₡{totalSum.toFixed(2)}</Box>;
@@ -164,12 +164,7 @@ export function ProjectTable({ projects, onEdit, onDelete, onRestore }: ProjectT
               icon={<RestoreIcon />}
               label="Restore"
               onClick={() => onRestore(project.id)}
-              sx={{
-                color: 'success.main',
-                '&:hover': {
-                  bgcolor: 'rgba(0, 217, 36, 0.08)',
-                },
-              }}
+              showInMenu={false}
             />,
           ];
         }
@@ -178,23 +173,13 @@ export function ProjectTable({ projects, onEdit, onDelete, onRestore }: ProjectT
             icon={<EditIcon />}
             label="Edit"
             onClick={() => onEdit(project)}
-            sx={{
-              color: 'primary.main',
-              '&:hover': {
-                bgcolor: 'rgba(99, 91, 255, 0.08)',
-              },
-            }}
+            showInMenu={false}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => onDelete(project.id)}
-            sx={{
-              color: 'error.main',
-              '&:hover': {
-                bgcolor: 'rgba(223, 27, 65, 0.08)',
-              },
-            }}
+            showInMenu={false}
           />,
         ];
       },

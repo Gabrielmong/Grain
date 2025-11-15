@@ -118,12 +118,7 @@ export default function LumberTable({ lumber, onEdit, onDelete, onRestore }: Lum
               icon={<RestoreIcon />}
               label="Restore"
               onClick={() => onRestore(lumber.id)}
-              sx={{
-                color: 'success.main',
-                '&:hover': {
-                  bgcolor: 'rgba(0, 217, 36, 0.08)',
-                },
-              }}
+              showInMenu={false}
             />,
           ];
         }
@@ -132,23 +127,13 @@ export default function LumberTable({ lumber, onEdit, onDelete, onRestore }: Lum
             icon={<EditIcon />}
             label="Edit"
             onClick={() => onEdit(lumber)}
-            sx={{
-              color: 'primary.main',
-              '&:hover': {
-                bgcolor: 'rgba(99, 91, 255, 0.08)',
-              },
-            }}
+            showInMenu={false}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => onDelete(lumber.id)}
-            sx={{
-              color: 'error.main',
-              '&:hover': {
-                bgcolor: 'rgba(223, 27, 65, 0.08)',
-              },
-            }}
+            showInMenu={false}
           />,
         ];
       },

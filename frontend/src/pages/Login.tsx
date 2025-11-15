@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useDispatch } from 'react-redux';
@@ -18,9 +18,6 @@ import { Visibility, VisibilityOff, Login as LoginIcon } from '@mui/icons-materi
 import { LOGIN } from '../graphql/auth';
 import { setCredentials } from '../store/authSlice';
 import { t } from 'i18next';
-import { setLanguage } from '../store/settings/settingsSlice';
-import type { Language } from '../types/settings';
-import i18n from '../i18n/config';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -54,10 +51,6 @@ export default function Login() {
         input: { username, password },
       },
     });
-  };
-
-  const switchLanguage = (lang: string) => {
-    dispatch(setLanguage(lang as Language));
   };
 
   return (

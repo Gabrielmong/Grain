@@ -158,12 +158,7 @@ export function FinishTable({ finishes, onEdit, onDelete, onRestore }: FinishTab
               icon={<RestoreIcon />}
               label="Restore"
               onClick={() => onRestore(finish.id)}
-              sx={{
-                color: 'success.main',
-                '&:hover': {
-                  bgcolor: 'rgba(0, 217, 36, 0.08)',
-                },
-              }}
+              showInMenu={false}
             />,
           ];
         }
@@ -172,23 +167,13 @@ export function FinishTable({ finishes, onEdit, onDelete, onRestore }: FinishTab
             icon={<EditIcon />}
             label="Edit"
             onClick={() => onEdit(finish)}
-            sx={{
-              color: 'primary.main',
-              '&:hover': {
-                bgcolor: 'rgba(99, 91, 255, 0.08)',
-              },
-            }}
+            showInMenu={false}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             onClick={() => onDelete(finish.id)}
-            sx={{
-              color: 'error.main',
-              '&:hover': {
-                bgcolor: 'rgba(223, 27, 65, 0.08)',
-              },
-            }}
+            showInMenu={false}
           />,
         ];
       },

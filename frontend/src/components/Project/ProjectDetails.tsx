@@ -22,7 +22,6 @@ import {
   DELETE_PROJECT,
   GET_FINISHES,
   GET_LUMBERS,
-  GET_PROJECTS,
   UPDATE_PROJECT,
 } from '../../graphql/operations';
 import {
@@ -30,6 +29,7 @@ import {
   VARA_TO_INCHES,
   type CreateProjectInput,
   type Project,
+  type Board,
 } from '../../types/project';
 import { useCurrency } from '../../utils/currency';
 import { ConfirmDialog } from '../General';
@@ -102,7 +102,7 @@ export function ProjectDetails() {
   const finishes = project?.finishes || [];
 
   const calculateProjectCost = () => {
-    const materialCost = boards.reduce((total, board) => {
+    const materialCost = boards.reduce((total: number, board: Board) => {
       const lumber = board.lumber;
       if (!lumber) return total;
 
@@ -114,7 +114,7 @@ export function ProjectDetails() {
       return total + cost;
     }, 0);
 
-    const finishCost = finishes.reduce((total, finish) => {
+    const finishCost = finishes.reduce((total: number, finish: { id: string; name: string; price: number }) => {
       return total + (finish?.price || 0);
     }, 0);
 

@@ -14,8 +14,8 @@ import {
   InputAdornment,
   IconButton,
   Checkbox,
-  FormControlLabel,
   Grid,
+  FormControlLabel,
 } from '@mui/material';
 import { Visibility, VisibilityOff, PersonAdd } from '@mui/icons-material';
 import { REGISTER } from '../graphql/auth';
@@ -121,7 +121,7 @@ export default function Register() {
 
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   required
                   fullWidth
@@ -134,7 +134,7 @@ export default function Register() {
                   disabled={loading}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   required
                   fullWidth
@@ -148,7 +148,7 @@ export default function Register() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   required
                   fullWidth
@@ -162,7 +162,7 @@ export default function Register() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   fullWidth
                   id="email"
@@ -176,7 +176,7 @@ export default function Register() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   required
                   fullWidth
@@ -204,7 +204,7 @@ export default function Register() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   required
                   fullWidth
@@ -232,7 +232,7 @@ export default function Register() {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <FormControlLabel
                   control={
                     <Checkbox

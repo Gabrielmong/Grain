@@ -27,7 +27,7 @@ export default function Settings() {
   const settings = useAppSelector((state) => state.settings);
 
   // Fetch settings from backend
-  const { data, loading } = useQuery(GET_SETTINGS, {
+  const { loading } = useQuery(GET_SETTINGS, {
     onCompleted: (data) => {
       // Sync backend settings to Redux
       if (data.settings) {
