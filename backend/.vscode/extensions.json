@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "prisma.prisma",
+    "usernamehw.errorlens",
+    "ms-vscode.vscode-typescript-next",
+    "apollographql.vscode-apollo"
+  ]
+}

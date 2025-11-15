@@ -1,0 +1,157 @@
+// Prisma schema for Woodwork Calculator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(uuid())
+  username          String    @unique
+  email             String?   @unique
+  password          String    // bcrypt hashed password
+  firstName         String
+  lastName          String
+  dateOfBirth       DateTime?
+  hasAcceptedTerms  Boolean   @default(false)
+  imageData         String?   @db.Text // Base64 encoded profile image
+  isDeleted         Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  lumber            Lumber[]
+  finishes          Finish[]
+  projects          Project[]
+  tools             Tool[]
+  settings          Settings?
+
+  @@index([username])
+  @@index([email])
+  @@index([isDeleted])
+  @@map("users")
+}
+
+model Lumber {
+  id               String    @id @default(uuid())
+  name             String
+  description      String
+  jankaRating      Float
+  costPerBoardFoot Float
+  tags             String[]
+  isDeleted        Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // Relations
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  boards           Board[]
+
+  @@index([userId])
+  @@index([isDeleted])
+  @@map("lumber")
+}
+
+model Finish {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  tags        String[]
+  storeLink   String?
+  imageData   String?   @db.Text // Base64 encoded image
+  isDeleted   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects    Project[] @relation("ProjectFinishes")
+
+  @@index([userId])
+  @@index([isDeleted])
+  @@map("finishes")
+}
+
+model Project {
+  id                String    @id @default(uuid())
+  name              String
+  description       String
+  laborCost         Float     @default(0)
+  miscCost          Float     @default(0)
+  additionalNotes   String?
+  isDeleted         Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  boards            Board[]
+  finishes          Finish[]  @relation("ProjectFinishes")
+
+  @@index([userId])
+  @@index([isDeleted])
+  @@map("projects")
+}
+
+model Board {
+  id         String   @id @default(uuid())
+  width      Float    // inches
+  thickness  Float    // inches
+  length     Float    // varas
+  quantity   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  lumberId   String
+  lumber     Lumber   @relation(fields: [lumberId], references: [id])
+
+  @@index([projectId])
+  @@index([lumberId])
+  @@map("boards")
+}
+
+model Tool {
+  id           String    @id @default(uuid())
+  name         String
+  description  String
+  function     String    // What the tool is used for
+  price        Float
+  serialNumber String?
+  imageData    String?   @db.Text // Base64 encoded image
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isDeleted])
+  @@map("tools")
+}
+
+model Settings {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currency  String   @default("USD") // 'CRC' or 'USD'
+  language  String   @default("en")  // 'en' or 'es'
+  themeMode String   @default("light") // 'light' or 'dark'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
