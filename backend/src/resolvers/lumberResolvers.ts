@@ -6,7 +6,11 @@ const prisma = new PrismaClient();
 
 export const lumberResolvers = {
   Query: {
-    lumbers: async (_: any, { includeDeleted = false }: { includeDeleted?: boolean }, context: any) => {
+    lumbers: async (
+      _: any,
+      { includeDeleted = false }: { includeDeleted?: boolean },
+      context: any
+    ) => {
       const user = requireAuth(context);
 
       return prisma.lumber.findMany({
@@ -19,8 +23,6 @@ export const lumberResolvers = {
     },
 
     lumber: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const lumber = await prisma.lumber.findUnique({
         where: { id },
       });
@@ -38,7 +40,6 @@ export const lumberResolvers = {
   Mutation: {
     createLumber: async (_: any, { input }: any, context: any) => {
       const user = requireAuth(context);
-
       return prisma.lumber.create({
         data: {
           ...input,
@@ -48,8 +49,6 @@ export const lumberResolvers = {
     },
 
     updateLumber: async (_: any, { id, input }: any, context: any) => {
-      const user = requireAuth(context);
-
       const lumber = await prisma.lumber.findUnique({
         where: { id },
       });
@@ -67,8 +66,6 @@ export const lumberResolvers = {
     },
 
     deleteLumber: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const lumber = await prisma.lumber.findUnique({
         where: { id },
       });
@@ -86,8 +83,6 @@ export const lumberResolvers = {
     },
 
     restoreLumber: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const lumber = await prisma.lumber.findUnique({
         where: { id },
       });
@@ -105,8 +100,6 @@ export const lumberResolvers = {
     },
 
     hardDeleteLumber: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const lumber = await prisma.lumber.findUnique({
         where: { id },
       });

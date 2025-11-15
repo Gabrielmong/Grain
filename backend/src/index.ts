@@ -40,7 +40,7 @@ async function startServer() {
   app.use(express.json({ limit: '10mb' })); // Increased limit for image uploads
 
   // Health check endpoint
-  app.get('/health', (req, res) => {
+  app.get('/health', (_req, res) => {
     res.json({ status: 'ok', message: 'Woodwork Calculator Backend is running' });
   });
 

@@ -7,16 +7,24 @@ const prisma = new PrismaClient();
 // Helper function to calculate board feet
 // Formula: (width × thickness × length_in_inches) / 144 × quantity
 // 1 vara = 33 inches
-const calculateBoardFeet = (width: number, thickness: number, length: number, quantity: number): number => {
+const calculateBoardFeet = (
+  width: number,
+  thickness: number,
+  length: number,
+  quantity: number
+): number => {
   const lengthInInches = length * 33;
-  return (width * thickness * lengthInInches) / 144 * quantity;
+  return ((width * thickness * lengthInInches) / 144) * quantity;
 };
 
 export const projectResolvers = {
   Query: {
-    projects: async (_: any, { includeDeleted = false }: { includeDeleted?: boolean }, context: any) => {
+    projects: async (
+      _: any,
+      { includeDeleted = false }: { includeDeleted?: boolean },
+      context: any
+    ) => {
       const user = requireAuth(context);
-
       return prisma.project.findMany({
         where: {
           userId: user.userId,
@@ -35,8 +43,6 @@ export const projectResolvers = {
     },
 
     project: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const project = await prisma.project.findUnique({
         where: { id },
         include: {
@@ -87,7 +93,6 @@ export const projectResolvers = {
     },
 
     updateProject: async (_: any, { id, input }: any, context: any) => {
-      const user = requireAuth(context);
       const { boards, finishIds, ...projectData } = input;
 
       const project = await prisma.project.findUnique({
@@ -134,8 +139,6 @@ export const projectResolvers = {
     },
 
     deleteProject: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const project = await prisma.project.findUnique({
         where: { id },
       });
@@ -161,8 +164,6 @@ export const projectResolvers = {
     },
 
     restoreProject: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const project = await prisma.project.findUnique({
         where: { id },
       });
@@ -188,8 +189,6 @@ export const projectResolvers = {
     },
 
     hardDeleteProject: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const project = await prisma.project.findUnique({
         where: { id },
       });
@@ -211,14 +210,21 @@ export const projectResolvers = {
   Project: {
     totalBoardFeet: (parent: any) => {
       return parent.boards.reduce((total: number, board: any) => {
-        return total + calculateBoardFeet(board.width, board.thickness, board.length, board.quantity);
+        return (
+          total + calculateBoardFeet(board.width, board.thickness, board.length, board.quantity)
+        );
       }, 0);
     },
 
     materialCost: (parent: any) => {
       return parent.boards.reduce((total: number, board: any) => {
-        const boardFeet = calculateBoardFeet(board.width, board.thickness, board.length, board.quantity);
-        return total + (boardFeet * board.lumber.costPerBoardFoot);
+        const boardFeet = calculateBoardFeet(
+          board.width,
+          board.thickness,
+          board.length,
+          board.quantity
+        );
+        return total + boardFeet * board.lumber.costPerBoardFoot;
       }, 0);
     },
 
@@ -230,8 +236,13 @@ export const projectResolvers = {
 
     totalCost: (parent: any) => {
       const materialCost = parent.boards.reduce((total: number, board: any) => {
-        const boardFeet = calculateBoardFeet(board.width, board.thickness, board.length, board.quantity);
-        return total + (boardFeet * board.lumber.costPerBoardFoot);
+        const boardFeet = calculateBoardFeet(
+          board.width,
+          board.thickness,
+          board.length,
+          board.quantity
+        );
+        return total + boardFeet * board.lumber.costPerBoardFoot;
       }, 0);
 
       const finishCost = parent.finishes.reduce((total: number, finish: any) => {

@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { StringValue } from 'ms';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-production';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
-const BCRYPT_ROUNDS = 10;
+const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret_key';
+const JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN as StringValue) || '7d';
+const BCRYPT_ROUNDS = process.env.BCRYPT_ROUNDS ? parseInt(process.env.BCRYPT_ROUNDS) : 10;
 
 export interface JwtPayload {
   userId: string;
@@ -28,7 +29,10 @@ export async function comparePassword(password: string, hashedPassword: string):
  * Generate a JWT token for a user
  */
 export function generateToken(payload: JwtPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  const options: jwt.SignOptions = {
+    expiresIn: JWT_EXPIRES_IN,
+  }; // Add any options if needed
+  return jwt.sign(payload, JWT_SECRET, options);
 }
 
 /**
@@ -36,7 +40,7 @@ export function generateToken(payload: JwtPayload): string {
  */
 export function verifyToken(token: string): JwtPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JwtPayload;
+    return jwt.verify(token, JWT_SECRET) as unknown as JwtPayload;
   } catch (error) {
     return null;
   }

@@ -6,9 +6,12 @@ const prisma = new PrismaClient();
 
 export const toolResolvers = {
   Query: {
-    tools: async (_: any, { includeDeleted = false }: { includeDeleted?: boolean }, context: any) => {
+    tools: async (
+      _: any,
+      { includeDeleted = false }: { includeDeleted?: boolean },
+      context: any
+    ) => {
       const user = requireAuth(context);
-
       return prisma.tool.findMany({
         where: {
           userId: user.userId,
@@ -19,8 +22,6 @@ export const toolResolvers = {
     },
 
     tool: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const tool = await prisma.tool.findUnique({
         where: { id },
       });
@@ -38,7 +39,6 @@ export const toolResolvers = {
   Mutation: {
     createTool: async (_: any, { input }: any, context: any) => {
       const user = requireAuth(context);
-
       return prisma.tool.create({
         data: {
           ...input,
@@ -48,8 +48,6 @@ export const toolResolvers = {
     },
 
     updateTool: async (_: any, { id, input }: any, context: any) => {
-      const user = requireAuth(context);
-
       const tool = await prisma.tool.findUnique({
         where: { id },
       });
@@ -67,8 +65,6 @@ export const toolResolvers = {
     },
 
     deleteTool: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const tool = await prisma.tool.findUnique({
         where: { id },
       });
@@ -86,8 +82,6 @@ export const toolResolvers = {
     },
 
     restoreTool: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const tool = await prisma.tool.findUnique({
         where: { id },
       });
@@ -105,8 +99,6 @@ export const toolResolvers = {
     },
 
     hardDeleteTool: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const tool = await prisma.tool.findUnique({
         where: { id },
       });

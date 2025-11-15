@@ -6,7 +6,11 @@ const prisma = new PrismaClient();
 
 export const finishResolvers = {
   Query: {
-    finishes: async (_: any, { includeDeleted = false }: { includeDeleted?: boolean }, context: any) => {
+    finishes: async (
+      _: any,
+      { includeDeleted = false }: { includeDeleted?: boolean },
+      context: any
+    ) => {
       const user = requireAuth(context);
 
       return prisma.finish.findMany({
@@ -19,8 +23,6 @@ export const finishResolvers = {
     },
 
     finish: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const finish = await prisma.finish.findUnique({
         where: { id },
       });
@@ -48,8 +50,6 @@ export const finishResolvers = {
     },
 
     updateFinish: async (_: any, { id, input }: any, context: any) => {
-      const user = requireAuth(context);
-
       const finish = await prisma.finish.findUnique({
         where: { id },
       });
@@ -67,8 +67,6 @@ export const finishResolvers = {
     },
 
     deleteFinish: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const finish = await prisma.finish.findUnique({
         where: { id },
       });
@@ -86,8 +84,6 @@ export const finishResolvers = {
     },
 
     restoreFinish: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const finish = await prisma.finish.findUnique({
         where: { id },
       });
@@ -105,8 +101,6 @@ export const finishResolvers = {
     },
 
     hardDeleteFinish: async (_: any, { id }: { id: string }, context: any) => {
-      const user = requireAuth(context);
-
       const finish = await prisma.finish.findUnique({
         where: { id },
       });
