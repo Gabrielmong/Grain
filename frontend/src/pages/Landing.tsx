@@ -11,8 +11,6 @@ import {
   Grid,
   Card,
   CardContent,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import FormatPaintIcon from '@mui/icons-material/FormatPaint';
@@ -24,8 +22,6 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 export default function Landing() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const features = [
     {
