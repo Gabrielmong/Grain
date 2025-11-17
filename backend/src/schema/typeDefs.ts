@@ -99,6 +99,25 @@ export const typeDefs = gql`
     updatedAt: DateTime!
   }
 
+  # Public Shared Project Type (limited information for sharing)
+  type SharedProject {
+    id: ID!
+    name: String!
+    description: String!
+    boards: [Board!]!
+    finishes: [Finish!]!
+    laborCost: Float!
+    miscCost: Float!
+    additionalNotes: String
+    totalBoardFeet: Float!
+    materialCost: Float!
+    finishCost: Float!
+    totalCost: Float!
+    createdBy: String!
+    currency: String!
+    createdAt: DateTime!
+  }
+
   # Settings Type
   type Settings {
     id: ID!
@@ -249,6 +268,9 @@ export const typeDefs = gql`
   type Query {
     # Auth Queries (Public)
     me: User!
+
+    # Public Queries
+    sharedProject(id: ID!): SharedProject
 
     # User Queries (Private)
     users(includeDeleted: Boolean): [User!]!

@@ -282,5 +282,26 @@
     "footer": {
       "rights": "Todos los derechos reservados."
     }
+  },
+  "shared": {
+    "goToApp": "Ir a la Aplicación",
+    "projectNotFound": "Proyecto no encontrado o ya no está disponible.",
+    "createdBy": "Creado por",
+    "createdOn": "Creado el",
+    "materialCost": "Costo de Materiales",
+    "finishCost": "Costo de Acabados",
+    "laborCost": "Costo de Mano de Obra",
+    "totalCost": "Costo Total",
+    "materials": "Materiales",
+    "totalBoardFeet": "Pies de Tabla Totales",
+    "lumber": "Madera",
+    "width": "Ancho",
+    "thickness": "Grosor",
+    "length": "Largo",
+    "quantity": "Cantidad",
+    "boardFeet": "Pies de Tabla",
+    "cost": "Costo",
+    "finishes": "Acabados",
+    "additionalNotes": "Notas Adicionales"
   }
 }

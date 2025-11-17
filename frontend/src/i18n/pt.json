@@ -1,0 +1,307 @@
+{
+  "app": {
+    "title": "Woodwork"
+  },
+  "login": {
+    "welcomeBack": "Bem-vindo de Volta",
+    "welcomeMessage": "Bem-vindo ao Woodwork, seu aplicativo para gerenciar projetos e materiais de marcenaria.",
+    "username": "Nome de usuário",
+    "password": "Senha",
+    "signIn": "Entrar",
+    "signingIn": "Entrando...",
+    "noAccount": "Não tem uma conta? Cadastre-se",
+    "fillAllFields": "Por favor, preencha todos os campos",
+    "failed": "Falha no login. Verifique suas credenciais."
+  },
+  "register": {
+    "createAccount": "Criar Conta",
+    "joinMessage": "Junte-se ao Woodwork hoje",
+    "username": "Nome de usuário",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Endereço de Email",
+    "password": "Senha",
+    "confirmPassword": "Confirmar Senha",
+    "acceptTerms": "Aceito os termos e condições",
+    "signUp": "Cadastrar",
+    "creatingAccount": "Criando conta...",
+    "alreadyHaveAccount": "Já tem uma conta? Entre",
+    "fillAllFields": "Por favor, preencha todos os campos",
+    "passwordsMismatch": "As senhas não coincidem",
+    "failed": "Falha no cadastro. Tente novamente."
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "projects": "Projetos",
+    "lumber": "Madeira",
+    "finishes": "Acabamentos",
+    "tools": "Ferramentas",
+    "account": "Conta",
+    "logout": "Sair"
+  },
+  "dashboard": {
+    "title": "Painel",
+    "subtitle": "Visão geral das suas estatísticas do Woodwork",
+    "activeProjects": "Projetos Ativos",
+    "lumberTypes": "Tipos de Madeira",
+    "finishOptions": "Opções de Acabamento",
+    "toolInventory": "Inventário de Ferramentas",
+    "totalProjectValue": "Valor Total do Projeto",
+    "totalBoardFeet": "Total de Pés de Tábua",
+    "totalToolsValue": "Total investido em Ferramentas",
+    "keyMetrics": "Métricas Principais",
+    "totalBoardFeetSubtitle": "Em todos os projetos ativos",
+    "avgLumberCost": "Custo Médio de Madeira",
+    "avgCostPerBF": "Custo médio por pé de tábua",
+    "quickActions": "Ações Rápidas",
+    "newProject": "Novo Projeto",
+    "addLumber": "Adicionar Madeira",
+    "addFinish": "Adicionar Acabamento",
+    "addTool": "Adicionar Ferramenta",
+    "viewAll": "Ver Todos"
+  },
+  "lumber": {
+    "title": "Inventário de Madeira",
+    "subtitle": "Gerencie seus tipos de madeira, preços e características",
+    "add": "Adicionar Madeira",
+    "emptyTitle": "Sem madeira no inventário",
+    "emptySubtitle": "Comece adicionando seu primeiro tipo de madeira para rastrear preços, classificações de dureza e usos recomendados",
+    "name": "Nome",
+    "description": "Descrição",
+    "jankaRating": "Classificação Janka",
+    "costPerBoardFoot": "Custo por Pé de Tábua",
+    "tags": "Tags",
+    "goodFor": "Bom para:",
+    "deleted": "Excluído",
+    "active": "Ativo",
+    "deleteConfirmMessage": "Tem certeza de que deseja excluir esta madeira? Esta ação marcará como excluída, mas pode ser restaurada depois."
+  },
+  "finishes": {
+    "title": "Acabamentos de Madeira",
+    "subtitle": "Gerencie seus produtos de acabamento, preços e recomendações",
+    "add": "Adicionar Acabamento",
+    "emptyTitle": "Sem acabamentos no inventário",
+    "emptySubtitle": "Comece adicionando seu primeiro acabamento para rastrear produtos, preços e casos de uso",
+    "name": "Nome",
+    "description": "Descrição",
+    "price": "Preço",
+    "viewOnStore": "Ver na Loja",
+    "goodFor": "Bom para:",
+    "deleteConfirmMessage": "Tem certeza de que deseja excluir este acabamento? Esta ação marcará como excluído, mas pode ser restaurado depois."
+  },
+  "tools": {
+    "title": "Inventário de Ferramentas",
+    "subtitle": "Gerencie suas ferramentas, rastreie compras e organize sua oficina",
+    "add": "Adicionar Ferramenta",
+    "emptyTitle": "Sem ferramentas no inventário",
+    "emptySubtitle": "Comece adicionando sua primeira ferramenta para rastrear equipamentos, números de série e preços",
+    "name": "Nome",
+    "description": "Descrição",
+    "function": "Função",
+    "price": "Preço",
+    "serialNumber": "Número de Série",
+    "deleteConfirmMessage": "Tem certeza de que deseja excluir esta ferramenta? Esta ação marcará como excluída, mas pode ser restaurada depois."
+  },
+  "projects": {
+    "title": "Projetos",
+    "subtitle": "Planeje e estime seus projetos de marcenaria com cálculos de materiais e custos",
+    "add": "Novo Projeto",
+    "emptyTitle": "Ainda sem projetos",
+    "emptySubtitle": "Comece criando seu primeiro projeto para calcular materiais, custos e planejar sua marcenaria",
+    "materials": "Materiais",
+    "finishes": "Acabamentos",
+    "costBreakdown": "Detalhamento de Custos",
+    "materialsCost": "Materiais",
+    "finishesCost": "Acabamentos",
+    "labor": "Mão de Obra",
+    "misc": "Diversos",
+    "totalCost": "Custo Total",
+    "boards": "Tábuas",
+    "boardFeet": "Pés de Tábua"
+  },
+  "settings": {
+    "title": "Configurações",
+    "subtitle": "Configure suas preferências e configurações do aplicativo",
+    "appearance": "Aparência",
+    "localization": "Localização",
+    "theme": "Tema",
+    "language": "Idioma",
+    "currency": "Moeda",
+    "light": "Claro",
+    "dark": "Escuro",
+    "saveMessage": "As configurações são salvas automaticamente e persistirão entre as sessões."
+  },
+  "common": {
+    "edit": "Editar",
+    "delete": "Excluir",
+    "restore": "Restaurar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "create": "Criar",
+    "update": "Atualizar",
+    "showDeleted": "Mostrar Excluídos",
+    "hideDeleted": "Ocultar Excluídos",
+    "actions": "Ações",
+    "status": "Status",
+    "active": "Ativo",
+    "deleted": "Excluído",
+    "name": "Nome",
+    "description": "Descrição",
+    "price": "Preço",
+    "unknown": "Desconhecido",
+    "notSet": "Não definido",
+    "notes": "Notas",
+    "saveChanges": "Salvar Alterações",
+    "editProfile": "Editar Perfil",
+    "changePassword": "Alterar Senha"
+  },
+  "account": {
+    "title": "Conta",
+    "subtitle": "Gerencie seu perfil, preferências e configurações do aplicativo",
+    "profileInformation": "Informações do Perfil",
+    "email": "Email",
+    "dateOfBirth": "Data de Nascimento",
+    "memberSince": "Membro Desde",
+    "firstName": "Nome",
+    "lastName": "Sobrenome",
+    "currentPassword": "Senha Atual",
+    "newPassword": "Nova Senha",
+    "confirmNewPassword": "Confirmar Nova Senha",
+    "passwordChangedSuccess": "Senha alterada com sucesso",
+    "profileUpdatedSuccess": "Perfil atualizado com sucesso",
+    "profilePictureUpdatedSuccess": "Foto de perfil atualizada com sucesso",
+    "newPasswordsDoNotMatch": "As novas senhas não coincidem",
+    "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+    "allChangesAutoSaved": "Todas as alterações são salvas automaticamente e persistirão entre as sessões."
+  },
+  "projectDetails": {
+    "backToProjects": "Voltar aos Projetos",
+    "projectSummary": "Resumo do Projeto",
+    "totalBoardFeet": "Total de Pés de Tábua",
+    "boardTypes": "Tipos de Tábua",
+    "totalCost": "Custo Total",
+    "materials": "Materiais",
+    "bfTotal": "Total BF",
+    "unknownWood": "Madeira Desconhecida",
+    "quantity": "Quantidade",
+    "boards": "tábuas",
+    "boardFeet": "Pés de Tábua",
+    "costPerBF": "Custo por BF",
+    "jankaRating": "Classificação Janka",
+    "materialCost": "Custo de Material",
+    "goodFor": "Bom para:",
+    "finishes": "Acabamentos",
+    "costBreakdown": "Detalhamento de Custos",
+    "labor": "Mão de Obra",
+    "miscellaneous": "Diversos",
+    "deleteProject": "Excluir Projeto",
+    "deleteProjectConfirm": "Tem certeza de que deseja excluir \"{name}\"? Esta ação não pode ser desfeita.",
+    "error": "Erro:",
+    "projectNotFound": "Projeto não encontrado"
+  },
+  "projectTable": {
+    "projectName": "Nome do Projeto",
+    "description": "Descrição",
+    "boards": "Tábuas",
+    "boardFeet": "Pés de Tábua"
+  },
+  "boardInput": {
+    "board": "Tábua",
+    "woodSpecies": "Espécie de Madeira",
+    "widthInches": "Largura (polegadas)",
+    "thicknessInches": "Espessura (polegadas)",
+    "lengthVaras": "Comprimento (varas)",
+    "varaHelper": "1 vara = 33 polegadas",
+    "quantity": "Quantidade",
+    "boardFeetTotal": "Pés de Tábua (total):",
+    "materialCost": "Custo do Material:"
+  },
+  "lumberTable": {
+    "name": "Nome",
+    "description": "Descrição",
+    "jankaRating": "Classificação Janka",
+    "costPerBF": "Custo/BF",
+    "tags": "Tags"
+  },
+  "finishTable": {
+    "name": "Nome",
+    "description": "Descrição",
+    "price": "Preço"
+  },
+  "toolTable": {
+    "name": "Nome",
+    "description": "Descrição",
+    "function": "Função",
+    "serialNumber": "Número de Série",
+    "price": "Preço"
+  },
+  "landing": {
+    "signIn": "Entrar",
+    "signUp": "Cadastrar",
+    "backToHome": "Voltar ao Início",
+    "goToApp": "Ir para o App",
+    "hero": {
+      "title": "Seu Gerenciador Completo de Projetos de Marcenaria",
+      "subtitle": "Planeje, estime e rastreie seus projetos de marcenaria com precisão. Gerencie inventário de madeira, calcule custos e organize as ferramentas da sua oficina—tudo em um só lugar.",
+      "getStarted": "Comece Grátis",
+      "learnMore": "Saiba Mais"
+    },
+    "features": {
+      "title": "Tudo o Que Você Precisa para Marcenaria",
+      "subtitle": "Ferramentas profissionais para ajudá-lo a planejar, rastrear e gerenciar todos os aspectos dos seus projetos de marcenaria.",
+      "projects": {
+        "title": "Gerenciamento de Projetos",
+        "description": "Planeje e estime projetos com cálculos detalhados de materiais, detalhamento de custos e rastreamento de pés de tábua."
+      },
+      "lumber": {
+        "title": "Inventário de Madeira",
+        "description": "Rastreie tipos de madeira, preços, classificações de dureza (Janka) e usos recomendados para cada espécie de madeira."
+      },
+      "finishes": {
+        "title": "Catálogo de Acabamentos",
+        "description": "Organize seus produtos de acabamento com preços, descrições e recomendações de aplicação."
+      },
+      "tools": {
+        "title": "Rastreamento de Ferramentas",
+        "description": "Catalogue as ferramentas da sua oficina com números de série, datas de compra e custos de equipamentos."
+      },
+      "calculations": {
+        "title": "Cálculos Automáticos",
+        "description": "Calcule pés de tábua, custos de materiais e totais de projetos automaticamente com medições precisas."
+      },
+      "tracking": {
+        "title": "Rastreamento de Investimento",
+        "description": "Monitore seu investimento total em materiais, ferramentas e projetos com análises detalhadas."
+      }
+    },
+    "cta": {
+      "title": "Pronto para Começar?",
+      "subtitle": "Junte-se aos marceneiros que usam o Woodwork para gerenciar seus projetos profissionalmente.",
+      "button": "Criar Conta Grátis"
+    },
+    "footer": {
+      "rights": "Todos os direitos reservados."
+    }
+  },
+  "shared": {
+    "goToApp": "Ir para o App",
+    "projectNotFound": "Projeto não encontrado ou não está mais disponível.",
+    "createdBy": "Criado por",
+    "createdOn": "Criado em",
+    "materialCost": "Custo de Material",
+    "finishCost": "Custo de Acabamento",
+    "laborCost": "Custo de Mão de Obra",
+    "totalCost": "Custo Total",
+    "materials": "Materiais",
+    "totalBoardFeet": "Total de Pés de Tábua",
+    "lumber": "Madeira",
+    "width": "Largura",
+    "thickness": "Espessura",
+    "length": "Comprimento",
+    "quantity": "Quantidade",
+    "boardFeet": "Pés de Tábua",
+    "cost": "Custo",
+    "finishes": "Acabamentos",
+    "additionalNotes": "Notas Adicionais"
+  }
+}

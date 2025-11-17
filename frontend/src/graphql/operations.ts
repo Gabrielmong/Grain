@@ -326,6 +326,49 @@ export const GET_PROJECT = gql`
   }
 `;
 
+export const GET_SHARED_PROJECT = gql`
+  query GetSharedProject($id: ID!) {
+    sharedProject(id: $id) {
+      id
+      name
+      description
+      boards {
+        id
+        width
+        thickness
+        length
+        quantity
+        boardFeet
+        lumberId
+        lumber {
+          id
+          name
+          costPerBoardFoot
+          jankaRating
+          description
+        }
+      }
+      finishes {
+        id
+        name
+        price
+        imageData
+        description
+      }
+      laborCost
+      miscCost
+      additionalNotes
+      totalBoardFeet
+      materialCost
+      finishCost
+      totalCost
+      createdBy
+      currency
+      createdAt
+    }
+  }
+`;
+
 export const CREATE_PROJECT = gql`
   mutation CreateProject($input: CreateProjectInput!) {
     createProject(input: $input) {

@@ -10,6 +10,7 @@ import { Chip, Stack, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/Restore';
+import ShareIcon from '@mui/icons-material/Share';
 import type { Project } from '../../types/project';
 import type { Finish } from '../../types/finish';
 import { calculateTotalBoardFootage } from '../../types/project';
@@ -29,6 +30,15 @@ interface ProjectTableProps {
 export function ProjectTable({ projects, onEdit, onDelete, onRestore }: ProjectTableProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const handleShare = async (projectId: string) => {
+    const shareUrl = `${window.location.origin}/shared/${projectId}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   const calculateProjectCost = (project: Project) => {
     const boards = project.boards || [];
@@ -171,6 +181,12 @@ export function ProjectTable({ projects, onEdit, onDelete, onRestore }: ProjectT
           ];
         }
         return [
+          <GridActionsCellItem
+            icon={<ShareIcon />}
+            label="Share"
+            onClick={() => handleShare(project.id)}
+            showInMenu={false}
+          />,
           <GridActionsCellItem
             icon={<EditIcon />}
             label={t('common.edit')}

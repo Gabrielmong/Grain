@@ -18,6 +18,8 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ShareIcon from '@mui/icons-material/Share';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   GET_PROJECT,
   DELETE_PROJECT,
@@ -44,6 +46,7 @@ export function ProjectDetails() {
   const formatCurrency = useCurrency();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const {
     data: projectData,
@@ -183,6 +186,17 @@ export function ProjectDetails() {
     setFormOpen(false);
   };
 
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/shared/${project.id}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
   return (
     <Box>
       {/* Header */}
@@ -226,6 +240,19 @@ export function ProjectDetails() {
           </Box>
 
           <Stack direction="row" spacing={1}>
+            <IconButton
+              onClick={handleShare}
+              sx={{
+                color: copySuccess ? 'success.main' : 'info.main',
+                bgcolor: copySuccess ? 'rgba(46, 125, 50, 0.08)' : 'rgba(2, 136, 209, 0.08)',
+                '&:hover': {
+                  bgcolor: copySuccess ? 'rgba(46, 125, 50, 0.15)' : 'rgba(2, 136, 209, 0.15)',
+                },
+              }}
+              title={copySuccess ? 'Link copied!' : 'Copy share link'}
+            >
+              {copySuccess ? <ContentCopyIcon /> : <ShareIcon />}
+            </IconButton>
             <IconButton
               onClick={handleEdit}
               sx={{

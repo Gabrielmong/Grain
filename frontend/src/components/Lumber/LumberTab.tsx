@@ -12,9 +12,9 @@ import LumberList from './LumberList';
 import LumberTable from './LumberTable';
 import LumberForm from './LumberForm';
 import type { Lumber, CreateLumberInput } from '../../types/lumber';
-import { t } from 'i18next';
 import { ConfirmDialog, ViewLayout } from '../General';
 import { useQueryParams } from '../../hooks/useQueryParams';
+import { useTranslation } from 'react-i18next';
 
 export default function LumberTab() {
   const { getParam, removeParam } = useQueryParams();
@@ -23,6 +23,7 @@ export default function LumberTab() {
   const [showDeleted, setShowDeleted] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [lumberToDelete, setLumberToDelete] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const { data, loading, error } = useQuery(GET_LUMBERS, {
     variables: { includeDeleted: showDeleted },

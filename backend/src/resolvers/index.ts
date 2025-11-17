@@ -57,4 +57,5 @@ export const resolvers = {
   // Field resolvers
   Project: projectResolvers.Project,
   Board: projectResolvers.Board,
+  SharedProject: projectResolvers.SharedProject,
 };

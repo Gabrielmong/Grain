@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -14,6 +15,8 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import RestoreIcon from '@mui/icons-material/Restore';
+import ShareIcon from '@mui/icons-material/Share';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import type { Project } from '../../types/project';
 import { calculateTotalBoardFootage } from '../../types/project';
 import { useCurrency } from '../../utils/currency';
@@ -35,6 +38,19 @@ export function ProjectList({ projects, onEdit, onDelete, onRestore }: ProjectLi
   const navigate = useNavigate();
   const formatCurrency = useCurrency();
   const { t } = useTranslation();
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
+
+  const handleShare = async (e: React.MouseEvent, projectId: string) => {
+    e.stopPropagation();
+    const shareUrl = `${window.location.origin}/shared/${projectId}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopiedId(projectId);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   const calculateProjectCost = (project: Project) => {
     const boards = project.boards || [];
@@ -267,6 +283,30 @@ export function ProjectList({ projects, onEdit, onDelete, onRestore }: ProjectLi
               <CardActions sx={{ p: 2, pt: 0, gap: 1 }}>
                 {!project.isDeleted ? (
                   <>
+                    <IconButton
+                      onClick={(e) => handleShare(e, project.id)}
+                      aria-label="share"
+                      sx={{
+                        color: copiedId === project.id ? 'success.main' : 'info.main',
+                        bgcolor:
+                          copiedId === project.id
+                            ? 'rgba(46, 125, 50, 0.08)'
+                            : 'rgba(2, 136, 209, 0.08)',
+                        '&:hover': {
+                          bgcolor:
+                            copiedId === project.id
+                              ? 'rgba(46, 125, 50, 0.15)'
+                              : 'rgba(2, 136, 209, 0.15)',
+                        },
+                      }}
+                      title={copiedId === project.id ? 'Link copied!' : 'Copy share link'}
+                    >
+                      {copiedId === project.id ? (
+                        <ContentCopyIcon fontSize="small" />
+                      ) : (
+                        <ShareIcon fontSize="small" />
+                      )}
+                    </IconButton>
                     <IconButton
                       onClick={(e) => {
                         e.stopPropagation();

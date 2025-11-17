@@ -282,5 +282,26 @@
     "footer": {
       "rights": "All rights reserved."
     }
+  },
+  "shared": {
+    "goToApp": "Go to App",
+    "projectNotFound": "Project not found or no longer available.",
+    "createdBy": "Created by",
+    "createdOn": "Created on",
+    "materialCost": "Material Cost",
+    "finishCost": "Finish Cost",
+    "laborCost": "Labor Cost",
+    "totalCost": "Total Cost",
+    "materials": "Materials",
+    "totalBoardFeet": "Total Board Feet",
+    "lumber": "Lumber",
+    "width": "Width",
+    "thickness": "Thickness",
+    "length": "Length",
+    "quantity": "Quantity",
+    "boardFeet": "Board Feet",
+    "cost": "Cost",
+    "finishes": "Finishes",
+    "additionalNotes": "Additional Notes"
   }
 }

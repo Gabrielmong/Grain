@@ -21,6 +21,7 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
+import { LanguageSelector } from '../components/General';
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ export default function Landing() {
           >
             {t('app.title')}
           </Typography>
+          <LanguageSelector />
           {isAuthenticated ? (
             <Button
               variant="outlined"
@@ -96,6 +98,7 @@ export default function Landing() {
                 textTransform: 'none',
                 borderRadius: 2,
                 px: 3,
+                ml: 1,
               }}
             >
               {user && (
@@ -111,7 +114,7 @@ export default function Landing() {
               )}
             </Button>
           ) : (
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2} sx={{ ml: 1 }}>
               <Button
                 variant="outlined"
                 onClick={() => navigate('/login')}

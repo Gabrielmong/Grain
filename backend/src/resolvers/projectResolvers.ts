@@ -63,6 +63,43 @@ export const projectResolvers = {
 
       return project;
     },
+
+    // Public query - no authentication required
+    sharedProject: async (_: any, { id }: { id: string }) => {
+      const project = await prisma.project.findUnique({
+        where: { id },
+        include: {
+          boards: {
+            include: {
+              lumber: true,
+            },
+          },
+          finishes: true,
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              settings: {
+                select: {
+                  currency: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!project) {
+        throw new NotFoundError('Project not found');
+      }
+
+      // Only allow sharing of non-deleted projects
+      if (project.isDeleted) {
+        throw new NotFoundError('Project not found');
+      }
+
+      return project;
+    },
   },
 
   Mutation: {
@@ -256,6 +293,67 @@ export const projectResolvers = {
   Board: {
     boardFeet: (parent: any) => {
       return calculateBoardFeet(parent.width, parent.thickness, parent.length, parent.quantity);
+    },
+  },
+
+  // Field resolvers for SharedProject
+  SharedProject: {
+    totalBoardFeet: (parent: any) => {
+      if (!parent.boards || parent.boards.length === 0) return 0;
+      return parent.boards.reduce((total: number, board: any) => {
+        return (
+          total + calculateBoardFeet(board.width, board.thickness, board.length, board.quantity)
+        );
+      }, 0);
+    },
+
+    materialCost: (parent: any) => {
+      if (!parent.boards || parent.boards.length === 0) return 0;
+      return parent.boards.reduce((total: number, board: any) => {
+        const boardFeet = calculateBoardFeet(
+          board.width,
+          board.thickness,
+          board.length,
+          board.quantity
+        );
+        return total + boardFeet * (board.lumber?.costPerBoardFoot || 0);
+      }, 0);
+    },
+
+    finishCost: (parent: any) => {
+      if (!parent.finishes || parent.finishes.length === 0) return 0;
+      return parent.finishes.reduce((total: number, finish: any) => {
+        return total + (finish?.price || 0);
+      }, 0);
+    },
+
+    totalCost: (parent: any) => {
+      const boards = parent.boards || [];
+      const finishes = parent.finishes || [];
+
+      const materialCost = boards.reduce((total: number, board: any) => {
+        const boardFeet = calculateBoardFeet(
+          board.width,
+          board.thickness,
+          board.length,
+          board.quantity
+        );
+        return total + boardFeet * (board.lumber?.costPerBoardFoot || 0);
+      }, 0);
+
+      const finishCost = finishes.reduce((total: number, finish: any) => {
+        return total + (finish?.price || 0);
+      }, 0);
+
+      return materialCost + finishCost + (parent.laborCost || 0) + (parent.miscCost || 0);
+    },
+
+    createdBy: (parent: any) => {
+      return `${parent.user?.firstName || ''} ${parent.user?.lastName || ''}`.trim() || 'Unknown';
+    },
+
+    currency: (parent: any) => {
+      return parent.user?.settings?.currency || 'USD';
     },
   },
 };

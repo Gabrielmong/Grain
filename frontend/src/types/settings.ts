@@ -1,5 +1,5 @@
 export type Currency = 'CRC' | 'USD';
-export type Language = 'en' | 'es';
+export type Language = 'en' | 'es' | 'pt';
 export type ThemeMode = 'light' | 'dark';
 
 export interface Settings {
@@ -21,4 +21,5 @@ export const CURRENCY_NAMES: Record<Currency, string> = {
 export const LANGUAGE_NAMES: Record<Language, string> = {
   en: 'English',
   es: 'Español',
+  pt: 'Português',
 };

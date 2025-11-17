@@ -8,13 +8,13 @@ import {
   DELETE_FINISH,
   RESTORE_FINISH,
 } from '../../graphql/operations';
-import { t } from 'i18next';
 import type { CreateFinishInput, Finish } from '../../types';
 import { ConfirmDialog, ViewLayout } from '../General';
 import { FinishList } from './FinishList';
 import { FinishTable } from './FinishTable';
 import { FinishForm } from './FinishForm';
 import { useQueryParams } from '../../hooks/useQueryParams';
+import { useTranslation } from 'react-i18next';
 
 export function FinishTab() {
   const { getParam, removeParam } = useQueryParams();
@@ -23,6 +23,7 @@ export function FinishTab() {
   const [showDeleted, setShowDeleted] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [finishToDelete, setFinishToDelete] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const { data, loading, error } = useQuery(GET_FINISHES, {
     variables: { includeDeleted: showDeleted },

@@ -22,12 +22,14 @@ import {
 import { Visibility, VisibilityOff, PersonAdd, Home } from '@mui/icons-material';
 import { REGISTER } from '../graphql/auth';
 import { setCredentials } from '../store/authSlice';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import type { RootState } from '../store/store';
+import { LanguageSelector } from '../components/General';
 
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -127,12 +129,14 @@ export default function Register() {
           >
             {t('app.title')}
           </Typography>
+          <LanguageSelector />
           <Button
             startIcon={<Home />}
             onClick={() => navigate('/')}
             sx={{
               textTransform: 'none',
               borderRadius: 2,
+              ml: 1,
             }}
           >
             {t('landing.backToHome')}

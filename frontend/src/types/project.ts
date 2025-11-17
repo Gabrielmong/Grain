@@ -29,6 +29,24 @@ export interface Project {
   updatedAt: string;
 }
 
+export interface SharedProject {
+  id: string;
+  name: string;
+  description: string;
+  boards: Board[];
+  finishes?: Array<{ id: string; name: string; price: number; imageData?: string; description: string }>;
+  laborCost: number;
+  miscCost: number;
+  additionalNotes?: string;
+  totalBoardFeet: number;
+  materialCost: number;
+  finishCost: number;
+  totalCost: number;
+  createdBy: string;
+  currency: string;
+  createdAt: string;
+}
+
 export interface CreateBoardInput {
   width: number;
   thickness: number;

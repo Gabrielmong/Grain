@@ -24,12 +24,14 @@ import {
 } from '@mui/icons-material';
 import { LOGIN } from '../graphql/auth';
 import { setCredentials } from '../store/authSlice';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import type { RootState } from '../store/store';
+import { LanguageSelector } from '../components/General';
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -95,12 +97,14 @@ export default function Login() {
           >
             {t('app.title')}
           </Typography>
+          <LanguageSelector />
           <Button
             startIcon={<HomeIcon />}
             onClick={() => navigate('/')}
             sx={{
               textTransform: 'none',
               borderRadius: 2,
+              ml: 1,
             }}
           >
             {t('landing.backToHome')}

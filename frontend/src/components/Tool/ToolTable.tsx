@@ -71,9 +71,7 @@ export function ToolTable({ tools, onEdit, onDelete, onRestore }: ToolTableProps
       headerName: t('tools.serialNumber'),
       width: 150,
       renderCell: (params) => (
-        <Box sx={{ fontFamily: 'monospace', fontSize: '0.875rem' }}>
-          {params.value || '-'}
-        </Box>
+        <Box sx={{ fontFamily: 'monospace', fontSize: '0.875rem' }}>{params.value || '-'}</Box>
       ),
     },
     {
@@ -97,36 +95,15 @@ export function ToolTable({ tools, onEdit, onDelete, onRestore }: ToolTableProps
         <Box sx={{ display: 'flex', gap: 0.5 }}>
           {!params.row.isDeleted ? (
             <>
-              <IconButton
-                onClick={() => onEdit(params.row)}
-                size="small"
-                sx={{
-                  color: 'primary.main',
-                  '&:hover': { bgcolor: 'rgba(99, 91, 255, 0.08)' },
-                }}
-              >
+              <IconButton onClick={() => onEdit(params.row)} size="small">
                 <EditIcon fontSize="small" />
               </IconButton>
-              <IconButton
-                onClick={() => onDelete(params.row.id)}
-                size="small"
-                sx={{
-                  color: 'error.main',
-                  '&:hover': { bgcolor: 'rgba(223, 27, 65, 0.08)' },
-                }}
-              >
+              <IconButton onClick={() => onDelete(params.row.id)} size="small">
                 <DeleteIcon fontSize="small" />
               </IconButton>
             </>
           ) : (
-            <IconButton
-              onClick={() => onRestore(params.row.id)}
-              size="small"
-              sx={{
-                color: 'success.main',
-                '&:hover': { bgcolor: 'rgba(0, 217, 36, 0.08)' },
-              }}
-            >
+            <IconButton onClick={() => onRestore(params.row.id)} size="small">
               <RestoreIcon fontSize="small" />
             </IconButton>
           )}
