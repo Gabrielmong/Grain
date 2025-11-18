@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "Grain",
-    "contactDeveloper": "Contact Developer"
+    "contactDeveloper": "Contact Developer",
+    "backToHome": "Back to Home"
   },
   "login": {
     "welcomeBack": "Welcome Back",

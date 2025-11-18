@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "Grain",
-    "contactDeveloper": "Contactar o Desenvolvedor"
+    "contactDeveloper": "Contactar o Desenvolvedor",
+    "backToHome": "Voltar para Início"
   },
   "login": {
     "welcomeBack": "Bem-vindo de Volta",

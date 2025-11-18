@@ -99,6 +99,21 @@ export const Appbar = ({ showSignInUp = true }: { showSignInUp?: boolean }) => {
             </Stack>
           )
         )}
+
+        {!showSignInUp && (
+          <Button
+            variant="text"
+            onClick={() => navigate('/')}
+            sx={{
+              textTransform: 'none',
+              borderRadius: 2,
+              px: 3,
+              ml: 1,
+            }}
+          >
+            {t('app.backToHome')}
+          </Button>
+        )}
       </Toolbar>
     </MuiAppBar>
   );
