@@ -163,7 +163,7 @@ export default function SharedProjectPage() {
               </Typography>
             </Box>
 
-            <Stack direction="row" spacing={3} flexWrap="wrap">
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               <Chip
                 icon={<PersonIcon />}
                 label={`${t('shared.createdBy')}: ${project.createdBy}`}
@@ -174,7 +174,7 @@ export default function SharedProjectPage() {
                 label={`${t('shared.createdOn')}: ${formatDate(project.createdAt)}`}
                 variant="outlined"
               />
-            </Stack>
+            </Box>
           </Stack>
         </Paper>
 

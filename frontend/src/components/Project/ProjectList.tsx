@@ -11,6 +11,10 @@ import {
   Stack,
   Grid,
   Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Snackbar,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -21,6 +25,7 @@ import type { Project } from '../../types/project';
 import { calculateTotalBoardFootage } from '../../types/project';
 import { useCurrency } from '../../utils/currency';
 import { useTranslation } from 'react-i18next';
+import { ArrowDownward } from '@mui/icons-material';
 
 const truncateText = (text: string, maxLength: number = 150) => {
   if (text.length <= maxLength) return text;
@@ -78,6 +83,13 @@ export function ProjectList({ projects, onEdit, onDelete, onRestore }: ProjectLi
 
   return (
     <Grid container spacing={3}>
+      <Snackbar
+        open={copiedId !== null}
+        message={t('common.linkCopied')}
+        autoHideDuration={4000}
+        onClose={() => setCopiedId(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
       {projects.map((project) => {
         const { materialCost, finishCost, totalCost } = calculateProjectCost(project);
         const totalBoardFootage = calculateTotalBoardFootage(project.boards);
@@ -128,55 +140,75 @@ export function ProjectList({ projects, onEdit, onDelete, onRestore }: ProjectLi
 
                   {/* Board Summary */}
                   <Box>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{ fontWeight: 600, display: 'block', mb: 1.5 }}
-                    >
+                    <Typography variant="caption" color="text.secondary">
                       Materials ({totalBoardFootage.toFixed(2)} BF total):
                     </Typography>
-                    <Stack spacing={1}>
-                      {project.boards.map((board, idx) => {
-                        const lumber = board.lumber;
-                        const lengthInInches = board.length * 33;
-                        const boardFeet = (board.width * board.thickness * lengthInInches) / 144;
-                        const totalBF = boardFeet * board.quantity;
+                    <Accordion elevation={0} sx={{ bgcolor: 'background.default' }}>
+                      <AccordionSummary
+                        expandIcon={<ArrowDownward />}
+                        aria-controls="boards-content"
+                        id="boards-header"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Typography variant="body2" color="primary.main" sx={{ fontWeight: 600 }}>
+                          View Boards
+                        </Typography>
+                      </AccordionSummary>
 
-                        return (
-                          <Box
-                            key={idx}
-                            sx={{
-                              p: 1.5,
-                              bgcolor: 'rgba(99, 91, 255, 0.03)',
-                              borderRadius: 1,
-                              border: '1px solid',
-                              borderColor: 'divider',
-                            }}
-                          >
-                            <Stack spacing={0.5}>
+                      <AccordionDetails>
+                        <Stack spacing={1}>
+                          {project.boards.map((board, idx) => {
+                            const lumber = board.lumber;
+                            const lengthInInches = board.length * 33;
+                            const boardFeet =
+                              (board.width * board.thickness * lengthInInches) / 144;
+                            const totalBF = boardFeet * board.quantity;
+
+                            return (
                               <Box
+                                key={idx}
                                 sx={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between',
-                                  alignItems: 'center',
+                                  p: 1.5,
+                                  bgcolor: 'rgba(99, 91, 255, 0.03)',
+                                  borderRadius: 1,
+                                  border: '1px solid',
+                                  borderColor: 'divider',
                                 }}
                               >
-                                <Typography variant="body2" fontWeight={600} color="text.primary">
-                                  {lumber?.name || 'Unknown Wood'}
-                                </Typography>
-                                <Typography variant="caption" fontWeight={600} color="primary.main">
-                                  {totalBF.toFixed(2)} BF
-                                </Typography>
+                                <Stack spacing={0.5}>
+                                  <Box
+                                    sx={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="body2"
+                                      fontWeight={600}
+                                      color="text.primary"
+                                    >
+                                      {lumber?.name || 'Unknown Wood'}
+                                    </Typography>
+                                    <Typography
+                                      variant="caption"
+                                      fontWeight={600}
+                                      color="primary.main"
+                                    >
+                                      {totalBF.toFixed(2)} BF
+                                    </Typography>
+                                  </Box>
+                                  <Typography variant="caption" color="text.secondary">
+                                    {board.width}" × {board.thickness}" × {board.length}v (
+                                    {(lengthInInches / 12).toFixed(2)}') • Qty: {board.quantity}
+                                  </Typography>
+                                </Stack>
                               </Box>
-                              <Typography variant="caption" color="text.secondary">
-                                {board.width}" × {board.thickness}" × {board.length}v (
-                                {(lengthInInches / 12).toFixed(2)}') • Qty: {board.quantity}
-                              </Typography>
-                            </Stack>
-                          </Box>
-                        );
-                      })}
-                    </Stack>
+                            );
+                          })}
+                        </Stack>
+                      </AccordionDetails>
+                    </Accordion>
                   </Box>
 
                   {/* Finishes */}

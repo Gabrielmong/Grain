@@ -153,7 +153,8 @@
     "notes": "Notes",
     "saveChanges": "Save Changes",
     "editProfile": "Edit Profile",
-    "changePassword": "Change Password"
+    "changePassword": "Change Password",
+    "linkCopied": "Link copied to clipboard"
   },
   "account": {
     "title": "Account",

@@ -153,7 +153,8 @@
     "notes": "Notas",
     "saveChanges": "Salvar Alterações",
     "editProfile": "Editar Perfil",
-    "changePassword": "Alterar Senha"
+    "changePassword": "Alterar Senha",
+    "linkCopied": "Link copiado para a área de transferência"
   },
   "account": {
     "title": "Conta",
