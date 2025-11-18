@@ -447,7 +447,7 @@ export const GET_DASHBOARD_STATS = gql`
       totalFinishes
       totalTools
       totalProjectCost
-      totalBoardFeet
+      totalProfit
       avgCostPerBF
       totalToolsValue
     }

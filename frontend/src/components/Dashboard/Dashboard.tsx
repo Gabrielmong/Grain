@@ -25,6 +25,7 @@ import { useCurrency } from '../../utils/currency';
 import { useDispatch } from 'react-redux';
 import { setCurrency, setLanguage, setThemeMode } from '../../store/settings/settingsSlice';
 import type { Currency, Language, ThemeMode } from '../../types';
+import { Money, Paid } from '@mui/icons-material';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ export default function Dashboard() {
       title: t('dashboard.activeProjects'),
       value: stats.totalProjects,
       icon: <FolderIcon sx={{ fontSize: 40 }} />,
-      color: '#635BFF',
+      color: '#3B82F6',
       action: () => navigate('/app/projects'),
     },
     {
@@ -113,9 +114,9 @@ export default function Dashboard() {
       trend: '+12%',
     },
     {
-      title: t('dashboard.totalBoardFeet'),
-      value: stats.totalBoardFeet.toFixed(2),
-      icon: <InventoryIcon sx={{ fontSize: 32 }} />,
+      title: t('dashboard.totalProfit'),
+      value: formatCurrency(stats.totalProfit),
+      icon: <Paid sx={{ fontSize: 32 }} />,
       trend: '+8%',
     },
     {

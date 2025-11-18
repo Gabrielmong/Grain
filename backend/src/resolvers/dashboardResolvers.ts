@@ -4,9 +4,14 @@ import { requireAuth } from '../middleware/auth';
 const prisma = new PrismaClient();
 
 // Helper function to calculate board feet
-const calculateBoardFeet = (width: number, thickness: number, length: number, quantity: number): number => {
+const calculateBoardFeet = (
+  width: number,
+  thickness: number,
+  length: number,
+  quantity: number
+): number => {
   const lengthInInches = length * 33; // 1 vara = 33 inches
-  return (width * thickness * lengthInInches) / 144 * quantity;
+  return ((width * thickness * lengthInInches) / 144) * quantity;
 };
 
 export const dashboardResolvers = {
@@ -67,13 +72,19 @@ export const dashboardResolvers = {
       // Calculate total board feet and total project cost
       let totalBoardFeet = 0;
       let totalProjectCost = 0;
+      let totalProfit = 0;
 
       projects.forEach((project) => {
         // Calculate material cost
         const materialCost = project.boards.reduce((total, board) => {
-          const boardFeet = calculateBoardFeet(board.width, board.thickness, board.length, board.quantity);
+          const boardFeet = calculateBoardFeet(
+            board.width,
+            board.thickness,
+            board.length,
+            board.quantity
+          );
           totalBoardFeet += boardFeet;
-          return total + (boardFeet * board.lumber.costPerBoardFoot);
+          return total + boardFeet * board.lumber.costPerBoardFoot;
         }, 0);
 
         // Calculate finish cost
@@ -81,11 +92,11 @@ export const dashboardResolvers = {
           return total + finish.price;
         }, 0);
 
-        // Add to total project cost
         totalProjectCost += materialCost + finishCost + project.laborCost + project.miscCost;
+
+        totalProfit += project.laborCost;
       });
 
-      // Calculate average cost per board foot
       const avgCostPerBF = totalBoardFeet > 0 ? totalProjectCost / totalBoardFeet : 0;
 
       return {
@@ -95,6 +106,7 @@ export const dashboardResolvers = {
         totalTools,
         totalProjectCost,
         totalBoardFeet,
+        totalProfit,
         avgCostPerBF,
         totalToolsValue,
       };

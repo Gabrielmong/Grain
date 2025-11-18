@@ -16,15 +16,13 @@ import {
   Checkbox,
   Grid,
   FormControlLabel,
-  AppBar,
-  Toolbar,
 } from '@mui/material';
-import { Visibility, VisibilityOff, PersonAdd, Home } from '@mui/icons-material';
+import { Visibility, VisibilityOff, PersonAdd } from '@mui/icons-material';
 import { REGISTER } from '../graphql/auth';
 import { setCredentials } from '../store/authSlice';
 import { useTranslation } from 'react-i18next';
 import type { RootState } from '../store/store';
-import { LanguageSelector } from '../components/General';
+import { Appbar } from '../components';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -105,45 +103,7 @@ export default function Register() {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       {/* Top Navigation Bar */}
-      <AppBar
-        position="sticky"
-        elevation={0}
-        sx={{
-          bgcolor: 'background.paper',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <Toolbar sx={{ py: 1 }}>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              fontWeight: 700,
-              background: 'linear-gradient(135deg, #635BFF 0%, #4F46E5 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            {t('app.title')}
-          </Typography>
-          <LanguageSelector />
-          <Button
-            startIcon={<Home />}
-            onClick={() => navigate('/')}
-            sx={{
-              textTransform: 'none',
-              borderRadius: 2,
-              ml: 1,
-            }}
-          >
-            {t('landing.backToHome')}
-          </Button>
-        </Toolbar>
-      </AppBar>
-
+      <Appbar showSignInUp={false} />
       <Container component="main" maxWidth="sm">
         <Box
           sx={{
@@ -296,7 +256,14 @@ export default function Register() {
                         disabled={loading}
                       />
                     }
-                    label={t('register.acceptTerms')}
+                    label={
+                      <Typography variant="body2">
+                        {t('register.iAccept')}{' '}
+                        <Link component={RouterLink} to="/terms" target="_blank">
+                          {t('register.termsAndConditions')}
+                        </Link>
+                      </Typography>
+                    }
                   />
                 </Grid>
               </Grid>

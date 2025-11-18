@@ -1,10 +1,11 @@
 {
   "app": {
-    "title": "Woodwork"
+    "title": "Grain",
+    "contactDeveloper": "Contact Developer"
   },
   "login": {
     "welcomeBack": "Welcome Back",
-    "welcomeMessage": "Welcome to Woodwork, your go-to app for managing woodworking projects and materials.",
+    "welcomeMessage": "Welcome to Grain, your go-to app for managing woodworking projects and materials.",
     "username": "Username",
     "password": "Password",
     "signIn": "Sign In",
@@ -15,7 +16,7 @@
   },
   "register": {
     "createAccount": "Create Account",
-    "joinMessage": "Join Woodwork today",
+    "joinMessage": "Join Grain today",
     "username": "Username",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -23,11 +24,15 @@
     "password": "Password",
     "confirmPassword": "Confirm Password",
     "acceptTerms": "I accept the terms and conditions",
+    "iAccept": "I accept the",
+    "termsAndConditions": "Terms and Conditions",
     "signUp": "Sign Up",
     "creatingAccount": "Creating account...",
     "alreadyHaveAccount": "Already have an account? Sign In",
     "fillAllFields": "Please fill in all fields",
     "passwordsMismatch": "Passwords do not match",
+    "mustAcceptTerms": "You must accept the terms and conditions",
+    "passwordTooShort": "Password must be at least 6 characters",
     "failed": "Registration failed. Please try again."
   },
   "nav": {
@@ -41,7 +46,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "subtitle": "Overview of your Woodwork statistics",
+    "subtitle": "Overview of your Grain statistics",
     "activeProjects": "Active Projects",
     "lumberTypes": "Lumber Types",
     "finishOptions": "Finish Options",
@@ -58,7 +63,8 @@
     "addLumber": "Add Lumber",
     "addFinish": "Add Finish",
     "addTool": "Add Tool",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "totalProfit": "Total Profit"
   },
   "lumber": {
     "title": "Lumber Inventory",
@@ -245,7 +251,8 @@
       "title": "Your Complete Woodworking Project Manager",
       "subtitle": "Plan, estimate, and track your woodworking projects with precision. Manage lumber inventory, calculate costs, and organize your workshop tools—all in one place.",
       "getStarted": "Get Started Free",
-      "learnMore": "Learn More"
+      "learnMore": "Learn More",
+      "continueToApp": "Continue to App"
     },
     "features": {
       "title": "Everything You Need for Woodworking",
@@ -277,7 +284,7 @@
     },
     "cta": {
       "title": "Ready to Get Started?",
-      "subtitle": "Join woodworkers who use Woodwork to manage their projects professionally.",
+      "subtitle": "Join woodworkers who use Grain to manage their projects professionally.",
       "button": "Create Free Account"
     },
     "footer": {
@@ -292,6 +299,7 @@
     "materialCost": "Material Cost",
     "finishCost": "Finish Cost",
     "laborCost": "Labor Cost",
+    "miscCost": "Miscellaneous Cost",
     "totalCost": "Total Cost",
     "materials": "Materials",
     "totalBoardFeet": "Total Board Feet",
@@ -304,5 +312,74 @@
     "cost": "Cost",
     "finishes": "Finishes",
     "additionalNotes": "Additional Notes"
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last Updated",
+    "backToHome": "Back to Home",
+    "introduction": {
+      "title": "1. Introduction",
+      "text": "Welcome to Grain (\"we\", \"our\", \"us\"). These Terms and Conditions govern your use of our woodworking project management application and services. By accessing or using our service, you agree to be bound by these terms."
+    },
+    "acceptance": {
+      "title": "2. Acceptance of Terms",
+      "text": "By creating an account or using our service, you confirm that you have read, understood, and agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our service."
+    },
+    "accounts": {
+      "title": "3. User Accounts",
+      "text": "When you create an account with us, you agree to:",
+      "point1": "Provide accurate, current, and complete information during registration",
+      "point2": "Maintain the security of your password and account credentials",
+      "point3": "Accept responsibility for all activities that occur under your account"
+    },
+    "dataProtection": {
+      "title": "4. Data Protection and Privacy (Costa Rica Law 8968)",
+      "text": "In compliance with Costa Rica's Law 8968 on the Protection of Personal Data (Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales), we are committed to protecting your personal information:",
+      "point1": "We collect only the minimum personal data necessary to provide our services (name, email, username)",
+      "point2": "Your personal data is stored securely and protected against unauthorized access",
+      "point3": "We process your data solely for the purpose of providing our woodworking project management services",
+      "point4": "Your data will not be transferred to third parties without your explicit consent",
+      "point5": "We implement appropriate technical and organizational measures to ensure data security"
+    },
+    "rights": {
+      "title": "5. Your Data Rights (ARCO Rights)",
+      "text": "Under Costa Rica Law 8968, you have the following rights regarding your personal data:",
+      "point1": "Access: Request information about what personal data we hold about you",
+      "point2": "Rectification: Request correction of inaccurate or incomplete data",
+      "point3": "Cancellation: Request deletion of your personal data from our systems",
+      "point4": "Opposition: Object to certain types of data processing",
+      "point5": "Portability: Request a copy of your data in a structured, commonly used format"
+    },
+    "useOfService": {
+      "title": "6. Use of Service",
+      "text": "You agree to use our service only for lawful purposes and in accordance with these terms. You agree not to:",
+      "point1": "Use the service in any way that violates any applicable law or regulation",
+      "point2": "Attempt to gain unauthorized access to our systems or other users' accounts",
+      "point3": "Interfere with or disrupt the service or servers connected to the service"
+    },
+    "userContent": {
+      "title": "7. User Content and Data",
+      "text": "You retain all rights to the project data, lumber inventory, and other content you create in our service. We claim no ownership over your content. You grant us only the limited license necessary to operate and provide the service to you."
+    },
+    "noDataSale": {
+      "title": "8. We Do Not Sell Your Data",
+      "text": "We do not sell, rent, or trade your personal information or project data to third parties. Your data is used exclusively to provide you with our services."
+    },
+    "liability": {
+      "title": "9. Limitation of Liability",
+      "text": "Our service is provided \"as is\" without warranties of any kind. We are not liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service. Project calculations and estimates are provided as tools to assist your planning and should be verified independently."
+    },
+    "changes": {
+      "title": "10. Changes to Terms",
+      "text": "We reserve the right to modify these terms at any time. We will notify users of any material changes via email or through the service. Your continued use of the service after such modifications constitutes acceptance of the updated terms."
+    },
+    "governingLaw": {
+      "title": "11. Governing Law",
+      "text": "These Terms and Conditions are governed by and construed in accordance with the laws of Costa Rica. Any disputes arising from these terms or your use of the service shall be subject to the exclusive jurisdiction of the courts of Costa Rica."
+    },
+    "contact": {
+      "title": "12. Contact Information",
+      "text": "If you have any questions about these Terms and Conditions, your data rights, or wish to exercise your ARCO rights, please contact us through your account settings or the contact information provided in the application."
+    }
   }
 }

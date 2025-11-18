@@ -137,6 +137,7 @@ export const typeDefs = gql`
     totalTools: Int!
     totalProjectCost: Float!
     totalBoardFeet: Float!
+    totalProfit: Float!
     avgCostPerBF: Float!
     totalToolsValue: Float!
   }

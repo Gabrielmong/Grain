@@ -6,9 +6,9 @@ export const getTheme = (mode: PaletteMode) =>
     palette: {
       mode,
       primary: {
-        main: '#635BFF', // Stripe purple
-        light: '#7A73FF',
-        dark: '#4D47CC',
+        main: '#3B82F6', // Vibrant blue
+        light: '#60A5FA',
+        dark: '#2563EB',
         contrastText: '#FFFFFF',
       },
       secondary: {
@@ -33,14 +33,14 @@ export const getTheme = (mode: PaletteMode) =>
         dark: '#CC582E',
       },
       background: {
-        default: mode === 'light' ? '#F6F9FC' : '#0A1929',
-        paper: mode === 'light' ? '#FFFFFF' : '#132F4C',
+        default: mode === 'light' ? '#F6F9FC' : '#1A1A1A',
+        paper: mode === 'light' ? '#FFFFFF' : '#262626',
       },
       text: {
-        primary: mode === 'light' ? '#0A2540' : '#E3E8EE',
-        secondary: mode === 'light' ? '#425466' : '#8B9DAF',
+        primary: mode === 'light' ? '#0A2540' : '#E5E5E5',
+        secondary: mode === 'light' ? '#425466' : '#A3A3A3',
       },
-      divider: mode === 'light' ? '#E3E8EE' : '#1E3A52',
+      divider: mode === 'light' ? '#E3E8EE' : '#404040',
     },
     typography: {
       fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -159,7 +159,7 @@ export const getTheme = (mode: PaletteMode) =>
             '& .MuiOutlinedInput-root': {
               borderRadius: 8,
               '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#635BFF',
+                borderColor: '#3B82F6',
               },
             },
           },
@@ -181,7 +181,7 @@ export const getTheme = (mode: PaletteMode) =>
             fontSize: '0.9375rem',
             minHeight: 56,
             '&.Mui-selected': {
-              color: '#635BFF',
+              color: '#3B82F6',
             },
           },
         },

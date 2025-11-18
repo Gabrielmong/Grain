@@ -3,7 +3,7 @@ import type { Settings, Currency, Language, ThemeMode } from '../../types/settin
 
 const initialState: Settings = {
   currency: 'USD',
-  language: 'en',
+  language: 'es',
   themeMode: 'light',
 };
 

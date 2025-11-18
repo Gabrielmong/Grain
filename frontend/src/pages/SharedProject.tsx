@@ -180,7 +180,7 @@ export default function SharedProjectPage() {
 
         {/* Cost Summary */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom variant="body2">
@@ -192,7 +192,7 @@ export default function SharedProjectPage() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom variant="body2">
@@ -204,7 +204,7 @@ export default function SharedProjectPage() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom variant="body2">
@@ -216,7 +216,19 @@ export default function SharedProjectPage() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Card>
+              <CardContent>
+                <Typography color="text.secondary" gutterBottom variant="body2">
+                  {t('shared.miscCost')}
+                </Typography>
+                <Typography variant="h5" fontWeight={600}>
+                  {formatCurrency(project.miscCost)}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
             <Card
               sx={{
                 background: (theme) =>
@@ -268,16 +280,11 @@ export default function SharedProjectPage() {
                         <Typography variant="body2" fontWeight={500}>
                           {board.lumber?.name}
                         </Typography>
-                        {board.lumber?.description && (
-                          <Typography variant="caption" color="text.secondary">
-                            {board.lumber.description}
-                          </Typography>
-                        )}
                       </Box>
                     </TableCell>
                     <TableCell align="right">{board.width}"</TableCell>
                     <TableCell align="right">{board.thickness}"</TableCell>
-                    <TableCell align="right">{board.length} varas</TableCell>
+                    <TableCell align="right">{board.length} varas (1 vara = 33")</TableCell>
                     <TableCell align="right">{board.quantity}</TableCell>
                     <TableCell align="right">{board.boardFeet.toFixed(2)}</TableCell>
                     <TableCell align="right">

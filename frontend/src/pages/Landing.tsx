@@ -1,18 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  AppBar,
-  Toolbar,
-  Stack,
-  Grid,
-  Card,
-  CardContent,
-  Avatar,
-} from '@mui/material';
+import { Box, Container, Typography, Button, Stack, Grid, Card, CardContent } from '@mui/material';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import FormatPaintIcon from '@mui/icons-material/FormatPaint';
 import BuildIcon from '@mui/icons-material/Build';
@@ -21,13 +9,13 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import { LanguageSelector } from '../components/General';
+import { Appbar, Footer } from '../components';
 
 export default function Landing() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const features = [
     {
@@ -65,86 +53,7 @@ export default function Landing() {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       {/* Top Navigation Bar */}
-      <AppBar
-        position="sticky"
-        elevation={0}
-        sx={{
-          bgcolor: 'background.paper',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <Toolbar sx={{ py: 1 }}>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              fontWeight: 700,
-              background: 'linear-gradient(135deg, #635BFF 0%, #4F46E5 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            {t('app.title')}
-          </Typography>
-          <LanguageSelector />
-          {isAuthenticated ? (
-            <Button
-              variant="outlined"
-              onClick={() => navigate('/app')}
-              sx={{
-                textTransform: 'none',
-                borderRadius: 2,
-                px: 3,
-                ml: 1,
-              }}
-            >
-              {user && (
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar
-                    sx={{ width: 24, height: 24, bgcolor: 'primary.main' }}
-                    src={user.imageData}
-                  >
-                    {t('landing.goToApp')}
-                  </Avatar>
-                  <Box sx={{ ml: 2 }}>{t('landing.goToApp')}</Box>
-                </Box>
-              )}
-            </Button>
-          ) : (
-            <Stack direction="row" spacing={2} sx={{ ml: 1 }}>
-              <Button
-                variant="outlined"
-                onClick={() => navigate('/login')}
-                sx={{
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  px: 3,
-                }}
-              >
-                {t('landing.signIn')}
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => navigate('/register')}
-                sx={{
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  px: 3,
-                  bgcolor: 'primary.main',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                  },
-                }}
-              >
-                {t('landing.signUp')}
-              </Button>
-            </Stack>
-          )}
-        </Toolbar>
-      </AppBar>
+      <Appbar />
 
       {/* Hero Section */}
       <Box
@@ -165,7 +74,7 @@ export default function Landing() {
                 fontWeight: 800,
                 mb: 3,
                 fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
-                background: 'linear-gradient(135deg, #635BFF 0%, #4F46E5 100%)',
+                background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -185,38 +94,61 @@ export default function Landing() {
               {t('landing.hero.subtitle')}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => navigate('/register')}
-                sx={{
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  px: 5,
-                  py: 1.5,
-                  fontSize: '1.125rem',
-                  bgcolor: 'primary.main',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                  },
-                }}
-              >
-                {t('landing.hero.getStarted')}
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={() => navigate('/login')}
-                sx={{
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  px: 5,
-                  py: 1.5,
-                  fontSize: '1.125rem',
-                }}
-              >
-                {t('landing.hero.learnMore')}
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => navigate('/app')}
+                  sx={{
+                    textTransform: 'none',
+                    borderRadius: 2,
+                    px: 5,
+                    py: 1.5,
+                    fontSize: '1.125rem',
+                    bgcolor: 'primary.main',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                    },
+                  }}
+                >
+                  {t('landing.hero.continueToApp')}
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={() => navigate('/register')}
+                    sx={{
+                      textTransform: 'none',
+                      borderRadius: 2,
+                      px: 5,
+                      py: 1.5,
+                      fontSize: '1.125rem',
+                      bgcolor: 'primary.main',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                      },
+                    }}
+                  >
+                    {t('landing.hero.getStarted')}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    onClick={() => navigate('/login')}
+                    sx={{
+                      textTransform: 'none',
+                      borderRadius: 2,
+                      px: 5,
+                      py: 1.5,
+                      fontSize: '1.125rem',
+                    }}
+                  >
+                    {t('landing.hero.learnMore')}
+                  </Button>
+                </>
+              )}
             </Stack>
           </Box>
         </Container>
@@ -274,67 +206,55 @@ export default function Landing() {
       </Container>
 
       {/* CTA Section */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, #635BFF 0%, #4F46E5 100%)',
-          py: { xs: 8, md: 10 },
-        }}
-      >
-        <Container maxWidth="md">
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography
-              variant="h3"
-              component="h2"
-              sx={{
-                fontWeight: 700,
-                mb: 2,
-                color: 'white',
-                fontSize: { xs: '2rem', md: '2.5rem' },
-              }}
-            >
-              {t('landing.cta.title')}
-            </Typography>
-            <Typography variant="h6" sx={{ mb: 4, color: 'rgba(255, 255, 255, 0.9)' }}>
-              {t('landing.cta.subtitle')}
-            </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => navigate('/register')}
-              sx={{
-                textTransform: 'none',
-                borderRadius: 2,
-                px: 5,
-                py: 1.5,
-                fontSize: '1.125rem',
-                bgcolor: 'white',
-                color: 'primary.main',
-                '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.9)',
-                },
-              }}
-            >
-              {t('landing.cta.button')}
-            </Button>
-          </Box>
-        </Container>
-      </Box>
+      {!isAuthenticated && (
+        <Box
+          sx={{
+            background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+            py: { xs: 8, md: 10 },
+          }}
+        >
+          <Container maxWidth="md">
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography
+                variant="h3"
+                component="h2"
+                sx={{
+                  fontWeight: 700,
+                  mb: 2,
+                  color: 'white',
+                  fontSize: { xs: '2rem', md: '2.5rem' },
+                }}
+              >
+                {t('landing.cta.title')}
+              </Typography>
+              <Typography variant="h6" sx={{ mb: 4, color: 'rgba(255, 255, 255, 0.9)' }}>
+                {t('landing.cta.subtitle')}
+              </Typography>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => navigate('/register')}
+                sx={{
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  px: 5,
+                  py: 1.5,
+                  fontSize: '1.125rem',
+                  bgcolor: 'white',
+                  color: 'primary.main',
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.9)',
+                  },
+                }}
+              >
+                {t('landing.cta.button')}
+              </Button>
+            </Box>
+          </Container>
+        </Box>
+      )}
 
-      {/* Footer */}
-      <Box
-        sx={{
-          py: 4,
-          borderTop: '1px solid',
-          borderColor: 'divider',
-          bgcolor: 'background.paper',
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography variant="body2" color="text.secondary" align="center">
-            © {new Date().getFullYear()} {t('app.title')}. {t('landing.footer.rights')}
-          </Typography>
-        </Container>
-      </Box>
+      <Footer />
     </Box>
   );
 }

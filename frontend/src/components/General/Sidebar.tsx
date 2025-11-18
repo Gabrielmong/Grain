@@ -98,8 +98,7 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
       {/* Header */}
       <Box
         sx={{
-          p: 3,
-          bgcolor: 'secondary.main',
+          p: 2,
           borderBottom: '1px solid',
           borderColor: 'divider',
         }}
@@ -109,8 +108,9 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
             variant="h5"
             component="h1"
             sx={{
+              flexGrow: 1,
               fontWeight: 700,
-              background: 'linear-gradient(135deg, #FFFFFF 0%, #E3E8EE 100%)',
+              background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -254,9 +254,30 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
           </ListItemButton>
         </ListItem>
 
-        <Typography variant="caption" color="text.secondary">
-          Woodwork v{APP_VERSION}
-        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+          <Typography variant="caption" color="text.secondary">
+            Grain v{APP_VERSION}
+          </Typography>
+          <Typography
+            component="a"
+            href="https://gabrielmong.github.io/gandalfio/#/contact"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              textDecoration: 'none',
+              opacity: 0.6,
+              transition: 'opacity 0.2s',
+              '&:hover': {
+                opacity: 1,
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            {t('app.contactDeveloper')}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

@@ -1,10 +1,11 @@
 {
   "app": {
-    "title": "Woodwork"
+    "title": "Grain",
+    "contactDeveloper": "Contactar o Desenvolvedor"
   },
   "login": {
     "welcomeBack": "Bem-vindo de Volta",
-    "welcomeMessage": "Bem-vindo ao Woodwork, seu aplicativo para gerenciar projetos e materiais de marcenaria.",
+    "welcomeMessage": "Bem-vindo ao Grain, seu aplicativo para gerenciar projetos e materiais de marcenaria.",
     "username": "Nome de usuário",
     "password": "Senha",
     "signIn": "Entrar",
@@ -15,7 +16,7 @@
   },
   "register": {
     "createAccount": "Criar Conta",
-    "joinMessage": "Junte-se ao Woodwork hoje",
+    "joinMessage": "Junte-se ao Grain hoje",
     "username": "Nome de usuário",
     "firstName": "Nome",
     "lastName": "Sobrenome",
@@ -23,11 +24,15 @@
     "password": "Senha",
     "confirmPassword": "Confirmar Senha",
     "acceptTerms": "Aceito os termos e condições",
+    "iAccept": "Aceito os",
+    "termsAndConditions": "Termos e Condições",
     "signUp": "Cadastrar",
     "creatingAccount": "Criando conta...",
     "alreadyHaveAccount": "Já tem uma conta? Entre",
     "fillAllFields": "Por favor, preencha todos os campos",
     "passwordsMismatch": "As senhas não coincidem",
+    "mustAcceptTerms": "Você deve aceitar os termos e condições",
+    "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
     "failed": "Falha no cadastro. Tente novamente."
   },
   "nav": {
@@ -41,7 +46,7 @@
   },
   "dashboard": {
     "title": "Painel",
-    "subtitle": "Visão geral das suas estatísticas do Woodwork",
+    "subtitle": "Visão geral das suas estatísticas do Grain",
     "activeProjects": "Projetos Ativos",
     "lumberTypes": "Tipos de Madeira",
     "finishOptions": "Opções de Acabamento",
@@ -58,7 +63,8 @@
     "addLumber": "Adicionar Madeira",
     "addFinish": "Adicionar Acabamento",
     "addTool": "Adicionar Ferramenta",
-    "viewAll": "Ver Todos"
+    "viewAll": "Ver Todos",
+    "totalProfit": "Lucro Total"
   },
   "lumber": {
     "title": "Inventário de Madeira",
@@ -245,7 +251,8 @@
       "title": "Seu Gerenciador Completo de Projetos de Marcenaria",
       "subtitle": "Planeje, estime e rastreie seus projetos de marcenaria com precisão. Gerencie inventário de madeira, calcule custos e organize as ferramentas da sua oficina—tudo em um só lugar.",
       "getStarted": "Comece Grátis",
-      "learnMore": "Saiba Mais"
+      "learnMore": "Saiba Mais",
+      "continueToApp": "Continuar para o App"
     },
     "features": {
       "title": "Tudo o Que Você Precisa para Marcenaria",
@@ -277,7 +284,7 @@
     },
     "cta": {
       "title": "Pronto para Começar?",
-      "subtitle": "Junte-se aos marceneiros que usam o Woodwork para gerenciar seus projetos profissionalmente.",
+      "subtitle": "Junte-se aos marceneiros que usam o Grain para gerenciar seus projetos profissionalmente.",
       "button": "Criar Conta Grátis"
     },
     "footer": {
@@ -292,6 +299,7 @@
     "materialCost": "Custo de Material",
     "finishCost": "Custo de Acabamento",
     "laborCost": "Custo de Mão de Obra",
+    "miscCost": "Custo Diversos",
     "totalCost": "Custo Total",
     "materials": "Materiais",
     "totalBoardFeet": "Total de Pés de Tábua",
@@ -304,5 +312,74 @@
     "cost": "Custo",
     "finishes": "Acabamentos",
     "additionalNotes": "Notas Adicionais"
+  },
+  "terms": {
+    "title": "Termos e Condições",
+    "lastUpdated": "Última Atualização",
+    "backToHome": "Voltar ao Início",
+    "introduction": {
+      "title": "1. Introdução",
+      "text": "Bem-vindo ao Grain (\"nós\", \"nosso\", \"nos\"). Estes Termos e Condições regem seu uso de nossa aplicação de gerenciamento de projetos de marcenaria e serviços. Ao acessar ou usar nosso serviço, você concorda em estar vinculado a estes termos."
+    },
+    "acceptance": {
+      "title": "2. Aceitação dos Termos",
+      "text": "Ao criar uma conta ou usar nosso serviço, você confirma que leu, entendeu e concorda em estar vinculado a estes Termos e Condições. Se você não concordar com estes termos, não use nosso serviço."
+    },
+    "accounts": {
+      "title": "3. Contas de Usuário",
+      "text": "Quando você cria uma conta conosco, você concorda em:",
+      "point1": "Fornecer informações precisas, atuais e completas durante o registro",
+      "point2": "Manter a segurança de sua senha e credenciais de conta",
+      "point3": "Aceitar a responsabilidade por todas as atividades que ocorram sob sua conta"
+    },
+    "dataProtection": {
+      "title": "4. Proteção de Dados e Privacidade (Lei 8968 da Costa Rica)",
+      "text": "Em conformidade com a Lei 8968 da Costa Rica sobre a Proteção de Dados Pessoais (Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales), estamos comprometidos em proteger suas informações pessoais:",
+      "point1": "Coletamos apenas os dados pessoais mínimos necessários para fornecer nossos serviços (nome, e-mail, nome de usuário)",
+      "point2": "Seus dados pessoais são armazenados com segurança e protegidos contra acesso não autorizado",
+      "point3": "Processamos seus dados exclusivamente com o propósito de fornecer nossos serviços de gerenciamento de projetos de marcenaria",
+      "point4": "Seus dados não serão transferidos para terceiros sem seu consentimento explícito",
+      "point5": "Implementamos medidas técnicas e organizacionais apropriadas para garantir a segurança dos dados"
+    },
+    "rights": {
+      "title": "5. Seus Direitos sobre os Dados (Direitos ARCO)",
+      "text": "Sob a Lei 8968 da Costa Rica, você tem os seguintes direitos em relação aos seus dados pessoais:",
+      "point1": "Acesso: Solicitar informações sobre quais dados pessoais temos sobre você",
+      "point2": "Retificação: Solicitar a correção de dados imprecisos ou incompletos",
+      "point3": "Cancelamento: Solicitar a exclusão de seus dados pessoais de nossos sistemas",
+      "point4": "Oposição: Opor-se a certos tipos de processamento de dados",
+      "point5": "Portabilidade: Solicitar uma cópia de seus dados em um formato estruturado e de uso comum"
+    },
+    "useOfService": {
+      "title": "6. Uso do Serviço",
+      "text": "Você concorda em usar nosso serviço apenas para fins legais e de acordo com estes termos. Você concorda em não:",
+      "point1": "Usar o serviço de qualquer forma que viole qualquer lei ou regulamento aplicável",
+      "point2": "Tentar obter acesso não autorizado aos nossos sistemas ou às contas de outros usuários",
+      "point3": "Interferir ou interromper o serviço ou os servidores conectados ao serviço"
+    },
+    "userContent": {
+      "title": "7. Conteúdo e Dados do Usuário",
+      "text": "Você retém todos os direitos sobre os dados do projeto, inventário de madeira e outro conteúdo que você criar em nosso serviço. Não reivindicamos nenhuma propriedade sobre seu conteúdo. Você nos concede apenas a licença limitada necessária para operar e fornecer o serviço a você."
+    },
+    "noDataSale": {
+      "title": "8. Não Vendemos Seus Dados",
+      "text": "Não vendemos, alugamos ou negociamos suas informações pessoais ou dados de projetos com terceiros. Seus dados são usados exclusivamente para fornecer nossos serviços a você."
+    },
+    "liability": {
+      "title": "9. Limitação de Responsabilidade",
+      "text": "Nosso serviço é fornecido \"como está\" sem garantias de qualquer tipo. Não somos responsáveis por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos resultantes do seu uso do serviço. Cálculos e estimativas de projetos são fornecidos como ferramentas para auxiliar seu planejamento e devem ser verificados de forma independente."
+    },
+    "changes": {
+      "title": "10. Alterações nos Termos",
+      "text": "Reservamo-nos o direito de modificar estes termos a qualquer momento. Notificaremos os usuários sobre quaisquer alterações materiais por e-mail ou através do serviço. Seu uso continuado do serviço após tais modificações constitui aceitação dos termos atualizados."
+    },
+    "governingLaw": {
+      "title": "11. Lei Aplicável",
+      "text": "Estes Termos e Condições são regidos e interpretados de acordo com as leis da Costa Rica. Quaisquer disputas decorrentes destes termos ou do seu uso do serviço estarão sujeitas à jurisdição exclusiva dos tribunais da Costa Rica."
+    },
+    "contact": {
+      "title": "12. Informações de Contato",
+      "text": "Se você tiver alguma dúvida sobre estes Termos e Condições, seus direitos sobre os dados ou desejar exercer seus direitos ARCO, entre em contato conosco através das configurações de sua conta ou das informações de contato fornecidas no aplicativo."
+    }
   }
 }
