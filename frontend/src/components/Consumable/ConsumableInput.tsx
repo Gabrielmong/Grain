@@ -43,13 +43,15 @@ export default function ConsumableInput({
 
   const selectedConsumable = consumableOptions.find((c) => c.id === projectConsumable.consumableId);
 
-  // Calculate packages needed (rounded up to nearest whole package)
+  // Calculate packages needed (rounded up to nearest whole package) - for display only
   const packagesNeeded = selectedConsumable
     ? Math.ceil(projectConsumable.quantity / selectedConsumable.packageQuantity)
     : 0;
 
-  // Calculate total cost
-  const totalCost = selectedConsumable ? packagesNeeded * selectedConsumable.price : 0;
+  // Calculate total cost based on unit price (not package price)
+  const totalCost = selectedConsumable
+    ? projectConsumable.quantity * selectedConsumable.unitPrice
+    : 0;
 
   const handleConsumableChange = (consumableId: string) => {
     onChange(index, { ...projectConsumable, consumableId });
@@ -89,7 +91,7 @@ export default function ConsumableInput({
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-              {t('consumables.consumableInput.consumableNumber', { number: index + 1 })}
+              {t('consumables.consumableInput.consumable')} {index + 1}
             </Typography>
             {selectedConsumable && (
               <Typography variant="body2" color="text.secondary">
@@ -97,7 +99,14 @@ export default function ConsumableInput({
                 {projectConsumable.quantity > 0 && (
                   <>
                     {' '}
-                    • {projectConsumable.quantity} {t('consumables.consumableInput.itemsNeeded')}
+                    • {projectConsumable.quantity}{' '}
+                    {projectConsumable.quantity === 1
+                      ? t('consumables.consumableInput.itemNeeded', {
+                          count: projectConsumable.quantity,
+                        })
+                      : t('consumables.consumableInput.itemsNeeded', {
+                          count: projectConsumable.quantity,
+                        })}
                   </>
                 )}
               </Typography>

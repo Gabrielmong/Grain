@@ -162,6 +162,7 @@
       "consumable": "Consumable",
       "consumableNumber": "Consumable #",
       "itemsNeeded": "Items Needed",
+      "itemNeeded": "Item Needed",
       "perPkg": "per package",
       "quantityNeeded": "Quantity Needed",
       "quantityHelper": "Number of items needed for the project",

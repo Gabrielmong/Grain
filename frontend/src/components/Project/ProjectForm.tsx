@@ -87,12 +87,11 @@ export function ProjectForm({
       return total + sheetGood.price * psg.quantity;
     }, 0);
 
-    // Calculate consumable costs
+    // Calculate consumable costs (charged by unit)
     const consumableCost = projectConsumables.reduce((total, pc) => {
       const consumable = consumableOptions.find((c) => c.id === pc.consumableId);
       if (!consumable) return total;
-      const packagesNeeded = Math.ceil(pc.quantity / consumable.packageQuantity);
-      return total + packagesNeeded * consumable.price;
+      return total + pc.quantity * consumable.unitPrice;
     }, 0);
 
     // Calculate finish costs

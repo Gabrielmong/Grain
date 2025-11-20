@@ -141,8 +141,7 @@ export function ProjectDetails() {
     const consumableCost = projectConsumables.reduce((total: number, projectConsumable: any) => {
       const consumable = projectConsumable.consumable;
       if (!consumable) return total;
-      const unitPrice = consumable.price / consumable.packageQuantity;
-      return total + projectConsumable.quantity * unitPrice;
+      return total + projectConsumable.quantity * consumable.unitPrice;
     }, 0);
 
     return {

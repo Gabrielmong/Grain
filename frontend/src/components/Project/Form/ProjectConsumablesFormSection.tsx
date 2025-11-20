@@ -45,7 +45,7 @@ export function ProjectConsumablesFormSection({
             }}
           >
             {t('project.form.addConsumable')}
-</Button>
+          </Button>
         </Box>
 
         {projectConsumables.length === 0 ? (

@@ -163,6 +163,7 @@
       "consumable": "Consumible",
       "consumableNumber": "Número de Consumible",
       "itemsNeeded": "Artículos Necesarios",
+      "itemNeeded": "Artículo Necesario",
       "perPkg": "por paquete",
       "quantityNeeded": "Cantidad Necesaria",
       "quantityHelper": "Número de artículos necesarios para el proyecto",

@@ -54,8 +54,7 @@ export function ProjectCard({
     const consumableCost = projectConsumables.reduce((total, projectConsumable) => {
       const consumable = projectConsumable.consumable;
       if (!consumable) return total;
-      const unitPrice = consumable.price / consumable.packageQuantity;
-      return total + projectConsumable.quantity * unitPrice;
+      return total + projectConsumable.quantity * consumable.unitPrice;
     }, 0);
 
     return {
