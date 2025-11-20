@@ -492,7 +492,8 @@
     "sheetGoods": "Láminas y Tableros",
     "dimensions": "Dimensiones",
     "material": "Material",
-    "unitPrice": "Precio Unitario"
+    "unitPrice": "Precio Unitario",
+    "consumableCost": "Costo de Consumibles"
   },
   "terms": {
     "title": "Términos y Condiciones",

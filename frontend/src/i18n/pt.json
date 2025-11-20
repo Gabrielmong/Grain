@@ -490,7 +490,8 @@
     "sheetGoods": "Chapas e Placas",
     "dimensions": "Dimensões",
     "material": "Material",
-    "unitPrice": "Preço Unitário"
+    "unitPrice": "Preço Unitário",
+    "consumableCost": "Custo de Consumíveis"
   },
   "terms": {
     "title": "Termos e Condições",
