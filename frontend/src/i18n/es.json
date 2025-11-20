@@ -39,8 +39,9 @@
   "nav": {
     "dashboard": "Panel de Control",
     "projects": "Proyectos",
-    "lumber": "Inventario de Madera",
-    "finishes": "Acabados de Madera",
+    "materials": "Materiales",
+    "lumber": "Madera",
+    "finishes": "Acabados",
     "sheetGoods": "Láminas y Tableros",
     "consumables": "Consumibles",
     "tools": "Herramientas",
@@ -72,7 +73,7 @@
     "totalProfit": "Ganancia Total"
   },
   "lumber": {
-    "title": "Inventario de Madera",
+    "title": "Madera",
     "subtitle": "Administre sus tipos de madera, precios y características",
     "add": "Agregar Madera",
     "emptyTitle": "No hay madera en inventario",
@@ -88,7 +89,7 @@
     "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta madera? Esta acción la marcará como eliminada pero se podrá restaurar más tarde."
   },
   "finishes": {
-    "title": "Acabados de Madera",
+    "title": "Acabados",
     "subtitle": "Administre sus productos de acabado de madera, precios y recomendaciones",
     "add": "Agregar Acabado",
     "emptyTitle": "No hay acabados en inventario",

@@ -39,6 +39,7 @@
   "nav": {
     "dashboard": "Painel",
     "projects": "Projetos",
+    "materials": "Materiais",
     "lumber": "Madeira",
     "finishes": "Acabamentos",
     "sheetGoods": "Chapas/Placas",
@@ -86,7 +87,7 @@
     "deleteConfirmMessage": "Tem certeza de que deseja excluir esta madeira? Esta ação marcará como excluída, mas pode ser restaurada depois."
   },
   "finishes": {
-    "title": "Acabamentos de Madeira",
+    "title": "Acabamentos",
     "subtitle": "Gerencie seus produtos de acabamento, preços e recomendações",
     "add": "Adicionar Acabamento",
     "emptyTitle": "Sem acabamentos no inventário",

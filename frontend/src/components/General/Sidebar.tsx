@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import {
   Typography,
   Divider,
   Avatar,
+  Collapse,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
@@ -20,6 +22,9 @@ import GridOnIcon from '@mui/icons-material/GridOn';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import BuildIcon from '@mui/icons-material/Build';
 import FolderIcon from '@mui/icons-material/Folder';
+import CategoryIcon from '@mui/icons-material/Category';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../../store/authSlice';
@@ -42,6 +47,7 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
+  const [materialsOpen, setMaterialsOpen] = useState(true);
 
   const handleLogout = () => {
     dispatch(resetSettings());
@@ -63,6 +69,9 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
       icon: <FolderIcon />,
       path: '/app/projects',
     },
+  ];
+
+  const materialItems = [
     {
       text: t('nav.lumber'),
       icon: <ViewModuleIcon />,
@@ -83,6 +92,9 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
       icon: <Inventory2Icon />,
       path: '/app/consumables',
     },
+  ];
+
+  const toolsItems = [
     {
       text: t('nav.tools'),
       icon: <BuildIcon />,
@@ -136,8 +148,129 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
       <Divider />
 
       {/* Navigation */}
-      <List sx={{ px: 2, py: 3, flexGrow: 1 }}>
+      <List
+        sx={{
+          px: 2,
+          py: 3,
+          flexGrow: 1,
+          overflow: 'auto',
+        }}
+      >
+        {/* Main menu items */}
         {menuItems.map((item) => {
+          const isActive = location.pathname === item.path;
+
+          return (
+            <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
+              <ListItemButton
+                onClick={() => handleNavigation(item.path)}
+                sx={{
+                  borderRadius: 2,
+                  py: 1.5,
+                  px: 2,
+                  bgcolor: isActive ? 'rgba(99, 91, 255, 0.08)' : 'transparent',
+                  '&:hover': {
+                    bgcolor: isActive ? 'rgba(99, 91, 255, 0.12)' : 'action.hover',
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: isActive ? 'primary.main' : 'text.secondary',
+                    minWidth: 40,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  primaryTypographyProps={{
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? 'primary.main' : 'text.primary',
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+
+        {/* Materials section (collapsible) */}
+        <ListItem disablePadding sx={{ mb: 1 }}>
+          <ListItemButton
+            onClick={() => setMaterialsOpen(!materialsOpen)}
+            sx={{
+              borderRadius: 2,
+              py: 1.5,
+              px: 2,
+              '&:hover': {
+                bgcolor: 'action.hover',
+              },
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                color: 'text.secondary',
+                minWidth: 40,
+              }}
+            >
+              <CategoryIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={t('nav.materials')}
+              primaryTypographyProps={{
+                fontWeight: 500,
+                color: 'text.primary',
+              }}
+            />
+            {materialsOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+        </ListItem>
+
+        {/* Materials sub-items */}
+        <Collapse in={materialsOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {materialItems.map((item) => {
+              const isActive = location.pathname === item.path;
+
+              return (
+                <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
+                  <ListItemButton
+                    onClick={() => handleNavigation(item.path)}
+                    sx={{
+                      borderRadius: 2,
+                      py: 1.5,
+                      pl: 6,
+                      pr: 2,
+                      bgcolor: isActive ? 'rgba(99, 91, 255, 0.08)' : 'transparent',
+                      '&:hover': {
+                        bgcolor: isActive ? 'rgba(99, 91, 255, 0.12)' : 'action.hover',
+                      },
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        color: isActive ? 'primary.main' : 'text.secondary',
+                        minWidth: 40,
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      primaryTypographyProps={{
+                        fontWeight: isActive ? 600 : 500,
+                        color: isActive ? 'primary.main' : 'text.primary',
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Collapse>
+
+        {/* Tools section */}
+        {toolsItems.map((item) => {
           const isActive = location.pathname === item.path;
 
           return (
