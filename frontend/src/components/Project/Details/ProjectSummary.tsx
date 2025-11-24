@@ -6,14 +6,20 @@ interface ProjectSummaryProps {
   totalBoardFootage: number;
   boardCount: number;
   totalCost: number;
+  price?: number;
 }
 
-export function ProjectSummary({ totalBoardFootage, boardCount, totalCost }: ProjectSummaryProps) {
+export function ProjectSummary({
+  totalBoardFootage,
+  boardCount,
+  totalCost,
+  price,
+}: ProjectSummaryProps) {
   const { t } = useTranslation();
   const formatCurrency = useCurrency();
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 2 }}>
+    <Card sx={{ borderRadius: 2 }}>
       <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
           {t('projectDetails.projectSummary')}
@@ -39,6 +45,16 @@ export function ProjectSummary({ totalBoardFootage, boardCount, totalCost }: Pro
               {boardCount}
             </Typography>
           </Box>
+          {price && price > 0 && (
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                {t('project.form.price')}
+              </Typography>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: 'info.main' }}>
+                {formatCurrency(price)}
+              </Typography>
+            </Box>
+          )}
           <Box sx={{ flex: 1 }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
               {t('projectDetails.totalCost')}

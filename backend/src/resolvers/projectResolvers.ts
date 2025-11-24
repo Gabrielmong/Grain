@@ -36,7 +36,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -69,7 +73,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -102,7 +110,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -143,7 +155,7 @@ export const projectResolvers = {
   Mutation: {
     createProject: async (_: any, { input }: any, context: any) => {
       const user = requireAuth(context);
-      const { boards, finishIds, projectSheetGoods, projectConsumables, ...projectData } = input;
+      const { boards, projectFinishes, projectSheetGoods, projectConsumables, ...projectData } = input;
 
       return prisma.project.create({
         data: {
@@ -155,10 +167,10 @@ export const projectResolvers = {
                 create: boards,
               },
             }),
-          ...(finishIds &&
-            finishIds.length > 0 && {
-              finishes: {
-                connect: finishIds.map((id: string) => ({ id })),
+          ...(projectFinishes &&
+            projectFinishes.length > 0 && {
+              projectFinishes: {
+                create: projectFinishes,
               },
             }),
           ...(projectSheetGoods &&
@@ -180,7 +192,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -196,7 +212,7 @@ export const projectResolvers = {
     },
 
     updateProject: async (_: any, { id, input }: any, context: any) => {
-      const { boards, finishIds, projectSheetGoods, projectConsumables, ...projectData } = input;
+      const { boards, projectFinishes, projectSheetGoods, projectConsumables, ...projectData } = input;
 
       const project = await prisma.project.findUnique({
         where: { id },
@@ -211,6 +227,13 @@ export const projectResolvers = {
       // Delete existing boards if boards are being updated
       if (boards) {
         await prisma.board.deleteMany({
+          where: { projectId: id },
+        });
+      }
+
+      // Delete existing project finishes if they are being updated
+      if (projectFinishes) {
+        await prisma.projectFinish.deleteMany({
           where: { projectId: id },
         });
       }
@@ -238,9 +261,9 @@ export const projectResolvers = {
               create: boards,
             },
           }),
-          ...(finishIds && {
-            finishes: {
-              set: finishIds.map((finishId: string) => ({ id: finishId })),
+          ...(projectFinishes && {
+            projectFinishes: {
+              create: projectFinishes,
             },
           }),
           ...(projectSheetGoods && {
@@ -260,7 +283,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -295,7 +322,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -330,7 +361,11 @@ export const projectResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
           projectSheetGoods: {
             include: {
               sheetGood: true,
@@ -392,8 +427,9 @@ export const projectResolvers = {
     },
 
     finishCost: (parent: any) => {
-      return parent.finishes.reduce((total: number, finish: any) => {
-        return total + finish.price;
+      return parent.projectFinishes.reduce((total: number, projectFinish: any) => {
+        const percentageDecimal = projectFinish.percentageUsed / 100;
+        return total + (projectFinish.finish.price * percentageDecimal);
       }, 0);
     },
 
@@ -415,8 +451,9 @@ export const projectResolvers = {
         return total + boardFeet * board.lumber.costPerBoardFoot;
       }, 0);
 
-      const finishCost = parent.finishes.reduce((total: number, finish: any) => {
-        return total + finish.price;
+      const finishCost = parent.projectFinishes.reduce((total: number, projectFinish: any) => {
+        const percentageDecimal = projectFinish.percentageUsed / 100;
+        return total + (projectFinish.finish.price * percentageDecimal);
       }, 0);
 
       const sheetGoodsCost = parent.projectSheetGoods.reduce(
@@ -444,6 +481,11 @@ export const projectResolvers = {
     },
   },
 
+  ProjectFinish: {
+    finish: (parent: any) => parent.finish,
+    finishId: (parent: any) => parent.finishId,
+  },
+
   // Field resolvers for SharedProject
   SharedProject: {
     totalBoardFeet: (parent: any) => {
@@ -469,9 +511,10 @@ export const projectResolvers = {
     },
 
     finishCost: (parent: any) => {
-      if (!parent.finishes || parent.finishes.length === 0) return 0;
-      return parent.finishes.reduce((total: number, finish: any) => {
-        return total + (finish?.price || 0);
+      if (!parent.projectFinishes || parent.projectFinishes.length === 0) return 0;
+      return parent.projectFinishes.reduce((total: number, projectFinish: any) => {
+        const percentageDecimal = projectFinish.percentageUsed / 100;
+        return total + ((projectFinish.finish?.price || 0) * percentageDecimal);
       }, 0);
     },
 
@@ -492,7 +535,7 @@ export const projectResolvers = {
 
     totalCost: (parent: any) => {
       const boards = parent.boards || [];
-      const finishes = parent.finishes || [];
+      const projectFinishes = parent.projectFinishes || [];
       const projectSheetGoods = parent.projectSheetGoods || [];
       const projectConsumables = parent.projectConsumables || [];
 
@@ -506,8 +549,9 @@ export const projectResolvers = {
         return total + boardFeet * (board.lumber?.costPerBoardFoot || 0);
       }, 0);
 
-      const finishCost = finishes.reduce((total: number, finish: any) => {
-        return total + (finish?.price || 0);
+      const finishCost = projectFinishes.reduce((total: number, projectFinish: any) => {
+        const percentageDecimal = projectFinish.percentageUsed / 100;
+        return total + ((projectFinish.finish?.price || 0) * percentageDecimal);
       }, 0);
 
       const sheetGoodsCost = projectSheetGoods.reduce((total: number, projectSheetGood: any) => {

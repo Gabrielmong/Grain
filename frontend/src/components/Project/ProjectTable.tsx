@@ -12,9 +12,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/Restore';
 import ShareIcon from '@mui/icons-material/Share';
 import type { Project, ProjectSheetGood } from '../../types/project';
-import type { Finish } from '../../types/finish';
 import { calculateTotalBoardFootage, ProjectStatus } from '../../types/project';
 import { StatusChip } from './utils';
+import { useCurrency } from '../../utils/currency';
 
 const truncateText = (text: string, maxLength: number = 150) => {
   if (text.length <= maxLength) return text;
@@ -38,6 +38,7 @@ export function ProjectTable({
 }: ProjectTableProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const formatCurrency = useCurrency();
 
   const handleShare = async (projectId: string) => {
     const shareUrl = `${window.location.origin}/shared/${projectId}`;
@@ -50,7 +51,7 @@ export function ProjectTable({
 
   const calculateProjectCost = (project: Project) => {
     const boards = project.boards || [];
-    const finishes = project.finishes || [];
+    const projectFinishes = project.projectFinishes || [];
     const projectSheetGoods = project.projectSheetGoods || [];
     const projectConsumables = project.projectConsumables || [];
 
@@ -63,8 +64,11 @@ export function ProjectTable({
       return total + totalBF * lumber.costPerBoardFoot;
     }, 0);
 
-    const finishCost = finishes.reduce((total, finish) => {
-      return total + (finish?.price || 0);
+    const finishCost = projectFinishes.reduce((total, pf) => {
+      const finish = pf.finish;
+      if (!finish) return total;
+      const percentageDecimal = pf.percentageUsed / 100;
+      return total + (finish.price * percentageDecimal);
     }, 0);
 
     const sheetGoodCost = projectSheetGoods.reduce((total, projectSheetGood) => {
@@ -140,7 +144,7 @@ export function ProjectTable({
       ),
     },
     {
-      field: 'finishes',
+      field: 'projectFinishes',
       headerName: t('projectDetails.finishes'),
       flex: 1,
       minWidth: 150,
@@ -148,11 +152,11 @@ export function ProjectTable({
       renderCell: (params: GridRenderCellParams) => (
         <Stack direction="row" spacing={0.5} flexWrap="wrap" gap={0.5} sx={{ py: 0.5 }}>
           {params.value && params.value.length > 0 ? (
-            params.value.map((finish: Finish) => {
+            params.value.map((pf: any) => {
               return (
                 <Chip
-                  key={finish.id}
-                  label={finish?.name || t('common.unknown')}
+                  key={pf.id}
+                  label={`${pf.finish?.name || t('common.unknown')} (${pf.percentageUsed}%)`}
                   size="small"
                   sx={{
                     bgcolor: 'background.default',
@@ -230,6 +234,20 @@ export function ProjectTable({
       ),
     },
     {
+      field: 'price',
+      headerName: t('project.form.price'),
+      width: 120,
+      type: 'number',
+      renderCell: (params: GridRenderCellParams) => {
+        const price = params.value;
+        return price > 0 ? (
+          <Box sx={{ fontWeight: 600, color: 'primary.main' }}>{formatCurrency(price)}</Box>
+        ) : (
+          <Box sx={{ color: 'text.disabled', fontSize: '0.875rem' }}>—</Box>
+        );
+      },
+    },
+    {
       field: 'totalCost',
       headerName: t('projectDetails.totalCost'),
       width: 130,
@@ -237,7 +255,7 @@ export function ProjectTable({
       valueGetter: (_value, row) => calculateProjectCost(row),
       renderCell: (params: GridRenderCellParams) => {
         const totalSum = params.value.totalCost;
-        return <Box sx={{ fontWeight: 700, color: 'success.main' }}>₡{totalSum.toFixed(2)}</Box>;
+        return <Box sx={{ fontWeight: 700, color: 'success.main' }}>{formatCurrency(totalSum)}</Box>;
       },
     },
     {

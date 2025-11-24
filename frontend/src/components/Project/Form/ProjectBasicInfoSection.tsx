@@ -13,18 +13,22 @@ interface ProjectBasicInfoSectionProps {
   name: string;
   description: string;
   status: ProjectStatus;
+  price: string;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onStatusChange: (value: ProjectStatus) => void;
+  onPriceChange: (value: string) => void;
 }
 
 export function ProjectBasicInfoSection({
   name,
   description,
   status,
+  price,
   onNameChange,
   onDescriptionChange,
   onStatusChange,
+  onPriceChange,
 }: ProjectBasicInfoSectionProps) {
   const { t } = useTranslation();
 
@@ -63,6 +67,16 @@ export function ProjectBasicInfoSection({
           <MenuItem value={ProjectStatus.COMPLETED}>{t('project.status.completed')}</MenuItem>
         </Select>
       </FormControl>
+      <TextField
+        label={t('project.form.price')}
+        placeholder={t('project.form.pricePlaceholder')}
+        value={price}
+        onChange={(e) => onPriceChange(e.target.value)}
+        fullWidth
+        type="number"
+        variant="outlined"
+        helperText={t('project.form.priceHelper')}
+      />
       <Divider />
     </>
   );

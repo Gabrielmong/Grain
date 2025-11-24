@@ -34,9 +34,11 @@
 
 ### 2. **Project Management**
 - Create projects with multiple material types
+- Set project quote price (cotización)
 - Track project status (Planned, In Progress, Finishing, Completed)
 - Calculate costs automatically based on materials used
 - Board feet calculations: `(width × thickness × length_in_inches) / 144 × quantity`
+- Finish percentage tracking (1-100% usage per finish)
 - Labor and miscellaneous costs
 - Shareable project links (public view)
 
@@ -44,7 +46,7 @@
 - **Material Cost:** Board feet × lumber cost per BF
 - **Sheet Goods Cost:** Price × quantity
 - **Consumables Cost:** Quantity × unit price (unit price = package price ÷ package quantity)
-- **Finish Cost:** Sum of all finish prices
+- **Finish Cost:** Price × (percentage used / 100) for each finish
 - **Total Cost:** Materials + Finishes + Sheet Goods + Consumables + Labor + Misc
 
 ### 4. **User Features**
@@ -71,7 +73,12 @@
 **Finish**
 - name, description, price, tags, storeLink, imageData
 - User ownership
-- Many-to-many with Projects
+- Many-to-many with Projects via ProjectFinish
+
+**ProjectFinish** (Junction Table)
+- percentageUsed (1-100%), projectId, finishId
+- Tracks partial usage of finishes in projects
+- Cost calculation: finish.price × (percentageUsed / 100)
 
 **SheetGood**
 - name, description, width, length, thickness, price, materialType, tags
@@ -85,8 +92,8 @@
 - Many-to-many with Projects via ProjectConsumable
 
 **Project**
-- Basic: name, description, status, laborCost, miscCost, additionalNotes
-- Relations: boards[], finishes[], projectSheetGoods[], projectConsumables[]
+- Basic: name, description, status, price (quote), laborCost, miscCost, additionalNotes
+- Relations: boards[], projectFinishes[], projectSheetGoods[], projectConsumables[]
 - Computed fields: totalBoardFeet, materialCost, finishCost, sheetGoodsCost, consumableCost, totalCost
 - User ownership
 
@@ -100,6 +107,10 @@
 
 **ProjectConsumable** (Junction Table)
 - quantity (number of items, not packages), projectId, consumableId
+
+**ProjectFinish** (Junction Table)
+- percentageUsed (1-100%), projectId, finishId
+- Created/Updated timestamps for tracking
 
 ## File Structure
 
@@ -227,30 +238,51 @@ const totalCost = quantityUsed * unitPrice;
 ```typescript
 interface ProjectCosts {
   materialCost: number;      // Sum of all board costs
-  finishCost: number;        // Sum of all finish prices
+  finishCost: number;        // Sum of (price × percentageUsed / 100) for each finish
   sheetGoodCost: number;     // Sum of (price × quantity) for sheet goods
   consumableCost: number;    // Sum of (quantity × unitPrice) for consumables
   laborCost: number;         // Manual input
   miscCost: number;          // Manual input
   totalCost: number;         // Sum of all above
 }
+
+// Example finish cost with percentage:
+const finishCost = projectFinishes.reduce((total, projectFinish) => {
+  const percentageDecimal = projectFinish.percentageUsed / 100;
+  return total + (projectFinish.finish.price * percentageDecimal);
+}, 0);
 ```
 
 ## Recent Major Features
 
-### 1. Consumables Feature (Latest)
+### 1. Project Price & Finish Percentage System (Latest - v1.12.0)
+- **Project Quote Price:** Added `price` field to store quoted/estimated price for projects
+- **Finish Percentage Tracking:** Changed from simple many-to-many to explicit `ProjectFinish` join table
+  - Track percentage usage (1-100%) for each finish in a project
+  - Cost calculation: `finish.price × (percentageUsed / 100)`
+  - UI: Slider controls for percentage selection in project form
+  - Visual: Percentage badges and adjusted costs in all project views
+- **Breaking Change:** Migrated from implicit `_ProjectFinishes` table to explicit `project_finishes`
+- **Translation Keys:** Added EN/ES translations for price and percentage fields
+
+**Files Modified:**
+- Backend: `schema.prisma`, `typeDefs.ts`, `projectResolvers.ts`, `dashboardResolvers.ts`
+- Frontend: All project components updated (`ProjectForm`, `ProjectDetails`, `ProjectCard`, etc.)
+- Store: `projectLogic.ts` - Added `createProjectFinish()` helper
+
+### 2. Consumables Feature
 - Added full consumables management (like glue, screws, sandpaper)
 - Package-based pricing with automatic unit price calculation
 - Integration across all project views (Details, List, Table, Form, Shared)
 - Cost calculation based on items used, not packages purchased
 
-### 2. Component Refactoring
+### 3. Component Refactoring
 - Broke down large components (936+ lines) into smaller modules
 - Improved maintainability with single-responsibility components
 - Created reusable components shared between views
 - **Line count reduction:** 67-89% across major components
 
-### 3. Full i18n Support
+### 4. Full i18n Support
 - Zero hardcoded strings in UI
 - 70+ translation keys added
 - Ready for multi-language support (English/Spanish)
@@ -363,6 +395,6 @@ VITE_API_URL="http://localhost:4000/graphql"
 ---
 
 **Last Updated:** January 2025
-**Project Version:** 1.10.2 (frontend) / 1.10.0 (backend)
+**Project Version:** 1.12.0 (frontend) / 1.12.0 (backend)
 **License:** Proprietary
 **Target Market:** Costa Rican woodworkers and craftspeople

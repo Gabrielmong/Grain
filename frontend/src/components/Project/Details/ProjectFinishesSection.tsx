@@ -1,40 +1,36 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Typography, Stack, Box, Paper, Chip } from '@mui/material';
 import { useCurrency } from '../../../utils/currency';
-
-interface Finish {
-  id: string;
-  name: string;
-  description?: string;
-  price: number;
-  tags?: string[];
-}
+import type { ProjectFinish } from '../../../types/project';
 
 interface ProjectFinishesSectionProps {
-  finishes: Finish[];
+  projectFinishes?: ProjectFinish[];
 }
 
-export function ProjectFinishesSection({ finishes }: ProjectFinishesSectionProps) {
+export function ProjectFinishesSection({ projectFinishes }: ProjectFinishesSectionProps) {
   const { t } = useTranslation();
   const formatCurrency = useCurrency();
 
-  if (!finishes || finishes.length === 0) {
+  if (!projectFinishes || projectFinishes.length === 0) {
     return null;
   }
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 2 }}>
+    <Card sx={{ borderRadius: 2 }}>
       <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
           {t('projectDetails.finishes')}
         </Typography>
         <Stack spacing={2}>
-          {finishes.map((finish: any) => {
+          {projectFinishes.map((projectFinish: ProjectFinish) => {
+            const finish = projectFinish.finish;
             if (!finish) return null;
+
+            const cost = (finish.price * projectFinish.percentageUsed) / 100;
 
             return (
               <Paper
-                key={finish.id}
+                key={projectFinish.id}
                 sx={{
                   p: 2.5,
                   bgcolor: 'rgba(0, 217, 36, 0.03)',
@@ -43,7 +39,12 @@ export function ProjectFinishesSection({ finishes }: ProjectFinishesSectionProps
                   borderColor: 'divider',
                 }}
               >
-                <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                  spacing={2}
+                >
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
                       {finish.name}
@@ -51,6 +52,17 @@ export function ProjectFinishesSection({ finishes }: ProjectFinishesSectionProps
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
                       {finish.description}
                     </Typography>
+                    <Box sx={{ mb: 1.5 }}>
+                      <Chip
+                        label={`${projectFinish.percentageUsed}% ${t('finishes.percentageUsed')}`}
+                        size="small"
+                        color="primary"
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                        }}
+                      />
+                    </Box>
                     {finish.tags && finish.tags.length > 0 && (
                       <Stack direction="row" spacing={0.5} flexWrap="wrap" gap={0.5}>
                         {finish.tags.map((tag: string, idx: number) => (
@@ -69,11 +81,23 @@ export function ProjectFinishesSection({ finishes }: ProjectFinishesSectionProps
                     )}
                   </Box>
                   <Box sx={{ textAlign: 'right' }}>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      display="block"
+                      sx={{ mb: 0.5 }}
+                    >
                       {t('common.price')}
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: 'success.main' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ textDecoration: 'line-through' }}
+                    >
                       {formatCurrency(finish.price)}
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: 'success.main' }}>
+                      {formatCurrency(cost)}
                     </Typography>
                   </Box>
                 </Stack>

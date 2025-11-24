@@ -140,14 +140,25 @@ export const typeDefs = gql`
     updatedAt: DateTime!
   }
 
+  # ProjectFinish Type
+  type ProjectFinish {
+    id: ID!
+    percentageUsed: Float!
+    finish: Finish!
+    finishId: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
   # Project Type
   type Project {
     id: ID!
     name: String!
     description: String!
     status: ProjectStatus!
+    price: Float!
     boards: [Board!]!
-    finishes: [Finish!]!
+    projectFinishes: [ProjectFinish!]!
     projectSheetGoods: [ProjectSheetGood!]!
     projectConsumables: [ProjectConsumable!]!
     sheetGoodsCost: Float!
@@ -170,8 +181,9 @@ export const typeDefs = gql`
     name: String!
     description: String!
     status: ProjectStatus!
+    price: Float!
     boards: [Board!]!
-    finishes: [Finish!]!
+    projectFinishes: [ProjectFinish!]!
     projectSheetGoods: [ProjectSheetGood!]!
     projectConsumables: [ProjectConsumable!]!
     sheetGoodsCost: Float!
@@ -334,13 +346,20 @@ export const typeDefs = gql`
     consumableId: String!
   }
 
+  # Input Types for ProjectFinish
+  input ProjectFinishInput {
+    finishId: String!
+    percentageUsed: Float!
+  }
+
   # Input Types for Project
   input CreateProjectInput {
     name: String!
     description: String!
     status: ProjectStatus
+    price: Float!
     boards: [BoardInput!]
-    finishIds: [String!]
+    projectFinishes: [ProjectFinishInput!]
     projectSheetGoods: [ProjectSheetGoodInput!]
     projectConsumables: [ProjectConsumableInput!]
     laborCost: Float!
@@ -352,8 +371,9 @@ export const typeDefs = gql`
     name: String
     description: String
     status: ProjectStatus
+    price: Float
     boards: [BoardInput!]
-    finishIds: [String!]
+    projectFinishes: [ProjectFinishInput!]
     projectSheetGoods: [ProjectSheetGoodInput!]
     projectConsumables: [ProjectConsumableInput!]
     laborCost: Float

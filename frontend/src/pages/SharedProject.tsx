@@ -1,19 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
-import {
-  Box,
-  Container,
-  CircularProgress,
-  Alert,
-  Divider,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, Container, CircularProgress, Alert, Divider, Paper, Typography } from '@mui/material';
 import { GET_SHARED_PROJECT } from '../graphql/operations';
 import type { SharedProject } from '../types/project';
 import { CURRENCY_SYMBOLS } from '../types';
+import { calculateTotalBoardFootage } from '../types/project';
 import {
+  ProjectBoardsSection,
   ProjectFinishesSection,
   ProjectSheetGoodsSection,
   ProjectConsumablesSection,
@@ -39,6 +33,8 @@ export default function SharedProjectPage() {
   const currencySymbol = project
     ? CURRENCY_SYMBOLS[project.currency as keyof typeof CURRENCY_SYMBOLS] || CURRENCY_SYMBOLS.USD
     : CURRENCY_SYMBOLS.USD;
+
+  const totalBoardFootage = project?.boards ? calculateTotalBoardFootage(project.boards) : 0;
 
   const formatCurrency = (amount: number) => {
     return `${currencySymbol}${amount.toLocaleString('en-US', {
@@ -98,6 +94,7 @@ export default function SharedProjectPage() {
         <Divider />
 
         <SharedProjectCostSummary
+          price={project.price}
           materialCost={project.materialCost}
           sheetGoodsCost={project.sheetGoodsCost}
           consumableCost={project.consumableCost}
@@ -108,6 +105,7 @@ export default function SharedProjectPage() {
           formatCurrency={formatCurrency}
         />
         <Divider />
+
         {project.additionalNotes && (
           <>
             <Paper sx={{ p: 3 }}>
@@ -122,6 +120,11 @@ export default function SharedProjectPage() {
             <Divider />
           </>
         )}
+
+        {project.boards && project.boards.length > 0 && (
+          <ProjectBoardsSection boards={project.boards} totalBoardFootage={totalBoardFootage} />
+        )}
+
         <ProjectSheetGoodsSection
           projectSheetGoods={project.projectSheetGoods?.map((psg: any) => ({
             ...psg,
@@ -129,7 +132,7 @@ export default function SharedProjectPage() {
           }))}
         />
 
-        <ProjectFinishesSection finishes={project.finishes || []} />
+        <ProjectFinishesSection projectFinishes={project.projectFinishes || []} />
 
         <ProjectConsumablesSection
           projectConsumables={project.projectConsumables?.map((pc: any) => ({

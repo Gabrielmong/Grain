@@ -30,7 +30,7 @@ export function ProjectConsumablesSection({ projectConsumables }: ProjectConsuma
   }
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 2 }}>
+    <Card sx={{ borderRadius: 2 }}>
       <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
           {t('projectDetails.consumables')}
@@ -73,8 +73,10 @@ export function ProjectConsumablesSection({ projectConsumables }: ProjectConsuma
                       {consumable.description}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-                      {t('projectDetails.packageSize')}: {consumable.packageQuantity} {t('projectDetails.items')} • {t('projectDetails.packagePrice')}:{' '}
-                      {formatCurrency(consumable.price)} • {t('projectDetails.unitPrice')}: {formatCurrency(unitPrice)}
+                      {t('projectDetails.packageSize')}: {consumable.packageQuantity}{' '}
+                      {t('projectDetails.items')} • {t('projectDetails.packagePrice')}:{' '}
+                      {formatCurrency(consumable.price)} • {t('projectDetails.unitPrice')}:{' '}
+                      {formatCurrency(unitPrice)}
                     </Typography>
                     {consumable.tags && consumable.tags.length > 0 && (
                       <Stack direction="row" spacing={0.5} flexWrap="wrap" gap={0.5}>
@@ -101,7 +103,8 @@ export function ProjectConsumablesSection({ projectConsumables }: ProjectConsuma
                       {formatCurrency(unitPrice)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('projectDetails.totalCostLabel')} ({projectConsumable.quantity} {t('projectDetails.items')})
+                      {t('projectDetails.totalCostLabel')} ({projectConsumable.quantity}{' '}
+                      {t('projectDetails.items')})
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 700, color: 'success.main' }}>
                       {formatCurrency(totalCost)}

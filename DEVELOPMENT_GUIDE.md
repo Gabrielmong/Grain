@@ -21,6 +21,8 @@ npm run dev
 #### Update Prisma Schema
 ```prisma
 // backend/prisma/schema.prisma
+
+// Example: Simple Model
 model NewFeature {
   id          String   @id @default(uuid())
   name        String
@@ -34,6 +36,36 @@ model NewFeature {
   @@index([userId])
   @@index([isDeleted])
   @@map("new_features")
+}
+
+// Example: Many-to-Many with Join Table (like ProjectFinish)
+model Project {
+  id              String          @id @default(uuid())
+  price           Float           @default(0)
+  projectFinishes ProjectFinish[] // Explicit join table
+  // ... other fields
+}
+
+model ProjectFinish {
+  id             String   @id @default(uuid())
+  percentageUsed Float    @default(100)  // Additional data on relationship
+  projectId      String
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  finishId       String
+  finish         Finish   @relation(fields: [finishId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([projectId, finishId]) // Prevent duplicates
+  @@map("project_finishes")
+}
+
+model Finish {
+  id              String          @id @default(uuid())
+  name            String
+  price           Float
+  projectFinishes ProjectFinish[] // Reverse relation
+  // ... other fields
 }
 ```
 
@@ -174,6 +206,8 @@ export const resolvers = {
 
 ```typescript
 // frontend/src/types/newFeature.ts
+
+// Simple model
 export interface NewFeature {
   id: string;
   name: string;
@@ -192,6 +226,34 @@ export interface UpdateNewFeatureInput {
   id: string;
   name?: string;
   description?: string;
+}
+
+// Example: Join table with additional data (like ProjectFinish)
+export interface ProjectFinish {
+  id: string;
+  percentageUsed: number;
+  finishId: string;
+  finish?: {
+    id: string;
+    name: string;
+    price: number;
+    // ... other fields
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateProjectFinishInput {
+  finishId: string;
+  percentageUsed: number;
+}
+
+// Helper function to create with generated ID (for client-side)
+export function createProjectFinish(input: CreateProjectFinishInput): ProjectFinish {
+  return {
+    id: crypto.randomUUID(),
+    ...input,
+  };
 }
 ```
 
@@ -418,6 +480,14 @@ import { NewFeatureTab } from '../components/NewFeature/NewFeatureTab';
 const totalCost = items.reduce((total, item) => {
   return total + (item.price * item.quantity);
 }, 0);
+
+// For finish costs with percentage usage:
+const finishCost = projectFinishes.reduce((total, projectFinish) => {
+  const finish = projectFinish.finish;
+  if (!finish) return total;
+  const percentageDecimal = projectFinish.percentageUsed / 100;
+  return total + (finish.price * percentageDecimal);
+}, 0);
 ```
 
 ### Board Feet Calculation
@@ -592,6 +662,85 @@ npm run dev
 - **i18n:** All user-facing text uses `t()` function
 - **Comments:** Minimal, prefer self-documenting code
 - **Formatting:** Prettier with 2-space indentation
+
+## Recent Implementation Patterns
+
+### Explicit Join Tables with Additional Data
+
+**Use Case:** When a many-to-many relationship needs to store additional data (like ProjectFinish with percentage).
+
+**Example:**
+```prisma
+// Before (implicit - no additional data possible)
+model Project {
+  finishes Finish[] @relation("ProjectFinishes")
+}
+
+// After (explicit - can store percentageUsed)
+model Project {
+  projectFinishes ProjectFinish[]
+}
+
+model ProjectFinish {
+  id             String @id @default(uuid())
+  percentageUsed Float  @default(100)
+  projectId      String
+  project        Project @relation(...)
+  finishId       String
+  finish         Finish @relation(...)
+
+  @@unique([projectId, finishId])
+}
+```
+
+**Migration Considerations:**
+1. Create new join table model
+2. Write migration to copy data from implicit table (`_ProjectFinishes`) to explicit table
+3. Update all GraphQL queries/mutations
+4. Update all frontend components that reference the relationship
+5. Test thoroughly before deploying
+
+**Files to Update:**
+- Backend: `schema.prisma`, `typeDefs.ts`, all resolvers using the relationship
+- Frontend: Types, GraphQL operations, all components displaying/editing the data
+- Store: Logic functions that create/update related data
+
+### Slider Controls for Percentage Input
+
+**Pattern for percentage selection UI:**
+```tsx
+<Slider
+  value={percentageUsed}
+  onChange={(e, value) => setPercentageUsed(value as number)}
+  min={1}
+  max={100}
+  valueLabelDisplay="auto"
+  valueLabelFormat={(value) => `${value}%`}
+  marks={[
+    { value: 25, label: '25%' },
+    { value: 50, label: '50%' },
+    { value: 75, label: '75%' },
+    { value: 100, label: '100%' },
+  ]}
+/>
+```
+
+### Displaying Adjusted Costs with Percentage
+
+**Pattern for showing percentage-adjusted pricing:**
+```tsx
+const cost = (finish.price * percentageUsed) / 100;
+
+<Box>
+  <Chip label={`${percentageUsed}% used`} size="small" />
+  <Typography variant="body2" sx={{ textDecoration: 'line-through' }}>
+    {formatCurrency(finish.price)} {/* Original price */}
+  </Typography>
+  <Typography variant="h6">
+    {formatCurrency(cost)} {/* Adjusted price */}
+  </Typography>
+</Box>
+```
 
 ---
 

@@ -110,7 +110,7 @@ export function ProjectDetails() {
 
   const project = projectData.project;
   const boards = project?.boards || [];
-  const finishes = project?.finishes || [];
+  const projectFinishes = project?.projectFinishes || [];
   const projectSheetGoods = project?.projectSheetGoods || [];
   const projectConsumables = project?.projectConsumables || [];
 
@@ -127,12 +127,12 @@ export function ProjectDetails() {
       return total + cost;
     }, 0);
 
-    const finishCost = finishes.reduce(
-      (total: number, finish: { id: string; name: string; price: number }) => {
-        return total + (finish?.price || 0);
-      },
-      0
-    );
+    const finishCost = projectFinishes.reduce((total: number, projectFinish: any) => {
+      const finish = projectFinish.finish;
+      if (!finish) return total;
+      const percentageDecimal = projectFinish.percentageUsed / 100;
+      return total + finish.price * percentageDecimal;
+    }, 0);
 
     const sheetGoodCost = projectSheetGoods.reduce((total: number, projectSheetGood: any) => {
       return total + (projectSheetGood.sheetGood?.price || 0) * projectSheetGood.quantity;
@@ -232,7 +232,13 @@ export function ProjectDetails() {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
       <Snackbar
         open={copySuccess}
         message={t('common.linkCopied')}
@@ -257,11 +263,12 @@ export function ProjectDetails() {
         totalBoardFootage={totalBoardFootage}
         boardCount={project.boards.length}
         totalCost={totalCost}
+        price={project.price}
       />
 
       <ProjectBoardsSection boards={project.boards} totalBoardFootage={totalBoardFootage} />
 
-      <ProjectFinishesSection finishes={project.finishes} />
+      <ProjectFinishesSection projectFinishes={project.projectFinishes} />
 
       <ProjectSheetGoodsSection projectSheetGoods={project.projectSheetGoods} />
 

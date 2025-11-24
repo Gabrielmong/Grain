@@ -30,7 +30,7 @@ export function ProjectCard({
 
   const calculateProjectCost = () => {
     const boards = project.boards || [];
-    const finishes = project.finishes || [];
+    const projectFinishes = project.projectFinishes || [];
     const projectSheetGoods = project.projectSheetGoods || [];
     const projectConsumables = project.projectConsumables || [];
 
@@ -43,8 +43,11 @@ export function ProjectCard({
       return total + totalBF * lumber.costPerBoardFoot;
     }, 0);
 
-    const finishCost = finishes.reduce((total, finish) => {
-      return total + (finish?.price || 0);
+    const finishCost = projectFinishes.reduce((total, projectFinish) => {
+      const finish = projectFinish.finish;
+      if (!finish) return total;
+      const percentageDecimal = projectFinish.percentageUsed / 100;
+      return total + (finish.price * percentageDecimal);
     }, 0);
 
     const sheetGoodCost = projectSheetGoods.reduce((total, projectSheetGood) => {

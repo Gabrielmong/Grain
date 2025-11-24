@@ -48,14 +48,29 @@ export interface ProjectConsumable {
   consumable?: Consumable;
 }
 
+export interface ProjectFinish {
+  id: string;
+  percentageUsed: number;
+  finishId: string;
+  finish?: {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    tags: string[];
+    storeLink?: string;
+    imageData?: string;
+  };
+}
+
 export interface Project {
   id: string;
   name: string;
   description: string;
   status: ProjectStatus;
+  price: number;
   boards?: Board[];
-  finishIds?: string[]; // array of finish IDs (for form input)
-  finishes?: Array<{ id: string; name: string; price: number }>; // populated finishes from backend
+  projectFinishes?: ProjectFinish[];
   projectSheetGoods: ProjectSheetGood[];
   projectConsumables: ProjectConsumable[];
   laborCost: number;
@@ -71,14 +86,9 @@ export interface SharedProject {
   name: string;
   description: string;
   status: ProjectStatus;
+  price: number;
   boards: Board[];
-  finishes?: Array<{
-    id: string;
-    name: string;
-    price: number;
-    imageData?: string;
-    description: string;
-  }>;
+  projectFinishes?: ProjectFinish[];
   projectSheetGoods: ProjectSheetGood[];
   projectConsumables: ProjectConsumable[];
   laborCost: number;
@@ -113,12 +123,18 @@ export interface CreateProjectConsumableInput {
   consumableId: string;
 }
 
+export interface CreateProjectFinishInput {
+  finishId: string;
+  percentageUsed: number;
+}
+
 export interface CreateProjectInput {
   name: string;
   description: string;
   status?: ProjectStatus;
+  price: number;
   boards?: CreateBoardInput[];
-  finishIds?: string[];
+  projectFinishes?: CreateProjectFinishInput[];
   projectSheetGoods?: CreateProjectSheetGoodInput[];
   projectConsumables?: CreateProjectConsumableInput[];
   laborCost: number;
@@ -131,8 +147,9 @@ export interface UpdateProjectInput {
   name?: string;
   description?: string;
   status?: ProjectStatus;
+  price?: number;
   boards?: CreateBoardInput[];
-  finishIds?: string[];
+  projectFinishes?: CreateProjectFinishInput[];
   projectSheetGoods?: CreateProjectSheetGoodInput[];
   projectConsumables?: CreateProjectConsumableInput[];
   laborCost?: number;

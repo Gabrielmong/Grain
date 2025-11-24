@@ -115,7 +115,7 @@ export function ProjectCardMaterials({ project }: ProjectCardMaterialsProps) {
         </Box>
       )}
 
-      {project.finishes && project.finishes.length > 0 && (
+      {project.projectFinishes && project.projectFinishes.length > 0 && (
         <Box>
           <Typography
             variant="caption"
@@ -125,11 +125,11 @@ export function ProjectCardMaterials({ project }: ProjectCardMaterialsProps) {
             {t('projects.finishes')}:
           </Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" gap={0.5}>
-            {project?.finishes?.map((finish) => {
+            {project?.projectFinishes?.map((projectFinish) => {
               return (
                 <Chip
-                  key={finish.id}
-                  label={finish?.name || 'Unknown'}
+                  key={projectFinish.id}
+                  label={`${projectFinish.finish?.name || 'Unknown'} (${projectFinish.percentageUsed}%)`}
                   size="small"
                   sx={{
                     bgcolor: 'background.default',

@@ -26,7 +26,7 @@ export function ProjectBoardsSection({ boards, totalBoardFootage }: ProjectBoard
   const formatCurrency = useCurrency();
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 2 }}>
+    <Card sx={{ borderRadius: 2 }}>
       <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
           {t('projectDetails.materials')} ({totalBoardFootage.toFixed(2)}{' '}

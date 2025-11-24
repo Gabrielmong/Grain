@@ -15,6 +15,7 @@ import type {
   CreateBoardInput,
   CreateProjectSheetGoodInput,
   CreateProjectConsumableInput,
+  CreateProjectFinishInput,
 } from '../../types/project';
 import { ProjectStatus, calculateBoardFootage } from '../../types/project';
 import type { Lumber } from '../../types/lumber';
@@ -56,8 +57,9 @@ export function ProjectForm({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<ProjectStatus>(ProjectStatus.PLANNED);
+  const [price, setPrice] = useState('');
   const [boards, setBoards] = useState<CreateBoardInput[]>([]);
-  const [finishIds, setFinishIds] = useState<string[]>([]);
+  const [projectFinishes, setProjectFinishes] = useState<CreateProjectFinishInput[]>([]);
   const [projectSheetGoods, setProjectSheetGoods] = useState<CreateProjectSheetGoodInput[]>([]);
   const [projectConsumables, setProjectConsumables] = useState<CreateProjectConsumableInput[]>([]);
   const [laborCost, setLaborCost] = useState('');
@@ -94,11 +96,12 @@ export function ProjectForm({
       return total + pc.quantity * consumable.unitPrice;
     }, 0);
 
-    // Calculate finish costs
-    const finishCost = finishIds.reduce((total, finishId) => {
-      const finish = finishOptions.find((f) => f.id === finishId);
+    // Calculate finish costs (with percentage)
+    const finishCost = projectFinishes.reduce((total, pf) => {
+      const finish = finishOptions.find((f) => f.id === pf.finishId);
       if (!finish) return total;
-      return total + finish.price;
+      const percentageDecimal = pf.percentageUsed / 100;
+      return total + finish.price * percentageDecimal;
     }, 0);
 
     // Add labor and misc costs
@@ -110,7 +113,7 @@ export function ProjectForm({
     boards,
     projectSheetGoods,
     projectConsumables,
-    finishIds,
+    projectFinishes,
     laborCost,
     miscCost,
     lumberOptions,
@@ -123,8 +126,9 @@ export function ProjectForm({
     setName('');
     setDescription('');
     setStatus(ProjectStatus.PLANNED);
+    setPrice('');
     setBoards([]);
-    setFinishIds([]);
+    setProjectFinishes([]);
     setProjectSheetGoods([]);
     setProjectConsumables([]);
     setLaborCost('');
@@ -137,6 +141,7 @@ export function ProjectForm({
       setName(editingProject.name);
       setDescription(editingProject.description);
       setStatus(editingProject.status);
+      setPrice(editingProject.price.toString());
       const cleanBoards =
         editingProject.boards?.map((board) => ({
           width: board.width,
@@ -146,8 +151,12 @@ export function ProjectForm({
           lumberId: board.lumberId,
         })) || [];
       setBoards(cleanBoards);
-      const finishIdsFromProject = editingProject?.finishes?.map((finish) => finish.id);
-      setFinishIds(finishIdsFromProject || []);
+      const projectFinishesFromProject =
+        editingProject.projectFinishes?.map((pf) => ({
+          finishId: pf.finishId,
+          percentageUsed: pf.percentageUsed,
+        })) || [];
+      setProjectFinishes(projectFinishesFromProject);
       const projectSheetGoodsFromProject =
         editingProject.projectSheetGoods?.map((psg) => ({
           quantity: psg.quantity,
@@ -233,8 +242,9 @@ export function ProjectForm({
       name,
       description,
       status,
+      price: parseFloat(price) || 0,
       boards,
-      finishIds,
+      projectFinishes,
       projectSheetGoods,
       projectConsumables,
       laborCost: parseFloat(laborCost) || 0,
@@ -314,9 +324,11 @@ export function ProjectForm({
             name={name}
             description={description}
             status={status}
+            price={price}
             onNameChange={setName}
             onDescriptionChange={setDescription}
             onStatusChange={setStatus}
+            onPriceChange={setPrice}
           />
 
           <ProjectBoardsFormSection
@@ -344,9 +356,9 @@ export function ProjectForm({
           />
 
           <ProjectFinishesFormSection
-            finishIds={finishIds}
+            projectFinishes={projectFinishes}
             finishOptions={finishOptions}
-            onFinishIdsChange={setFinishIds}
+            onProjectFinishesChange={setProjectFinishes}
           />
 
           <ProjectCostsSection

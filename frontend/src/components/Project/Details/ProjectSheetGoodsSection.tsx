@@ -33,7 +33,7 @@ export function ProjectSheetGoodsSection({ projectSheetGoods }: ProjectSheetGood
   }
 
   return (
-    <Card sx={{ mb: 3, borderRadius: 2 }}>
+    <Card sx={{ orderRadius: 2 }}>
       <CardContent sx={{ p: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
           {t('projectDetails.sheetGoods')}
@@ -54,18 +54,28 @@ export function ProjectSheetGoodsSection({ projectSheetGoods }: ProjectSheetGood
                   borderColor: 'divider',
                 }}
               >
-                <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                  spacing={2}
+                >
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
                       {sheetGood.name}{' '}
-                      <Chip label={`${t('projectDetails.qty')}: ${projectSheetGood.quantity}`} size="small" sx={{ ml: 1 }} />
+                      <Chip
+                        label={`${t('projectDetails.qty')}: ${projectSheetGood.quantity}`}
+                        size="small"
+                        sx={{ ml: 1 }}
+                      />
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                       {sheetGood.description}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-                      {t('projectDetails.dimensions')}: {sheetGood.width}" × {sheetGood.length}" × {sheetGood.thickness}" •
-                      {t('projectDetails.material')}: {sheetGood.materialType}
+                      {t('projectDetails.dimensions')}: {sheetGood.width}" × {sheetGood.length}" ×{' '}
+                      {sheetGood.thickness}" •{t('projectDetails.material')}:{' '}
+                      {sheetGood.materialType}
                     </Typography>
                     {sheetGood.tags && sheetGood.tags.length > 0 && (
                       <Stack direction="row" spacing={0.5} flexWrap="wrap" gap={0.5}>

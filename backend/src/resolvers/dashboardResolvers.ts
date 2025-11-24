@@ -32,7 +32,11 @@ export const dashboardResolvers = {
               lumber: true,
             },
           },
-          finishes: true,
+          projectFinishes: {
+            include: {
+              finish: true,
+            },
+          },
         },
       });
 
@@ -103,9 +107,10 @@ export const dashboardResolvers = {
           return total + boardFeet * board.lumber.costPerBoardFoot;
         }, 0);
 
-        // Calculate finish cost
-        const finishCost = project.finishes.reduce((total, finish) => {
-          return total + finish.price;
+        // Calculate finish cost (with percentage)
+        const finishCost = project.projectFinishes.reduce((total, projectFinish) => {
+          const percentageDecimal = projectFinish.percentageUsed / 100;
+          return total + (projectFinish.finish.price * percentageDecimal);
         }, 0);
 
         totalProjectCost += materialCost + finishCost + project.laborCost + project.miscCost;

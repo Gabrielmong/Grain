@@ -435,6 +435,7 @@ export const GET_PROJECTS = gql`
       name
       description
       status
+      price
       boards {
         id
         width
@@ -449,10 +450,19 @@ export const GET_PROJECTS = gql`
           costPerBoardFoot
         }
       }
-      finishes {
+      projectFinishes {
         id
-        name
-        price
+        percentageUsed
+        finishId
+        finish {
+          id
+          name
+          description
+          price
+          tags
+          storeLink
+          imageData
+        }
       }
       projectSheetGoods {
         id
@@ -507,6 +517,7 @@ export const GET_PROJECT = gql`
       name
       description
       status
+      price
       boards {
         id
         width
@@ -522,11 +533,19 @@ export const GET_PROJECT = gql`
           jankaRating
         }
       }
-      finishes {
+      projectFinishes {
         id
-        name
-        price
-        imageData
+        percentageUsed
+        finishId
+        finish {
+          id
+          name
+          description
+          price
+          tags
+          storeLink
+          imageData
+        }
       }
       projectSheetGoods {
         id
@@ -581,6 +600,7 @@ export const GET_SHARED_PROJECT = gql`
       name
       description
       status
+      price
       boards {
         id
         width
@@ -597,12 +617,19 @@ export const GET_SHARED_PROJECT = gql`
           description
         }
       }
-      finishes {
+      projectFinishes {
         id
-        name
-        price
-        imageData
-        description
+        percentageUsed
+        finishId
+        finish {
+          id
+          name
+          description
+          price
+          tags
+          storeLink
+          imageData
+        }
       }
       projectSheetGoods {
         id
@@ -657,6 +684,7 @@ export const CREATE_PROJECT = gql`
       name
       description
       status
+      price
       totalCost
       createdAt
     }
@@ -670,6 +698,7 @@ export const UPDATE_PROJECT = gql`
       name
       description
       status
+      price
       totalCost
       updatedAt
     }

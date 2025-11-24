@@ -60,21 +60,21 @@ model Lumber {
 }
 
 model Finish {
-  id          String    @id @default(uuid())
-  name        String
-  description String
-  price       Float
-  tags        String[]
-  storeLink   String?
-  imageData   String?   @db.Text // Base64 encoded image
-  isDeleted   Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id             String          @id @default(uuid())
+  name           String
+  description    String
+  price          Float
+  tags           String[]
+  storeLink      String?
+  imageData      String?         @db.Text // Base64 encoded image
+  isDeleted      Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   // Relations
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  projects    Project[] @relation("ProjectFinishes")
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectFinishes ProjectFinish[]
 
   @@index([userId])
   @@index([isDeleted])
@@ -140,6 +140,7 @@ model Project {
   name              String
   description       String
   status            ProjectStatus      @default(PLANNED)
+  price             Float              @default(0) // Quote/Cotización price
   laborCost         Float              @default(0)
   miscCost          Float              @default(0)
   additionalNotes   String?
@@ -151,7 +152,7 @@ model Project {
   userId            String
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   boards            Board[]
-  finishes          Finish[]           @relation("ProjectFinishes")
+  projectFinishes   ProjectFinish[]
   projectSheetGoods ProjectSheetGood[]
   projectConsumables ProjectConsumable[]
 
@@ -216,6 +217,24 @@ model ProjectConsumable {
   @@index([projectId])
   @@index([consumableId])
   @@map("project_consumables")
+}
+
+model ProjectFinish {
+  id              String   @id @default(uuid())
+  percentageUsed  Float    @default(100) // Percentage of finish used (0-100)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  finishId        String
+  finish          Finish   @relation(fields: [finishId], references: [id])
+
+  @@index([projectId])
+  @@index([finishId])
+  @@map("project_finishes")
 }
 
 model Tool {

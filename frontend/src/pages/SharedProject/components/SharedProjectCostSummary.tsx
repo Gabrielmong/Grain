@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 
 interface SharedProjectCostSummaryProps {
+  price?: number;
   materialCost: number;
   sheetGoodsCost?: number;
   consumableCost?: number;
@@ -13,6 +14,7 @@ interface SharedProjectCostSummaryProps {
 }
 
 export function SharedProjectCostSummary({
+  price,
   materialCost,
   sheetGoodsCost,
   consumableCost,
@@ -26,6 +28,26 @@ export function SharedProjectCostSummary({
 
   return (
     <Grid container spacing={3}>
+      {price !== undefined && price > 0 && (
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Card
+            sx={{
+              height: '100%',
+              background: (theme) =>
+                `linear-gradient(135deg, ${theme.palette.info.main} 0%, ${theme.palette.info.dark} 100%)`,
+            }}
+          >
+            <CardContent>
+              <Typography gutterBottom variant="body2" sx={{ color: 'info.contrastText', opacity: 0.9 }}>
+                {t('project.form.price')}
+              </Typography>
+              <Typography variant="h5" fontWeight={600} sx={{ color: 'info.contrastText' }}>
+                {formatCurrency(price)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      )}
       {materialCost !== 0 && (
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <Card sx={{ height: '100%' }}>

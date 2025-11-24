@@ -27,6 +27,28 @@ export function ProjectCardCostSummary({
     <>
       <Divider sx={{ my: 2 }} />
 
+      {project.price > 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            p: 1.5,
+            mb: 2,
+            bgcolor: 'rgba(59, 130, 246, 0.08)',
+            borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'rgba(59, 130, 246, 0.2)',
+          }}
+        >
+          <Typography variant="body2" fontWeight={600} color="primary.main">
+            {t('project.form.price')}
+          </Typography>
+          <Typography variant="body2" fontWeight={700} color="primary.main">
+            {formatCurrency(project.price)}
+          </Typography>
+        </Box>
+      )}
+
       <Box>
         <Typography
           variant="caption"

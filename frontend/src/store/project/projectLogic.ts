@@ -4,6 +4,8 @@ import type {
   UpdateProjectInput,
   Board,
   CreateBoardInput,
+  ProjectFinish,
+  CreateProjectFinishInput,
   ProjectSheetGood,
   CreateProjectSheetGoodInput,
   ProjectConsumable,
@@ -19,6 +21,13 @@ export function createBoard(input: CreateBoardInput): Board {
     id: crypto.randomUUID(),
     ...input,
     boardFeet: boardFeet * input.quantity,
+  };
+}
+
+export function createProjectFinish(input: CreateProjectFinishInput): ProjectFinish {
+  return {
+    id: crypto.randomUUID(),
+    ...input,
   };
 }
 
@@ -43,8 +52,9 @@ export function createProject(input: CreateProjectInput): Project {
     name: input.name,
     description: input.description,
     status: input.status || ProjectStatus.PLANNED,
+    price: input.price || 0,
     boards: input?.boards?.map(createBoard),
-    finishIds: input.finishIds,
+    projectFinishes: input.projectFinishes?.map(createProjectFinish) || [],
     projectSheetGoods: input.projectSheetGoods?.map(createProjectSheetGood) || [],
     projectConsumables: input.projectConsumables?.map(createProjectConsumable) || [],
     laborCost: input.laborCost,
@@ -65,8 +75,11 @@ export function updateProjectItem(
     name: updates.name ?? project.name,
     description: updates.description ?? project.description,
     status: updates.status ?? project.status,
+    price: updates.price ?? project.price,
     boards: updates.boards ? updates.boards.map(createBoard) : project.boards,
-    finishIds: updates.finishIds ?? project.finishIds,
+    projectFinishes: updates.projectFinishes
+      ? updates.projectFinishes.map(createProjectFinish)
+      : project.projectFinishes,
     projectSheetGoods: updates.projectSheetGoods
       ? updates.projectSheetGoods.map(createProjectSheetGood)
       : project.projectSheetGoods,

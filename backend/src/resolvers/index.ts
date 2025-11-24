@@ -63,6 +63,7 @@ export const resolvers = {
   // Field resolvers
   Project: projectResolvers.Project,
   Board: projectResolvers.Board,
+  ProjectFinish: projectResolvers.ProjectFinish,
   SharedProject: projectResolvers.SharedProject,
   Consumable: consumableResolvers.Consumable,
 };
