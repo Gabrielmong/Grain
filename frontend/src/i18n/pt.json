@@ -54,6 +54,7 @@
     "activeProjects": "Projetos Ativos",
     "lumberTypes": "Tipos de Madeira",
     "finishOptions": "Opções de Acabamento",
+    "sheetGoodOptions": "Chapas e Placas",
     "toolInventory": "Inventário de Ferramentas",
     "totalProjectValue": "Valor Total do Projeto",
     "totalBoardFeet": "Total de Pés de Tábua",
@@ -66,6 +67,7 @@
     "newProject": "Novo Projeto",
     "addLumber": "Adicionar Madeira",
     "addFinish": "Adicionar Acabamento",
+    "addSheetGood": "Adicionar Chapa/Placa",
     "addTool": "Adicionar Ferramenta",
     "viewAll": "Ver Todos",
     "totalProfit": "Lucro Total"
@@ -95,6 +97,8 @@
     "name": "Nome",
     "description": "Descrição",
     "price": "Preço",
+    "percentageUsed": "Porcentagem Usada",
+    "percentageHelper": "Porcentagem do produto de acabamento usado no projeto",
     "viewOnStore": "Ver na Loja",
     "goodFor": "Bom para:",
     "deleteConfirmMessage": "Tem certeza de que deseja excluir este acabamento? Esta ação marcará como excluído, mas pode ser restaurado depois."
@@ -107,11 +111,12 @@
     "emptySubtitle": "Comece adicionando seu primeiro material de chapa/placa para rastrear preços, dimensões e usos recomendados",
     "name": "Nome",
     "description": "Descrição",
-    "thickness": "Espessura",
     "width": "Largura",
     "length": "Comprimento",
-    "cost": "Custo",
-    "tags": "Tags",
+    "thickness": "Espessura",
+    "materialType": "Tipo de Material",
+    "price": "Preço",
+    "dimensions": "Dimensões",
     "goodFor": "Bom para:",
     "deleted": "Excluído",
     "active": "Ativo",
@@ -125,9 +130,10 @@
     "emptySubtitle": "Comece adicionando seu primeiro consumível para rastrear itens, quantidades e preços",
     "name": "Nome",
     "description": "Descrição",
-    "quantity": "Quantidade",
+    "packageQuantity": "Quantidade no Pacote",
+    "price": "Preço",
     "unitPrice": "Preço Unitário",
-    "totalCost": "Custo Total",
+    "goodFor": "Bom para:",
     "deleteConfirmMessage": "Tem certeza de que deseja excluir este consumível? Esta ação marcará como excluído, mas pode ser restaurada depois.",
     "consumableForm": {
       "addNewConsumable": "Adicionar Consumível",
@@ -255,6 +261,9 @@
       "description": "Descrição",
       "descriptionPlaceholder": "ex., Uma mesa de jantar personalizada para 6 pessoas",
       "status": "Status",
+      "price": "Preço de Cotação",
+      "priceHelper": "O preço cotado para este projeto",
+      "pricePlaceholder": "ex., 1500.00",
       "planned": "Planejado",
       "inProgress": "Em Progresso",
       "finishing": "Finalizando",
@@ -283,7 +292,8 @@
       "statusLabel": "Status",
       "createNewProject": "Criar Novo Projeto",
       "total": "Total",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "noFinishesAdded": "Nenhum acabamento adicionado ainda. Clique em \"Adicionar Acabamento\" para começar."
     }
   },
   "settings": {
@@ -493,7 +503,11 @@
     "dimensions": "Dimensões",
     "material": "Material",
     "unitPrice": "Preço Unitário",
-    "consumableCost": "Custo de Consumíveis"
+    "consumables": "Consumíveis",
+    "consumableCost": "Custo de Consumíveis",
+    "packageSize": "Tamanho do Pacote",
+    "packagePrice": "Preço do Pacote",
+    "itemsUsed": "Itens Usados"
   },
   "terms": {
     "title": "Termos e Condições",

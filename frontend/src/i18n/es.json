@@ -118,6 +118,8 @@
     "price": "Precio",
     "dimensions": "Dimensiones",
     "goodFor": "Bueno para:",
+    "deleted": "Eliminado",
+    "active": "Activo",
     "deleteConfirmMessage": "¿Está seguro de que desea eliminar esta lámina/tablero? Esta acción lo marcará como eliminado pero se podrá restaurar más tarde."
   },
   "consumables": {
@@ -128,9 +130,9 @@
     "emptySubtitle": "Comience agregando su primer consumible para rastrear pegamentos, tornillos, lijas y otros suministros de carpintería",
     "name": "Nombre",
     "description": "Descripción",
-    "quantity": "Cantidad",
-    "unit": "Unidad",
+    "packageQuantity": "Cantidad en Paquete",
     "price": "Precio",
+    "unitPrice": "Precio Unitario",
     "goodFor": "Bueno para:",
     "deleteConfirmMessage": "¿Está seguro de que desea eliminar este consumible? Esta acción lo marcará como eliminado pero se podrá restaurar más tarde.",
     "consumableForm": {
@@ -290,7 +292,8 @@
       "statusLabel": "Estado",
       "createNewProject": "Crear Nuevo Proyecto",
       "total": "Total",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "noFinishesAdded": "No se han agregado acabados aún. Haga clic en \"Agregar Acabado\" para comenzar."
     }
   },
   "settings": {
@@ -483,7 +486,7 @@
     "sheetGoodCost": "Costo de Láminas/Tableros",
     "finishCost": "Costo de Acabados",
     "laborCost": "Costo de Mano de Obra",
-    "miscCost": "Costo Varios",
+    "miscCost": "Costos varios",
     "totalCost": "Costo Total",
     "materials": "Materiales",
     "totalBoardFeet": "Pies de Tabla Totales",
@@ -500,7 +503,11 @@
     "dimensions": "Dimensiones",
     "material": "Material",
     "unitPrice": "Precio Unitario",
-    "consumableCost": "Costo de Consumibles"
+    "consumables": "Consumibles",
+    "consumableCost": "Costo de Consumibles",
+    "packageSize": "Tamaño del Paquete",
+    "packagePrice": "Precio del Paquete",
+    "itemsUsed": "Artículos Usados"
   },
   "terms": {
     "title": "Términos y Condiciones",

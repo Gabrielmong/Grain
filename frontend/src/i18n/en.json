@@ -118,6 +118,8 @@
     "price": "Price",
     "dimensions": "Dimensions",
     "goodFor": "Good for:",
+    "deleted": "Deleted",
+    "active": "Active",
     "deleteConfirmMessage": "Are you sure you want to delete this sheet good? This action will mark it as deleted but can be restored later."
   },
   "consumables": {
@@ -131,6 +133,7 @@
     "packageQuantity": "Package Quantity",
     "price": "Price",
     "unitPrice": "Unit Price",
+    "goodFor": "Good for:",
     "deleteConfirmMessage": "Are you sure you want to delete this consumable? This action will mark it as deleted but can be restored later.",
     "consumableForm": {
       "addNewConsumable": "Add Consumable",
@@ -289,7 +292,8 @@
       "statusLabel": "Status",
       "createNewProject": "Create New Project",
       "total": "Total",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "noFinishesAdded": "No finishes added yet. Click \"Add Finish\" to get started."
     }
   },
   "settings": {
