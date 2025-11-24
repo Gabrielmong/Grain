@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Typography, Stack, Box, Paper, Chip } from '@mui/material';
-import { useCurrency } from '../../../utils/currency';
 
 interface SheetGood {
   id: string;
@@ -22,11 +21,14 @@ interface ProjectSheetGood {
 
 interface ProjectSheetGoodsSectionProps {
   projectSheetGoods: ProjectSheetGood[];
+  formatCurrency: (amount: number) => string;
 }
 
-export function ProjectSheetGoodsSection({ projectSheetGoods }: ProjectSheetGoodsSectionProps) {
+export function ProjectSheetGoodsSection({
+  projectSheetGoods,
+  formatCurrency,
+}: ProjectSheetGoodsSectionProps) {
   const { t } = useTranslation();
-  const formatCurrency = useCurrency();
 
   if (!projectSheetGoods || projectSheetGoods.length === 0) {
     return null;

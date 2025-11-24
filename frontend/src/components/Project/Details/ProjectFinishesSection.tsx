@@ -1,15 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Typography, Stack, Box, Paper, Chip } from '@mui/material';
-import { useCurrency } from '../../../utils/currency';
 import type { ProjectFinish } from '../../../types/project';
 
 interface ProjectFinishesSectionProps {
   projectFinishes?: ProjectFinish[];
+  formatCurrency: (amount: number) => string;
 }
 
-export function ProjectFinishesSection({ projectFinishes }: ProjectFinishesSectionProps) {
+export function ProjectFinishesSection({
+  projectFinishes,
+  formatCurrency,
+}: ProjectFinishesSectionProps) {
   const { t } = useTranslation();
-  const formatCurrency = useCurrency();
 
   if (!projectFinishes || projectFinishes.length === 0) {
     return null;

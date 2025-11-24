@@ -14,16 +14,19 @@ import {
 } from '@mui/material';
 import { ArrowDownward } from '@mui/icons-material';
 import { VARA_TO_INCHES, type Board } from '../../../types/project';
-import { useCurrency } from '../../../utils/currency';
 
 interface ProjectBoardsSectionProps {
   boards: Board[];
   totalBoardFootage: number;
+  formatCurrency: (amount: number) => string;
 }
 
-export function ProjectBoardsSection({ boards, totalBoardFootage }: ProjectBoardsSectionProps) {
+export function ProjectBoardsSection({
+  boards,
+  totalBoardFootage,
+  formatCurrency,
+}: ProjectBoardsSectionProps) {
   const { t } = useTranslation();
-  const formatCurrency = useCurrency();
 
   return (
     <Card sx={{ borderRadius: 2 }}>

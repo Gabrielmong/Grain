@@ -122,7 +122,11 @@ export default function SharedProjectPage() {
         )}
 
         {project.boards && project.boards.length > 0 && (
-          <ProjectBoardsSection boards={project.boards} totalBoardFootage={totalBoardFootage} />
+          <ProjectBoardsSection
+            boards={project.boards}
+            totalBoardFootage={totalBoardFootage}
+            formatCurrency={formatCurrency}
+          />
         )}
 
         <ProjectSheetGoodsSection
@@ -130,15 +134,20 @@ export default function SharedProjectPage() {
             ...psg,
             sheetGood: psg.sheetGood,
           }))}
+          formatCurrency={formatCurrency}
         />
 
-        <ProjectFinishesSection projectFinishes={project.projectFinishes || []} />
+        <ProjectFinishesSection
+          projectFinishes={project.projectFinishes || []}
+          formatCurrency={formatCurrency}
+        />
 
         <ProjectConsumablesSection
           projectConsumables={project.projectConsumables?.map((pc: any) => ({
             ...pc,
             consumable: pc.consumable,
           }))}
+          formatCurrency={formatCurrency}
         />
       </Container>
     </Box>
