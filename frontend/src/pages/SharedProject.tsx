@@ -31,8 +31,8 @@ export default function SharedProjectPage() {
   const project: SharedProject | undefined = data?.sharedProject;
 
   const currencySymbol = project
-    ? CURRENCY_SYMBOLS[project.currency as keyof typeof CURRENCY_SYMBOLS] || CURRENCY_SYMBOLS.USD
-    : CURRENCY_SYMBOLS.USD;
+    ? CURRENCY_SYMBOLS[project.currency as keyof typeof CURRENCY_SYMBOLS] || CURRENCY_SYMBOLS.CRC
+    : CURRENCY_SYMBOLS.CRC;
 
   const totalBoardFootage = project?.boards ? calculateTotalBoardFootage(project.boards) : 0;
 
