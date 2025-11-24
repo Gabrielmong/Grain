@@ -115,9 +115,12 @@ export const dashboardResolvers = {
           return total + projectFinish.finish.price * percentageDecimal;
         }, 0);
 
-        totalProjectCost += materialCost + finishCost + project.laborCost + project.miscCost;
+        // only add to total project cost if project is not in PRICE status
+        if (project.status !== 'PRICE')
+          totalProjectCost += materialCost + finishCost + project.laborCost + project.miscCost;
 
-        totalProfit += project.laborCost;
+        // only add to profit if project is completed
+        if (project.status === 'COMPLETED') totalProfit += project.laborCost;
       });
 
       const avgCostPerBF = totalBoardFeet > 0 ? totalProjectCost / totalBoardFeet : 0;
