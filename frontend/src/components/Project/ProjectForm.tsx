@@ -96,12 +96,12 @@ export function ProjectForm({
       return total + pc.quantity * consumable.unitPrice;
     }, 0);
 
-    // Calculate finish costs (with percentage)
+    // Calculate finish costs (with percentage and quantity)
     const finishCost = projectFinishes.reduce((total, pf) => {
       const finish = finishOptions.find((f) => f.id === pf.finishId);
       if (!finish) return total;
       const percentageDecimal = pf.percentageUsed / 100;
-      return total + finish.price * percentageDecimal;
+      return total + finish.price * percentageDecimal * pf.quantity;
     }, 0);
 
     // Add labor and misc costs
