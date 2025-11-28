@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import authReducer from './authSlice';
 import settingsReducer from './settings/settingsSlice';
 import toolReducer from './tool/toolSlice';
+import projectReducer from './project/projectSlice';
 
 // Create a simple localStorage wrapper
 const storage = {
@@ -21,12 +22,13 @@ const rootReducer = combineReducers({
   auth: authReducer,
   settings: settingsReducer,
   tool: toolReducer,
+  project: projectReducer,
 });
 
 const persistConfig = {
   key: 'lumber-calculator',
   storage,
-  whitelist: ['settings'], // Only persist settings locally, auth handled separately
+  whitelist: ['settings', 'project'], // Persist settings and project filters locally, auth handled separately
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

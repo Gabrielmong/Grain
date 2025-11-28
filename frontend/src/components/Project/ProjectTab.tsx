@@ -2,6 +2,13 @@ import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation } from '@apollo/client';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import {
+  setSearchValue,
+  setSortValue,
+  setActiveFilters,
+  setShowDeleted,
+} from '../../store/project/projectSlice';
 import {
   GET_PROJECTS,
   CREATE_PROJECT,
@@ -24,14 +31,26 @@ import { useQueryParams } from '../../hooks/useQueryParams';
 export function ProjectTab() {
   const { t } = useTranslation();
   const { getParam, removeParam } = useQueryParams();
+  const dispatch = useAppDispatch();
+
+  // Get filters from Redux state
+  const searchValue = useAppSelector((state) => state.project.filters.searchValue);
+  const sortValue = useAppSelector((state) => state.project.filters.sortValue);
+  const activeFilters = useAppSelector((state) => state.project.filters.activeFilters);
+  const showDeleted = useAppSelector((state) => state.project.filters.showDeleted);
+
+  // Local state for form and dialogs
   const [formOpen, setFormOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
-  const [showDeleted, setShowDeleted] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
-  const [searchValue, setSearchValue] = useState('');
-  const [sortValue, setSortValue] = useState('name-asc');
-  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({ status: [] });
+
+  // Handlers for filter updates
+  const handleSearchChange = (value: string) => dispatch(setSearchValue(value));
+  const handleSortChange = (value: string) => dispatch(setSortValue(value));
+  const handleFiltersChange = (filters: Record<string, string[]>) =>
+    dispatch(setActiveFilters(filters));
+  const handleShowDeletedChange = (value: boolean) => dispatch(setShowDeleted(value));
 
   const {
     data: projectsData,
@@ -101,6 +120,11 @@ export function ProjectTab() {
       id: 'status',
       label: t('projects.filterBy.projectStatus'),
       options: [
+        {
+          value: ProjectStatus.PRICE,
+          label: t('project.status.price'),
+          color: 'default' as const,
+        },
         {
           value: ProjectStatus.PLANNED,
           label: t('project.status.planned'),
@@ -301,17 +325,17 @@ export function ProjectTab() {
         emptySubtitle={t('projects.emptySubtitle')}
         isEmpty={activeProjects.length === 0 && !showDeleted}
         showDeleted={showDeleted}
-        onShowDeletedChange={setShowDeleted}
+        onShowDeletedChange={handleShowDeletedChange}
         deletedCount={deletedProjects.length}
         searchValue={searchValue}
-        onSearchChange={setSearchValue}
+        onSearchChange={handleSearchChange}
         sortValue={sortValue}
-        onSortChange={setSortValue}
+        onSortChange={handleSortChange}
         sortOptions={sortOptions}
         searchPlaceholder={t('projects.searchPlaceholder')}
         filterGroups={filterGroups}
         activeFilters={activeFilters}
-        onFiltersChange={setActiveFilters}
+        onFiltersChange={handleFiltersChange}
         cardView={
           <ProjectList
             projects={filteredAndSortedProjects}

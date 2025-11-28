@@ -10,10 +10,22 @@ import {
 
 interface ProjectState {
   items: Project[];
+  filters: {
+    searchValue: string;
+    sortValue: string;
+    activeFilters: Record<string, string[]>;
+    showDeleted: boolean;
+  };
 }
 
 const initialState: ProjectState = {
   items: [],
+  filters: {
+    searchValue: '',
+    sortValue: 'name-asc',
+    activeFilters: { status: [] },
+    showDeleted: false,
+  },
 };
 
 const projectSlice = createSlice({
@@ -52,10 +64,35 @@ const projectSlice = createSlice({
     hardDeleteProject: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+    setSearchValue: (state, action: PayloadAction<string>) => {
+      state.filters.searchValue = action.payload;
+    },
+    setSortValue: (state, action: PayloadAction<string>) => {
+      state.filters.sortValue = action.payload;
+    },
+    setActiveFilters: (state, action: PayloadAction<Record<string, string[]>>) => {
+      state.filters.activeFilters = action.payload;
+    },
+    setShowDeleted: (state, action: PayloadAction<boolean>) => {
+      state.filters.showDeleted = action.payload;
+    },
+    resetFilters: (state) => {
+      state.filters = initialState.filters;
+    },
   },
 });
 
-export const { addProject, updateProject, softDeleteProject, restoreProject, hardDeleteProject } =
-  projectSlice.actions;
+export const {
+  addProject,
+  updateProject,
+  softDeleteProject,
+  restoreProject,
+  hardDeleteProject,
+  setSearchValue,
+  setSortValue,
+  setActiveFilters,
+  setShowDeleted,
+  resetFilters,
+} = projectSlice.actions;
 
 export default projectSlice.reducer;
