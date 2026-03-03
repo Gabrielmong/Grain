@@ -27,6 +27,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import PeopleIcon from '@mui/icons-material/People';
 import { logout } from '../../store/authSlice';
 import type { RootState } from '../../store/store';
 import packageJson from '../../../package.json';
@@ -68,6 +70,16 @@ export function Sidebar({ open, onClose, variant = 'permanent' }: SidebarProps) 
       text: t('nav.projects'),
       icon: <FolderIcon />,
       path: '/app/projects',
+    },
+    {
+      text: t('nav.customers'),
+      icon: <PeopleIcon />,
+      path: '/app/customers',
+    },
+    {
+      text: t('nav.feed'),
+      icon: <DynamicFeedIcon />,
+      path: '/feed',
     },
   ];
 

@@ -4,6 +4,25 @@ import type { Consumable } from './consumable';
 // 1 Costa Rican vara = 33 inches (0.8382 meters)
 export const VARA_TO_INCHES = 33;
 
+export const ProjectImageCategory = {
+  RENDER: 'RENDER',
+  FINISHED: 'FINISHED',
+} as const;
+
+export type ProjectImageCategory = (typeof ProjectImageCategory)[keyof typeof ProjectImageCategory];
+
+export interface ProjectImage {
+  id: string;
+  url: string;
+  category: ProjectImageCategory;
+  createdAt: string;
+}
+
+export interface CreateProjectImageInput {
+  url: string;
+  category: ProjectImageCategory;
+}
+
 export const ProjectStatus = {
   PRICE: 'PRICE',
   PLANNED: 'PLANNED',
@@ -76,6 +95,7 @@ export interface Project {
   projectFinishes?: ProjectFinish[];
   projectSheetGoods: ProjectSheetGood[];
   projectConsumables: ProjectConsumable[];
+  images?: ProjectImage[];
   laborCost: number;
   miscCost: number;
   additionalNotes?: string;
@@ -95,6 +115,7 @@ export interface SharedProject {
   projectFinishes?: ProjectFinish[];
   projectSheetGoods: ProjectSheetGood[];
   projectConsumables: ProjectConsumable[];
+  images?: ProjectImage[];
   laborCost: number;
   miscCost: number;
   additionalNotes?: string;
@@ -105,6 +126,7 @@ export interface SharedProject {
   consumableCost: number;
   totalCost: number;
   createdBy: string;
+  username: string;
   currency: string;
   createdAt: string;
 }
@@ -143,6 +165,7 @@ export interface CreateProjectInput {
   projectFinishes?: CreateProjectFinishInput[];
   projectSheetGoods?: CreateProjectSheetGoodInput[];
   projectConsumables?: CreateProjectConsumableInput[];
+  images?: CreateProjectImageInput[];
   laborCost: number;
   miscCost: number;
   additionalNotes?: string;
@@ -159,6 +182,7 @@ export interface UpdateProjectInput {
   projectFinishes?: CreateProjectFinishInput[];
   projectSheetGoods?: CreateProjectSheetGoodInput[];
   projectConsumables?: CreateProjectConsumableInput[];
+  images?: CreateProjectImageInput[];
   laborCost?: number;
   miscCost?: number;
   additionalNotes?: string;

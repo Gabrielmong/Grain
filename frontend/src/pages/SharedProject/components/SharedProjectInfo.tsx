@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Stack, Box, Typography, Chip } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -9,6 +10,7 @@ interface SharedProjectInfoProps {
   name: string;
   description: string;
   createdBy: string;
+  username: string;
   createdAt: string;
   status: ProjectStatus;
   formatDate: (date: string) => string;
@@ -18,11 +20,13 @@ export function SharedProjectInfo({
   name,
   description,
   createdBy,
+  username,
   createdAt,
   status,
   formatDate,
 }: SharedProjectInfoProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <Paper sx={{ p: 4 }}>
@@ -41,6 +45,8 @@ export function SharedProjectInfo({
             icon={<PersonIcon />}
             label={`${t('shared.createdBy')}: ${createdBy}`}
             variant="outlined"
+            onClick={username ? () => navigate(`/u/${username}`) : undefined}
+            sx={username ? { cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' } } : {}}
           />
           <Chip
             icon={<CalendarTodayIcon />}

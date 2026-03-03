@@ -15,6 +15,8 @@ import {
   Stack,
   IconButton,
   Typography,
+  Autocomplete,
+  TextField,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
@@ -29,6 +31,8 @@ export interface FilterGroup {
   id: string;
   label: string;
   options: FilterOption[];
+  /** 'autocomplete' renders a searchable lookup instead of checkboxes */
+  type?: 'checkbox' | 'autocomplete';
 }
 
 interface FilterButtonProps {
@@ -153,37 +157,73 @@ export function FilterButton({ filterGroups, activeFilters, onFiltersChange }: F
 
             {/* Filter Groups */}
             {filterGroups.map((group) => (
-              <FormControl key={group.id} component="fieldset">
+              <FormControl key={group.id} component="fieldset" fullWidth>
                 <FormLabel component="legend" sx={{ mb: 1 }}>
                   {group.label}
                 </FormLabel>
-                <FormGroup>
-                  {group.options.map((option) => (
-                    <FormControlLabel
-                      key={option.value}
-                      control={
-                        <Checkbox
-                          checked={localFilters[group.id]?.includes(option.value) || false}
-                          onChange={() => handleToggleFilter(group.id, option.value)}
+
+                {group.type === 'autocomplete' ? (
+                  <Autocomplete
+                    multiple
+                    options={group.options}
+                    getOptionLabel={(o) => o.label}
+                    value={group.options.filter((o) =>
+                      localFilters[group.id]?.includes(o.value)
+                    )}
+                    onChange={(_, newValue) => {
+                      setLocalFilters((prev) => ({
+                        ...prev,
+                        [group.id]: newValue.map((o) => o.value),
+                      }));
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        size="small"
+                        placeholder={`Search ${group.label}...`}
+                      />
+                    )}
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip
+                          label={option.label}
+                          size="small"
+                          {...getTagProps({ index })}
+                          key={option.value}
                         />
-                      }
-                      label={
-                        <Stack direction="row" spacing={1} alignItems="center">
-                          {option.color ? (
-                            <Chip
-                              label={option.label}
-                              size="small"
-                              color={option.color}
-                              sx={{ minWidth: 8 }}
-                            />
-                          ) : (
-                            <Typography>{option.label}</Typography>
-                          )}
-                        </Stack>
-                      }
-                    />
-                  ))}
-                </FormGroup>
+                      ))
+                    }
+                    isOptionEqualToValue={(option, value) => option.value === value.value}
+                  />
+                ) : (
+                  <FormGroup>
+                    {group.options.map((option) => (
+                      <FormControlLabel
+                        key={option.value}
+                        control={
+                          <Checkbox
+                            checked={localFilters[group.id]?.includes(option.value) || false}
+                            onChange={() => handleToggleFilter(group.id, option.value)}
+                          />
+                        }
+                        label={
+                          <Stack direction="row" spacing={1} alignItems="center">
+                            {option.color ? (
+                              <Chip
+                                label={option.label}
+                                size="small"
+                                color={option.color}
+                                sx={{ minWidth: 8 }}
+                              />
+                            ) : (
+                              <Typography>{option.label}</Typography>
+                            )}
+                          </Stack>
+                        }
+                      />
+                    ))}
+                  </FormGroup>
+                )}
               </FormControl>
             ))}
           </Stack>

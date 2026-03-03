@@ -283,6 +283,14 @@ export function ProjectTable({
                 },
               }}
             >
+              <MenuItem value={ProjectStatus.PRICE}>
+                <Chip
+                  label={t('project.status.price')}
+                  size="small"
+                  color="primary"
+                  sx={{ height: 22, fontSize: '0.75rem' }}
+                />
+              </MenuItem>
               <MenuItem value={ProjectStatus.PLANNED}>
                 <Chip
                   label={t('project.status.planned')}
@@ -364,7 +372,8 @@ export function ProjectTable({
   return (
     <Box
       sx={{
-        height: 600,
+        height: 'calc(100vh - 220px)',
+        minHeight: 400,
         width: '100%',
         '& .MuiDataGrid-root': {
           border: '1px solid',

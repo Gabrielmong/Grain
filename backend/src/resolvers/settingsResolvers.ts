@@ -32,24 +32,11 @@ export const settingsResolvers = {
     updateSettings: async (_: any, { input }: any, context: any) => {
       const user = requireAuth(context);
 
-      // Try to update existing settings
-      try {
-        return await prisma.settings.update({
-          where: { userId: user.userId },
-          data: input,
-        });
-      } catch (error) {
-        // If settings don't exist, create them
-        return await prisma.settings.create({
-          data: {
-            userId: user.userId,
-            currency: 'USD',
-            language: 'en',
-            themeMode: 'light',
-            ...input,
-          },
-        });
-      }
+      return prisma.settings.upsert({
+        where: { userId: user.userId },
+        create: { userId: user.userId, currency: 'USD', language: 'en', themeMode: 'light', ...input },
+        update: input,
+      });
     },
   },
 };

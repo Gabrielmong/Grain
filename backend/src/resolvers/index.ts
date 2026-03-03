@@ -9,6 +9,8 @@ import { projectResolvers } from './projectResolvers';
 import { settingsResolvers } from './settingsResolvers';
 import { dashboardResolvers } from './dashboardResolvers';
 import { cutListResolvers } from './cutListResolvers';
+import { postResolvers } from './postResolvers';
+import { customerResolvers } from './customerResolvers';
 
 // Custom DateTime scalar
 const dateTimeScalar = new GraphQLScalarType({
@@ -49,6 +51,8 @@ export const resolvers = {
     ...settingsResolvers.Query,
     ...dashboardResolvers.Query,
     ...cutListResolvers.Query,
+    ...postResolvers.Query,
+    ...customerResolvers.Query,
   },
 
   Mutation: {
@@ -61,12 +65,18 @@ export const resolvers = {
     ...projectResolvers.Mutation,
     ...settingsResolvers.Mutation,
     ...cutListResolvers.Mutation,
+    ...postResolvers.Mutation,
+    ...customerResolvers.Mutation,
   },
 
   // Field resolvers
   Project: projectResolvers.Project,
   Board: projectResolvers.Board,
   ProjectFinish: projectResolvers.ProjectFinish,
+  ProjectImage: projectResolvers.ProjectImage,
   SharedProject: projectResolvers.SharedProject,
   Consumable: consumableResolvers.Consumable,
+  Post: postResolvers.Post,
+  Comment: postResolvers.Comment,
+  Customer: customerResolvers.Customer,
 };

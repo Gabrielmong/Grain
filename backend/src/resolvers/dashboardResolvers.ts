@@ -19,8 +19,7 @@ export const dashboardResolvers = {
     dashboardStats: async (_: any, __: any, context: any) => {
       const user = requireAuth(context);
 
-      // Get all active projects with their boards and finishes
-      // Active projects are those that are not deleted and not completed
+      // Get all active projects with their boards, finishes, sheet goods, and consumables
       const allProjects = await prisma.project.findMany({
         where: {
           userId: user.userId,
@@ -35,6 +34,16 @@ export const dashboardResolvers = {
           projectFinishes: {
             include: {
               finish: true,
+            },
+          },
+          projectSheetGoods: {
+            include: {
+              sheetGood: true,
+            },
+          },
+          projectConsumables: {
+            include: {
+              consumable: true,
             },
           },
         },
@@ -115,11 +124,29 @@ export const dashboardResolvers = {
           return total + projectFinish.finish.price * percentageDecimal * projectFinish.quantity;
         }, 0);
 
-        // only add to total project cost if project is not in PRICE status
-        if (project.status !== 'PRICE')
-          totalProjectCost += materialCost + finishCost + project.laborCost + project.miscCost;
+        // Calculate sheet goods cost
+        const sheetGoodsCost = project.projectSheetGoods.reduce((total, psg) => {
+          return total + psg.sheetGood.price * psg.quantity;
+        }, 0);
 
-        // only add to profit if project is completed
+        // Calculate consumable cost (unit price × quantity)
+        const consumableCost = project.projectConsumables.reduce((total, pc) => {
+          const unitPrice = pc.consumable.price / pc.consumable.packageQuantity;
+          return total + pc.quantity * unitPrice;
+        }, 0);
+
+        const projectTotalCost =
+          materialCost +
+          finishCost +
+          sheetGoodsCost +
+          consumableCost +
+          project.laborCost +
+          project.miscCost;
+
+        // only add to total project cost if project is not in PRICE status
+        if (project.status !== 'PRICE') totalProjectCost += projectTotalCost;
+
+        // profit = quoted price minus actual cost, only for completed projects
         if (project.status === 'COMPLETED') totalProfit += project.laborCost;
       });
 

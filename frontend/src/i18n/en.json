@@ -39,6 +39,8 @@
   "nav": {
     "dashboard": "Dashboard",
     "projects": "Projects",
+    "customers": "Customers",
+    "feed": "Feed",
     "materials": "Materials",
     "lumber": "Lumber",
     "finishes": "Finishes",
@@ -234,7 +236,8 @@
       "boardFeetDesc": "Board Feet (High to Low)"
     },
     "filterBy": {
-      "projectStatus": "Project Status"
+      "projectStatus": "Project Status",
+      "customer": "Customer"
     },
     "deleteDialog": {
       "title": "Delete Project",
@@ -292,6 +295,7 @@
       "descriptionPlaceholderAlt": "Describe the project...",
       "statusLabel": "Status",
       "createNewProject": "Create New Project",
+      "selectCustomer": "Select a customer (optional)",
       "total": "Total",
       "cancel": "Cancel",
       "noFinishesAdded": "No finishes added yet. Click \"Add Finish\" to get started.",
@@ -366,7 +370,8 @@
     "editProfile": "Edit Profile",
     "changePassword": "Change Password",
     "linkCopied": "Link copied to clipboard",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "remove": "Remove"
   },
   "account": {
     "title": "Account",
@@ -612,5 +617,92 @@
       "title": "12. Contact Information",
       "text": "If you have any questions about these Terms and Conditions, your data rights, or wish to exercise your ARCO rights, please contact us through your account settings or the contact information provided in the application."
     }
+  },
+  "projectImages": {
+    "title": "Project Images",
+    "renderImages": "Render Images",
+    "finishedImages": "Finished Images",
+    "upload": "Upload Image",
+    "uploadImage": "Upload Image",
+    "uploading": "Uploading...",
+    "maxError": "Maximum 5 images per category",
+    "uploadError": "Failed to upload image",
+    "noImages": "No images yet"
+  },
+  "feed": {
+    "title": "Feed",
+    "subtitle": "See what other woodworkers are building",
+    "shareToFeed": "Share to Feed",
+    "editPost": "Edit Post",
+    "postDescription": "Description",
+    "postDescriptionPlaceholder": "Tell us about this project...",
+    "imageVisibility": "Image Visibility",
+    "showRenderImages": "Show Render Images",
+    "showFinishedImages": "Show Finished Images",
+    "noImagesWarning": "This project has no images. Add images to your project to share them.",
+    "hideFromFeed": "Hide from Feed",
+    "hideFromFeedHelp": "Post will be saved but hidden from the public feed",
+    "publishPost": "Publish",
+    "updatePost": "Update Post",
+    "noImages": "No images",
+    "empty": "No posts yet. Be the first to share!",
+    "loadMore": "Load More",
+    "comments": "Comments",
+    "noComments": "No comments yet. Be the first!",
+    "addComment": "Add a Comment",
+    "addReply": "Add a Reply",
+    "addCommentPlaceholder": "Add a comment...",
+    "yourName": "Your Name",
+    "yourComment": "Your Comment",
+    "yourReply": "Your reply...",
+    "postComment": "Post Comment",
+    "postReply": "Reply",
+    "post": "Post",
+    "author": "Author",
+    "edited": "edited",
+    "edit": "Edit",
+    "delete": "Delete",
+    "reply": "Reply",
+    "replyingTo": "Replying to {{name}}",
+    "cancelEdit": "Cancel",
+    "saveEdit": "Save",
+    "likeCount": "{{count}} likes",
+    "sortOldest": "Oldest",
+    "sortNewest": "Newest",
+    "customer": "Customer",
+    "customerPlaceholder": "Link a customer (optional)"
+  },
+  "userProfile": {
+    "notFound": "User not found",
+    "posts": "posts",
+    "completedProjects": "completed projects",
+    "noPosts": "No posts shared yet"
+  },
+  "customers": {
+    "title": "Customers",
+    "subtitle": "Manage your customer relationships and linked projects",
+    "add": "Add Customer",
+    "addCustomer": "Add Customer",
+    "editCustomer": "Edit Customer",
+    "createCustomer": "Create Customer",
+    "updateCustomer": "Update Customer",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "notes": "Notes",
+    "linkedProjects": "Linked Projects",
+    "projects": "projects",
+    "contactInfo": "Contact Information",
+    "noContactInfo": "No contact information provided",
+    "noLinkedProjects": "No projects linked yet",
+    "backToCustomers": "Back to Customers",
+    "noCustomers": "No customers found",
+    "emptyTitle": "No Customers Yet",
+    "emptySubtitle": "Add your first customer to get started",
+    "deleteConfirmMessage": "Are you sure you want to delete this customer?",
+    "notFound": "Customer not found",
+    "searchPlaceholder": "Search customers by name, email, or phone...",
+    "sortNameAsc": "Name (A-Z)",
+    "sortNameDesc": "Name (Z-A)"
   }
 }

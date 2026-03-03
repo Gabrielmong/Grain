@@ -13,6 +13,11 @@ export const typeDefs = gql`
     COMPLETED
   }
 
+  enum ProjectImageCategory {
+    RENDER
+    FINISHED
+  }
+
   # User Type
   type User {
     id: ID!
@@ -152,6 +157,14 @@ export const typeDefs = gql`
     updatedAt: DateTime!
   }
 
+  # ProjectImage Type
+  type ProjectImage {
+    id: ID!
+    url: String!
+    category: ProjectImageCategory!
+    createdAt: DateTime!
+  }
+
   # CutList Type
   type CutList {
     id: ID!
@@ -178,6 +191,7 @@ export const typeDefs = gql`
     projectSheetGoods: [ProjectSheetGood!]!
     projectConsumables: [ProjectConsumable!]!
     cutLists: [CutList!]!
+    images: [ProjectImage!]!
     sheetGoodsCost: Float!
     consumableCost: Float!
     laborCost: Float!
@@ -204,6 +218,7 @@ export const typeDefs = gql`
     projectFinishes: [ProjectFinish!]!
     projectSheetGoods: [ProjectSheetGood!]!
     projectConsumables: [ProjectConsumable!]!
+    images: [ProjectImage!]!
     sheetGoodsCost: Float!
     consumableCost: Float!
     laborCost: Float!
@@ -214,8 +229,73 @@ export const typeDefs = gql`
     finishCost: Float!
     totalCost: Float!
     createdBy: String!
+    username: String!
     currency: String!
     createdAt: DateTime!
+  }
+
+  # Post/Feed Types
+  type PostImage {
+    url: String!
+    category: ProjectImageCategory!
+  }
+
+  type Comment {
+    id: ID!
+    content: String!
+    authorName: String!
+    userId: ID
+    userImageData: String
+    isAuthor: Boolean!
+    parentId: ID
+    replies: [Comment!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
+  type Post {
+    id: ID!
+    userId: ID!
+    description: String!
+    showRenderImages: Boolean!
+    showFinishedImages: Boolean!
+    isHidden: Boolean!
+    projectId: ID!
+    projectName: String!
+    createdBy: String!
+    username: String!
+    createdByImageData: String
+    images: [PostImage!]!
+    likeCount: Int!
+    commentCount: Int!
+    isLikedByMe(fingerprint: String!): Boolean!
+    comments: [Comment!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
+  # User Profile (public)
+  type UserProfile {
+    id: ID!
+    username: String!
+    firstName: String!
+    lastName: String!
+    imageData: String
+    completedProjectsCount: Int!
+    posts: [Post!]!
+  }
+
+  # Customer Type
+  type Customer {
+    id: ID!
+    name: String!
+    email: String
+    phone: String
+    notes: String
+    projects: [Project!]!
+    isDeleted: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
   }
 
   # Settings Type
@@ -371,6 +451,12 @@ export const typeDefs = gql`
     percentageUsed: Float!
   }
 
+  # Input Types for ProjectImage
+  input ProjectImageInput {
+    url: String!
+    category: ProjectImageCategory!
+  }
+
   # Input Types for CutList
   input CreateCutListInput {
     projectId: String!
@@ -401,6 +487,7 @@ export const typeDefs = gql`
     projectFinishes: [ProjectFinishInput!]
     projectSheetGoods: [ProjectSheetGoodInput!]
     projectConsumables: [ProjectConsumableInput!]
+    images: [ProjectImageInput!]
     laborCost: Float!
     miscCost: Float!
     additionalNotes: String
@@ -416,6 +503,7 @@ export const typeDefs = gql`
     projectFinishes: [ProjectFinishInput!]
     projectSheetGoods: [ProjectSheetGoodInput!]
     projectConsumables: [ProjectConsumableInput!]
+    images: [ProjectImageInput!]
     laborCost: Float
     miscCost: Float
     additionalNotes: String
@@ -457,6 +545,37 @@ export const typeDefs = gql`
   input ChangePasswordInput {
     currentPassword: String!
     newPassword: String!
+  }
+
+  # Input Types for Post
+  input PostInput {
+    description: String!
+    showRenderImages: Boolean!
+    showFinishedImages: Boolean!
+    isHidden: Boolean!
+  }
+
+  input CommentInput {
+    content: String!
+    authorName: String!
+    parentId: ID
+  }
+
+  # Input Types for Customer
+  input CreateCustomerInput {
+    name: String!
+    email: String
+    phone: String
+    notes: String
+    projectIds: [ID!]
+  }
+
+  input UpdateCustomerInput {
+    name: String
+    email: String
+    phone: String
+    notes: String
+    projectIds: [ID!]
   }
 
   # Queries
@@ -504,6 +623,17 @@ export const typeDefs = gql`
 
     # Dashboard Query (Private)
     dashboardStats: DashboardStats!
+
+    # Feed Queries (Public)
+    feed(page: Int, limit: Int): [Post!]!
+    post(id: ID!): Post
+    myPost(projectId: ID!): Post
+    userPosts(username: String!): [Post!]!
+    userProfile(username: String!): UserProfile
+
+    # Customer Queries (Private)
+    customers(includeDeleted: Boolean): [Customer!]!
+    customer(id: ID!): Customer
   }
 
   # Mutations
@@ -568,5 +698,24 @@ export const typeDefs = gql`
 
     # Settings Mutations (Private)
     updateSettings(input: UpdateSettingsInput!): Settings!
+
+    # Project Image Mutations (Private)
+    deleteProjectImage(id: ID!): Boolean!
+
+    # Feed Mutations (Public for likes/comments, Private for post management)
+    createOrUpdatePost(projectId: ID!, input: PostInput!): Post!
+    deletePost(id: ID!): Boolean!
+    likePost(postId: ID!, fingerprint: String!): Post!
+    unlikePost(postId: ID!, fingerprint: String!): Post!
+    addComment(postId: ID!, input: CommentInput!): Comment!
+    editComment(id: ID!, content: String!): Comment!
+    deleteComment(id: ID!): Boolean!
+
+    # Customer Mutations (Private)
+    createCustomer(input: CreateCustomerInput!): Customer!
+    updateCustomer(id: ID!, input: UpdateCustomerInput!): Customer!
+    deleteCustomer(id: ID!): Customer!
+    restoreCustomer(id: ID!): Customer!
+    hardDeleteCustomer(id: ID!): Boolean!
   }
 `;

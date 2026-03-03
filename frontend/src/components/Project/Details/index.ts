@@ -5,3 +5,4 @@ export { ProjectFinishesSection } from './ProjectFinishesSection';
 export { ProjectSheetGoodsSection } from './ProjectSheetGoodsSection';
 export { ProjectConsumablesSection } from './ProjectConsumablesSection';
 export { ProjectCostBreakdown } from './ProjectCostBreakdown';
+export { ProjectImagesSection } from './ProjectImagesSection';

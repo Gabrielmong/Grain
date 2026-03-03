@@ -11,6 +11,7 @@ import {
   ProjectFinishesSection,
   ProjectSheetGoodsSection,
   ProjectConsumablesSection,
+  ProjectImagesSection,
 } from '../components/Project/Details';
 import {
   SharedProjectHeader,
@@ -87,10 +88,19 @@ export default function SharedProjectPage() {
           name={project.name}
           description={project.description}
           createdBy={project.createdBy}
+          username={project.username}
           createdAt={project.createdAt}
           status={project.status}
           formatDate={formatDate}
         />
+
+        {project.images && project.images.length > 0 && (
+          <>
+            <Divider />
+            <ProjectImagesSection images={project.images} />
+          </>
+        )}
+
         <Divider />
 
         <SharedProjectCostSummary

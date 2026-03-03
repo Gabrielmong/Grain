@@ -6,3 +6,4 @@ export * from './tool';
 export * from './sheetGood';
 export * from './consumable';
 export * from './cutList';
+export * from './customer';

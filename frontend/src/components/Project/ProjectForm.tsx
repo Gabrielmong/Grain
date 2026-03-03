@@ -8,6 +8,8 @@ import {
   Button,
   Stack,
   Typography,
+  Autocomplete,
+  TextField,
 } from '@mui/material';
 import type {
   Project,
@@ -16,12 +18,14 @@ import type {
   CreateProjectSheetGoodInput,
   CreateProjectConsumableInput,
   CreateProjectFinishInput,
+  CreateProjectImageInput,
 } from '../../types/project';
 import { ProjectStatus, calculateBoardFootage } from '../../types/project';
 import type { Lumber } from '../../types/lumber';
 import type { Finish } from '../../types/finish';
 import type { SheetGood } from '../../types/sheetGood';
 import type { Consumable } from '../../types/consumable';
+import type { Customer } from '../../types/customer';
 import { useCurrency } from '../../utils/currency';
 import {
   ProjectBasicInfoSection,
@@ -30,17 +34,20 @@ import {
   ProjectSheetGoodsFormSection,
   ProjectConsumablesFormSection,
   ProjectCostsSection,
+  ProjectImagesFormSection,
 } from './Form';
 
 interface ProjectFormProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (project: CreateProjectInput) => void;
+  onSubmit: (project: CreateProjectInput, customerId: string | null) => void;
   editingProject?: Project | null;
   lumberOptions: Lumber[];
   finishOptions: Finish[];
   sheetGoodOptions: SheetGood[];
   consumableOptions: Consumable[];
+  customerOptions?: Customer[];
+  initialCustomerId?: string | null;
 }
 
 export function ProjectForm({
@@ -52,6 +59,8 @@ export function ProjectForm({
   finishOptions,
   sheetGoodOptions,
   consumableOptions,
+  customerOptions = [],
+  initialCustomerId = null,
 }: ProjectFormProps) {
   const { t } = useTranslation();
   const [name, setName] = useState('');
@@ -63,9 +72,11 @@ export function ProjectForm({
   const [projectFinishes, setProjectFinishes] = useState<CreateProjectFinishInput[]>([]);
   const [projectSheetGoods, setProjectSheetGoods] = useState<CreateProjectSheetGoodInput[]>([]);
   const [projectConsumables, setProjectConsumables] = useState<CreateProjectConsumableInput[]>([]);
+  const [images, setImages] = useState<CreateProjectImageInput[]>([]);
   const [laborCost, setLaborCost] = useState('');
   const [miscCost, setMiscCost] = useState('');
   const [additionalNotes, setAdditionalNotes] = useState('');
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
   const formatCurrency = useCurrency();
 
@@ -133,9 +144,11 @@ export function ProjectForm({
     setProjectFinishes([]);
     setProjectSheetGoods([]);
     setProjectConsumables([]);
+    setImages([]);
     setLaborCost('');
     setMiscCost('');
     setAdditionalNotes('');
+    setSelectedCustomerId(null);
   };
 
   useEffect(() => {
@@ -173,13 +186,15 @@ export function ProjectForm({
           consumableId: pc.consumableId,
         })) || [];
       setProjectConsumables(projectConsumablesFromProject);
+      setImages(editingProject.images?.map((img) => ({ url: img.url, category: img.category })) || []);
       setLaborCost(editingProject.laborCost.toString());
       setMiscCost(editingProject.miscCost.toString());
       setAdditionalNotes(editingProject.additionalNotes || '');
+      setSelectedCustomerId(initialCustomerId ?? null);
     } else {
       resetForm();
     }
-  }, [editingProject, open]);
+  }, [editingProject, open, initialCustomerId]);
 
   const handleAddBoard = () => {
     const newBoard: CreateBoardInput = {
@@ -252,11 +267,12 @@ export function ProjectForm({
       projectFinishes,
       projectSheetGoods,
       projectConsumables,
+      images,
       laborCost: parseFloat(laborCost) || 0,
       miscCost: parseFloat(miscCost) || 0,
       additionalNotes: additionalNotes.trim() || undefined,
     };
-    onSubmit(projectData);
+    onSubmit(projectData, selectedCustomerId);
     resetForm();
     onClose();
   };
@@ -338,6 +354,24 @@ export function ProjectForm({
             onMeasurementUnitChange={setMeasurementUnit}
           />
 
+          {customerOptions.length > 0 && (
+            <Autocomplete
+              options={customerOptions}
+              getOptionLabel={(c) => c.name}
+              value={customerOptions.find((c) => c.id === selectedCustomerId) ?? null}
+              onChange={(_, newValue) => setSelectedCustomerId(newValue?.id ?? null)}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={t('nav.customers')}
+                  placeholder={t('project.form.selectCustomer')}
+                  size="small"
+                />
+              )}
+            />
+          )}
+
           <ProjectBoardsFormSection
             boards={boards}
             lumberOptions={lumberOptions}
@@ -367,6 +401,8 @@ export function ProjectForm({
             finishOptions={finishOptions}
             onProjectFinishesChange={setProjectFinishes}
           />
+
+          <ProjectImagesFormSection images={images} onChange={setImages} />
 
           <ProjectCostsSection
             laborCost={laborCost}

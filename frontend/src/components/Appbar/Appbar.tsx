@@ -43,6 +43,13 @@ export const Appbar = ({ showSignInUp = true }: { showSignInUp?: boolean }) => {
         >
           {t('app.title')}
         </Typography>
+        <Button
+          variant="text"
+          onClick={() => navigate('/feed')}
+          sx={{ textTransform: 'none', borderRadius: 2, px: 2, mr: 1 }}
+        >
+          {t('nav.feed')}
+        </Button>
         <LanguageSelector />
         {isAuthenticated ? (
           <Button
@@ -56,14 +63,14 @@ export const Appbar = ({ showSignInUp = true }: { showSignInUp?: boolean }) => {
             }}
           >
             {user && (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Avatar
-                  sx={{ width: 24, height: 24, bgcolor: 'primary.main' }}
-                  src={user.imageData}
+                  sx={{ width: 28, height: 28, bgcolor: 'primary.main', fontSize: '0.75rem' }}
+                  src={user.imageData || undefined}
                 >
-                  {t('landing.goToApp')}
+                  {!user.imageData && user.firstName?.charAt(0).toUpperCase()}
                 </Avatar>
-                <Box sx={{ ml: 2 }}>{t('landing.goToApp')}</Box>
+                {t('landing.goToApp')}
               </Box>
             )}
           </Button>

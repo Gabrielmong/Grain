@@ -19,6 +19,8 @@ import {
   GET_LUMBERS,
   GET_SHEET_GOODS,
   GET_CONSUMABLES,
+  GET_CUSTOMERS,
+  UPDATE_CUSTOMER,
 } from '../../graphql';
 import { ProjectList } from './ProjectList';
 import { ProjectTable } from './ProjectTable';
@@ -64,6 +66,7 @@ export function ProjectTab() {
   const { data: lumberData } = useQuery(GET_LUMBERS);
   const { data: sheetGoodsData } = useQuery(GET_SHEET_GOODS);
   const { data: consumablesData } = useQuery(GET_CONSUMABLES);
+  const { data: customersData } = useQuery(GET_CUSTOMERS);
 
   const activeFinishes = useMemo(() => {
     return (finishesData?.finishes || []).filter((finish: any) => !finish.isDeleted);
@@ -97,6 +100,8 @@ export function ProjectTab() {
     refetchQueries: [{ query: GET_PROJECTS, variables: { includeDeleted: showDeleted } }],
   });
 
+  const [updateCustomer] = useMutation(UPDATE_CUSTOMER);
+
   const allProjects = projectsData?.projects || [];
 
   const activeProjects = allProjects.filter((item: Project) => !item.isDeleted);
@@ -115,38 +120,36 @@ export function ProjectTab() {
     { value: 'totalBoardFeet-desc', label: t('projects.sortBy.boardFeetDesc') },
   ];
 
+  const activeCustomers = useMemo(() => {
+    return (customersData?.customers || []).filter((c: any) => !c.isDeleted);
+  }, [customersData]);
+
   const filterGroups = [
     {
       id: 'status',
       label: t('projects.filterBy.projectStatus'),
       options: [
-        {
-          value: ProjectStatus.PRICE,
-          label: t('project.status.price'),
-          color: 'default' as const,
-        },
-        {
-          value: ProjectStatus.PLANNED,
-          label: t('project.status.planned'),
-          color: 'default' as const,
-        },
-        {
-          value: ProjectStatus.IN_PROGRESS,
-          label: t('project.status.inProgress'),
-          color: 'info' as const,
-        },
-        {
-          value: ProjectStatus.FINISHING,
-          label: t('project.status.finishing'),
-          color: 'warning' as const,
-        },
-        {
-          value: ProjectStatus.COMPLETED,
-          label: t('project.status.completed'),
-          color: 'success' as const,
-        },
+        { value: ProjectStatus.PRICE, label: t('project.status.price'), color: 'default' as const },
+        { value: ProjectStatus.PLANNED, label: t('project.status.planned'), color: 'default' as const },
+        { value: ProjectStatus.IN_PROGRESS, label: t('project.status.inProgress'), color: 'info' as const },
+        { value: ProjectStatus.FINISHING, label: t('project.status.finishing'), color: 'warning' as const },
+        { value: ProjectStatus.COMPLETED, label: t('project.status.completed'), color: 'success' as const },
       ],
     },
+    ...(activeCustomers.length > 0
+      ? [
+          {
+            id: 'customer',
+            label: t('projects.filterBy.customer'),
+            type: 'autocomplete' as const,
+            options: activeCustomers.map((c: any) => ({
+              value: c.id,
+              label: c.name,
+              color: 'default' as const,
+            })),
+          },
+        ]
+      : []),
   ];
 
   const filteredAndSortedProjects = useMemo(() => {
@@ -165,6 +168,16 @@ export function ProjectTab() {
     // Apply status filter
     if (activeFilters.status && activeFilters.status.length > 0) {
       filtered = filtered.filter((project) => activeFilters.status.includes(project.status));
+    }
+
+    // Apply customer filter
+    if (activeFilters.customer && activeFilters.customer.length > 0) {
+      const linkedProjectIds = new Set(
+        activeCustomers
+          .filter((c: any) => activeFilters.customer.includes(c.id))
+          .flatMap((c: any) => (c.projects || []).map((p: any) => p.id))
+      );
+      filtered = filtered.filter((project) => linkedProjectIds.has(project.id));
     }
 
     // Apply sorting
@@ -229,22 +242,43 @@ export function ProjectTab() {
     setEditingProject(null);
   };
 
-  const handleFormSubmit = async (projectData: CreateProjectInput) => {
+  const handleFormSubmit = async (projectData: CreateProjectInput, customerId: string | null) => {
     try {
+      let projectId: string;
       if (editingProject) {
         await updateProjectMutation({
-          variables: {
-            id: editingProject.id,
-            input: projectData,
-          },
+          variables: { id: editingProject.id, input: projectData },
         });
+        projectId = editingProject.id;
       } else {
-        await createProject({
-          variables: {
-            input: projectData,
-          },
+        const result = await createProject({
+          variables: { input: projectData },
         });
+        projectId = result.data?.createProject?.id;
       }
+
+      // Handle customer association
+      const oldCustomer = activeCustomers.find((c: any) =>
+        c.projects?.some((p: any) => p.id === projectId)
+      ) ?? null;
+      const newCustomer = activeCustomers.find((c: any) => c.id === customerId) ?? null;
+
+      if (oldCustomer && oldCustomer.id !== customerId) {
+        const remainingIds = (oldCustomer.projects || [])
+          .filter((p: any) => p.id !== projectId)
+          .map((p: any) => p.id);
+        await updateCustomer({ variables: { id: oldCustomer.id, input: { projectIds: remainingIds } } });
+      }
+
+      if (newCustomer && newCustomer.id !== oldCustomer?.id) {
+        const existingIds = (newCustomer.projects || []).map((p: any) => p.id);
+        if (!existingIds.includes(projectId)) {
+          await updateCustomer({
+            variables: { id: newCustomer.id, input: { projectIds: [...existingIds, projectId] } },
+          });
+        }
+      }
+
       handleFormClose();
     } catch (error) {
       console.error('Error saving project:', error);
@@ -365,6 +399,14 @@ export function ProjectTab() {
         finishOptions={activeFinishes}
         sheetGoodOptions={activeSheetGoods}
         consumableOptions={activeConsumables}
+        customerOptions={activeCustomers}
+        initialCustomerId={
+          editingProject
+            ? (activeCustomers.find((c: any) =>
+                c.projects?.some((p: any) => p.id === editingProject.id)
+              )?.id ?? null)
+            : null
+        }
       />
 
       <ConfirmDialog

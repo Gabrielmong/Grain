@@ -4,3 +4,4 @@ export { ProjectFinishesFormSection } from './ProjectFinishesFormSection';
 export { ProjectSheetGoodsFormSection } from './ProjectSheetGoodsFormSection';
 export { ProjectConsumablesFormSection } from './ProjectConsumablesFormSection';
 export { ProjectCostsSection } from './ProjectCostsSection';
+export { ProjectImagesFormSection } from './ProjectImagesSection';

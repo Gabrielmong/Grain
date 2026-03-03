@@ -417,6 +417,12 @@ export const GET_PROJECTS = gql`
           tags
         }
       }
+      images {
+        id
+        url
+        category
+        createdAt
+      }
       laborCost
       miscCost
       additionalNotes
@@ -501,6 +507,12 @@ export const GET_PROJECT = gql`
           unitPrice
           tags
         }
+      }
+      images {
+        id
+        url
+        category
+        createdAt
       }
       laborCost
       miscCost
@@ -588,6 +600,12 @@ export const GET_SHARED_PROJECT = gql`
           tags
         }
       }
+      images {
+        id
+        url
+        category
+        createdAt
+      }
       laborCost
       miscCost
       additionalNotes
@@ -598,6 +616,7 @@ export const GET_SHARED_PROJECT = gql`
       consumableCost
       totalCost
       createdBy
+      username
       currency
       createdAt
     }
@@ -771,5 +790,297 @@ export const TOGGLE_CUT_LIST_COMPLETE = gql`
       isCompleted
       updatedAt
     }
+  }
+`;
+
+// PROJECT IMAGE OPERATIONS
+export const DELETE_PROJECT_IMAGE = gql`
+  mutation DeleteProjectImage($id: ID!) {
+    deleteProjectImage(id: $id)
+  }
+`;
+
+// FEED / POST OPERATIONS
+const POST_FIELDS = gql`
+  fragment PostFields on Post {
+    id
+    userId
+    description
+    showRenderImages
+    showFinishedImages
+    isHidden
+    projectId
+    projectName
+    createdBy
+    username
+    createdByImageData
+    images {
+      url
+      category
+    }
+    likeCount
+    commentCount
+    comments {
+      id
+      content
+      authorName
+      userId
+      userImageData
+      isAuthor
+      parentId
+      createdAt
+      updatedAt
+      replies {
+        id
+        content
+        authorName
+        userId
+        userImageData
+        isAuthor
+        parentId
+        createdAt
+        updatedAt
+      }
+    }
+    createdAt
+    updatedAt
+  }
+`;
+
+export const GET_FEED = gql`
+  ${POST_FIELDS}
+  query GetFeed($page: Int, $limit: Int, $fingerprint: String!) {
+    feed(page: $page, limit: $limit) {
+      ...PostFields
+      isLikedByMe(fingerprint: $fingerprint)
+    }
+  }
+`;
+
+export const GET_POST = gql`
+  ${POST_FIELDS}
+  query GetPost($id: ID!, $fingerprint: String!) {
+    post(id: $id) {
+      ...PostFields
+      isLikedByMe(fingerprint: $fingerprint)
+    }
+  }
+`;
+
+export const GET_MY_POST = gql`
+  ${POST_FIELDS}
+  query GetMyPost($projectId: ID!) {
+    myPost(projectId: $projectId) {
+      ...PostFields
+      isLikedByMe(fingerprint: "")
+    }
+  }
+`;
+
+export const GET_USER_POSTS = gql`
+  ${POST_FIELDS}
+  query GetUserPosts($username: String!, $fingerprint: String!) {
+    userPosts(username: $username) {
+      ...PostFields
+      isLikedByMe(fingerprint: $fingerprint)
+    }
+  }
+`;
+
+export const GET_USER_PROFILE = gql`
+  query GetUserProfile($username: String!) {
+    userProfile(username: $username) {
+      id
+      username
+      firstName
+      lastName
+      imageData
+      completedProjectsCount
+    }
+  }
+`;
+
+export const CREATE_OR_UPDATE_POST = gql`
+  ${POST_FIELDS}
+  mutation CreateOrUpdatePost($projectId: ID!, $input: PostInput!) {
+    createOrUpdatePost(projectId: $projectId, input: $input) {
+      ...PostFields
+      isLikedByMe(fingerprint: "")
+    }
+  }
+`;
+
+export const DELETE_POST = gql`
+  mutation DeletePost($id: ID!) {
+    deletePost(id: $id)
+  }
+`;
+
+export const LIKE_POST = gql`
+  ${POST_FIELDS}
+  mutation LikePost($postId: ID!, $fingerprint: String!) {
+    likePost(postId: $postId, fingerprint: $fingerprint) {
+      ...PostFields
+      isLikedByMe(fingerprint: $fingerprint)
+    }
+  }
+`;
+
+export const UNLIKE_POST = gql`
+  ${POST_FIELDS}
+  mutation UnlikePost($postId: ID!, $fingerprint: String!) {
+    unlikePost(postId: $postId, fingerprint: $fingerprint) {
+      ...PostFields
+      isLikedByMe(fingerprint: $fingerprint)
+    }
+  }
+`;
+
+export const ADD_COMMENT = gql`
+  mutation AddComment($postId: ID!, $input: CommentInput!) {
+    addComment(postId: $postId, input: $input) {
+      id
+      content
+      authorName
+      userId
+      userImageData
+      isAuthor
+      parentId
+      createdAt
+      updatedAt
+      replies {
+        id
+        content
+        authorName
+        userId
+        userImageData
+        isAuthor
+        parentId
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const EDIT_COMMENT = gql`
+  mutation EditComment($id: ID!, $content: String!) {
+    editComment(id: $id, content: $content) {
+      id
+      content
+      updatedAt
+    }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation DeleteComment($id: ID!) {
+    deleteComment(id: $id)
+  }
+`;
+
+// CUSTOMER OPERATIONS
+export const GET_CUSTOMERS = gql`
+  query GetCustomers($includeDeleted: Boolean) {
+    customers(includeDeleted: $includeDeleted) {
+      id
+      name
+      email
+      phone
+      notes
+      isDeleted
+      createdAt
+      updatedAt
+      projects {
+        id
+        name
+        status
+        totalCost
+      }
+    }
+  }
+`;
+
+export const GET_CUSTOMER = gql`
+  query GetCustomer($id: ID!) {
+    customer(id: $id) {
+      id
+      name
+      email
+      phone
+      notes
+      isDeleted
+      createdAt
+      updatedAt
+      projects {
+        id
+        name
+        status
+        totalCost
+        description
+        price
+        createdAt
+      }
+    }
+  }
+`;
+
+export const CREATE_CUSTOMER = gql`
+  mutation CreateCustomer($input: CreateCustomerInput!) {
+    createCustomer(input: $input) {
+      id
+      name
+      email
+      phone
+      notes
+      createdAt
+      projects {
+        id
+        name
+        status
+      }
+    }
+  }
+`;
+
+export const UPDATE_CUSTOMER = gql`
+  mutation UpdateCustomer($id: ID!, $input: UpdateCustomerInput!) {
+    updateCustomer(id: $id, input: $input) {
+      id
+      name
+      email
+      phone
+      notes
+      updatedAt
+      projects {
+        id
+        name
+        status
+      }
+    }
+  }
+`;
+
+export const DELETE_CUSTOMER = gql`
+  mutation DeleteCustomer($id: ID!) {
+    deleteCustomer(id: $id) {
+      id
+      isDeleted
+    }
+  }
+`;
+
+export const RESTORE_CUSTOMER = gql`
+  mutation RestoreCustomer($id: ID!) {
+    restoreCustomer(id: $id) {
+      id
+      isDeleted
+    }
+  }
+`;
+
+export const HARD_DELETE_CUSTOMER = gql`
+  mutation HardDeleteCustomer($id: ID!) {
+    hardDeleteCustomer(id: $id)
   }
 `;

@@ -12,6 +12,8 @@ import {
   UPDATE_PROJECT,
   GET_CONSUMABLES,
   GET_CUT_LISTS,
+  GET_CUSTOMERS,
+  UPDATE_CUSTOMER,
 } from '../../graphql';
 import {
   calculateTotalBoardFootage,
@@ -31,7 +33,9 @@ import {
   ProjectSheetGoodsSection,
   ProjectConsumablesSection,
   ProjectCostBreakdown,
+  ProjectImagesSection,
 } from './Details';
+import { ShareToFeedModal } from './ShareToFeedModal';
 import { ArrowBack } from '@mui/icons-material';
 import { useCurrency } from '../../utils/currency';
 
@@ -42,6 +46,7 @@ export function ProjectDetails() {
   const navigate = useNavigate();
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const [feedModalOpen, setFeedModalOpen] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const formatCurrency = useCurrency();
 
@@ -73,6 +78,8 @@ export function ProjectDetails() {
     variables: { projectId: id || '' },
     skip: !id,
   });
+  const { data: customersData } = useQuery(GET_CUSTOMERS);
+  const [updateCustomer] = useMutation(UPDATE_CUSTOMER);
 
   const activeFinishes = useMemo(() => {
     return (finishesData?.finishes || []).filter((finish: any) => !finish.isDeleted);
@@ -89,6 +96,10 @@ export function ProjectDetails() {
   const activeConsumables = useMemo(() => {
     return (consumablesData?.consumables || []).filter((consumable: any) => !consumable.isDeleted);
   }, [consumablesData]);
+
+  const activeCustomers = useMemo(() => {
+    return (customersData?.customers || []).filter((c: any) => !c.isDeleted);
+  }, [customersData]);
 
   const cutListCompletion = useMemo(() => {
     const cutLists = cutListsData?.cutLists || [];
@@ -191,15 +202,34 @@ export function ProjectDetails() {
     }
   };
 
-  const handleFormSubmit = async (projectData: CreateProjectInput) => {
+  const handleFormSubmit = async (projectData: CreateProjectInput, customerId: string | null) => {
     try {
       if (editingProject) {
         await updateProjectMutation({
-          variables: {
-            id: editingProject.id,
-            input: projectData,
-          },
+          variables: { id: editingProject.id, input: projectData },
         });
+
+        const projectId = editingProject.id;
+        const oldCustomer = activeCustomers.find((c: any) =>
+          c.projects?.some((p: any) => p.id === projectId)
+        ) ?? null;
+        const newCustomer = activeCustomers.find((c: any) => c.id === customerId) ?? null;
+
+        if (oldCustomer && oldCustomer.id !== customerId) {
+          const remainingIds = (oldCustomer.projects || [])
+            .filter((p: any) => p.id !== projectId)
+            .map((p: any) => p.id);
+          await updateCustomer({ variables: { id: oldCustomer.id, input: { projectIds: remainingIds } } });
+        }
+
+        if (newCustomer && newCustomer.id !== oldCustomer?.id) {
+          const existingIds = (newCustomer.projects || []).map((p: any) => p.id);
+          if (!existingIds.includes(projectId)) {
+            await updateCustomer({
+              variables: { id: newCustomer.id, input: { projectIds: [...existingIds, projectId] } },
+            });
+          }
+        }
       }
       handleFormClose();
     } catch (error) {
@@ -277,6 +307,7 @@ export function ProjectDetails() {
         onShare={handleShare}
         onStatusChange={handleStatusChange}
         onCutList={handleCutList}
+      onShareToFeed={() => setFeedModalOpen(true)}
       />
 
       <ProjectSummary
@@ -285,6 +316,8 @@ export function ProjectDetails() {
         totalCost={totalCost}
         price={project.price}
       />
+
+      <ProjectImagesSection images={project.images || []} />
 
       <ProjectBoardsSection
         boards={project.boards}
@@ -317,6 +350,13 @@ export function ProjectDetails() {
         additionalNotes={project.additionalNotes}
       />
 
+      <ShareToFeedModal
+        open={feedModalOpen}
+        onClose={() => setFeedModalOpen(false)}
+        projectId={project.id}
+        projectImages={project.images || []}
+      />
+
       <ConfirmDialog
         open={deleteConfirmOpen}
         title={t('projectDetails.deleteProject')}
@@ -334,6 +374,14 @@ export function ProjectDetails() {
         finishOptions={activeFinishes}
         sheetGoodOptions={activeSheetGoods}
         consumableOptions={activeConsumables}
+        customerOptions={activeCustomers}
+        initialCustomerId={
+          editingProject
+            ? (activeCustomers.find((c: any) =>
+                c.projects?.some((p: any) => p.id === editingProject.id)
+              )?.id ?? null)
+            : null
+        }
       />
     </Box>
   );

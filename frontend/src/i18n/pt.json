@@ -39,6 +39,8 @@
   "nav": {
     "dashboard": "Painel",
     "projects": "Projetos",
+    "customers": "Clientes",
+    "feed": "Feed",
     "materials": "Materiais",
     "lumber": "Madeira",
     "finishes": "Acabamentos",
@@ -234,7 +236,8 @@
       "boardFeetDesc": "Pés de Tábua (Maior para Menor)"
     },
     "filterBy": {
-      "projectStatus": "Status do Projeto"
+      "projectStatus": "Status do Projeto",
+      "customer": "Cliente"
     },
     "deleteDialog": {
       "title": "Excluir Projeto",
@@ -292,6 +295,7 @@
       "descriptionPlaceholderAlt": "Descreva o projeto...",
       "statusLabel": "Status",
       "createNewProject": "Criar Novo Projeto",
+      "selectCustomer": "Selecionar um cliente (opcional)",
       "total": "Total",
       "cancel": "Cancelar",
       "noFinishesAdded": "Nenhum acabamento adicionado ainda. Clique em \"Adicionar Acabamento\" para começar.",
@@ -365,7 +369,8 @@
     "editProfile": "Editar Perfil",
     "changePassword": "Alterar Senha",
     "linkCopied": "Link copiado para a área de transferência",
-    "quantity": "Quantidade"
+    "quantity": "Quantidade",
+    "remove": "Remover"
   },
   "account": {
     "title": "Conta",
@@ -611,5 +616,92 @@
       "title": "12. Informações de Contato",
       "text": "Se você tiver alguma dúvida sobre estes Termos e Condições, seus direitos sobre os dados ou desejar exercer seus direitos ARCO, entre em contato conosco através das configurações de sua conta ou das informações de contato fornecidas no aplicativo."
     }
+  },
+  "projectImages": {
+    "title": "Imagens do Projeto",
+    "renderImages": "Imagens de Render",
+    "finishedImages": "Imagens do Produto Acabado",
+    "upload": "Enviar Imagem",
+    "uploadImage": "Enviar Imagem",
+    "uploading": "Enviando...",
+    "maxError": "Máximo de 5 imagens por categoria",
+    "uploadError": "Falha ao enviar a imagem",
+    "noImages": "Sem imagens ainda"
+  },
+  "feed": {
+    "title": "Feed",
+    "subtitle": "Veja o que outros marceneiros estão construindo",
+    "shareToFeed": "Compartilhar no Feed",
+    "editPost": "Editar Publicação",
+    "postDescription": "Descrição",
+    "postDescriptionPlaceholder": "Conte-nos sobre este projeto...",
+    "imageVisibility": "Visibilidade das Imagens",
+    "showRenderImages": "Mostrar Imagens de Render",
+    "showFinishedImages": "Mostrar Imagens Acabadas",
+    "noImagesWarning": "Este projeto não tem imagens. Adicione imagens ao seu projeto para compartilhá-las.",
+    "hideFromFeed": "Ocultar do Feed",
+    "hideFromFeedHelp": "A publicação será salva mas ficará oculta do feed público",
+    "publishPost": "Publicar",
+    "updatePost": "Atualizar",
+    "noImages": "Sem imagens",
+    "empty": "Sem publicações ainda. Seja o primeiro a compartilhar!",
+    "loadMore": "Carregar Mais",
+    "comments": "Comentários",
+    "noComments": "Sem comentários ainda. Seja o primeiro!",
+    "addComment": "Adicionar Comentário",
+    "addReply": "Adicionar Resposta",
+    "addCommentPlaceholder": "Adicionar um comentário...",
+    "yourName": "Seu Nome",
+    "yourComment": "Seu Comentário",
+    "yourReply": "Sua resposta...",
+    "postComment": "Comentar",
+    "postReply": "Responder",
+    "post": "Publicar",
+    "author": "Autor",
+    "edited": "editado",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "reply": "Responder",
+    "replyingTo": "Respondendo a {{name}}",
+    "cancelEdit": "Cancelar",
+    "saveEdit": "Salvar",
+    "likeCount": "{{count}} curtidas",
+    "sortOldest": "Mais Antigos",
+    "sortNewest": "Mais Recentes",
+    "customer": "Cliente",
+    "customerPlaceholder": "Vincular um cliente (opcional)"
+  },
+  "userProfile": {
+    "notFound": "Usuário não encontrado",
+    "posts": "publicações",
+    "completedProjects": "projetos concluídos",
+    "noPosts": "Nenhuma publicação compartilhada ainda"
+  },
+  "customers": {
+    "title": "Clientes",
+    "subtitle": "Gerencie seus relacionamentos com clientes e projetos vinculados",
+    "add": "Adicionar Cliente",
+    "addCustomer": "Adicionar Cliente",
+    "editCustomer": "Editar Cliente",
+    "createCustomer": "Criar Cliente",
+    "updateCustomer": "Atualizar Cliente",
+    "name": "Nome",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "notes": "Notas",
+    "linkedProjects": "Projetos Vinculados",
+    "projects": "projetos",
+    "contactInfo": "Informações de Contato",
+    "noContactInfo": "Sem informações de contato",
+    "noLinkedProjects": "Sem projetos vinculados ainda",
+    "backToCustomers": "Voltar para Clientes",
+    "noCustomers": "Nenhum cliente encontrado",
+    "emptyTitle": "Sem Clientes Ainda",
+    "emptySubtitle": "Adicione seu primeiro cliente para começar",
+    "deleteConfirmMessage": "Tem certeza de que deseja excluir este cliente?",
+    "notFound": "Cliente não encontrado",
+    "searchPlaceholder": "Buscar clientes por nome, e-mail ou telefone...",
+    "sortNameAsc": "Nome (A-Z)",
+    "sortNameDesc": "Nome (Z-A)"
   }
 }

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { requireAuth, requireOwnership } from '../middleware/auth';
 import { NotFoundError } from '../utils/errors';
+import { deleteFromS3 } from '../services/s3';
 
 const prisma = new PrismaClient();
 
@@ -51,6 +52,7 @@ export const projectResolvers = {
               consumable: true,
             },
           },
+          images: true,
         },
         // place status 'in progress' projects first, then order by updatedAt descending
         orderBy: [
@@ -88,6 +90,7 @@ export const projectResolvers = {
               consumable: true,
             },
           },
+          images: true,
         },
       });
 
@@ -125,10 +128,12 @@ export const projectResolvers = {
               consumable: true,
             },
           },
+          images: true,
           user: {
             select: {
               firstName: true,
               lastName: true,
+              username: true,
               settings: {
                 select: {
                   currency: true,
@@ -155,7 +160,7 @@ export const projectResolvers = {
   Mutation: {
     createProject: async (_: any, { input }: any, context: any) => {
       const user = requireAuth(context);
-      const { boards, projectFinishes, projectSheetGoods, projectConsumables, ...projectData } = input;
+      const { boards, projectFinishes, projectSheetGoods, projectConsumables, images, ...projectData } = input;
 
       return prisma.project.create({
         data: {
@@ -185,6 +190,12 @@ export const projectResolvers = {
                 create: projectConsumables,
               },
             }),
+          ...(images &&
+            images.length > 0 && {
+              images: {
+                create: images,
+              },
+            }),
         },
         include: {
           boards: {
@@ -207,12 +218,13 @@ export const projectResolvers = {
               consumable: true,
             },
           },
+          images: true,
         },
       });
     },
 
     updateProject: async (_: any, { id, input }: any, context: any) => {
-      const { boards, projectFinishes, projectSheetGoods, projectConsumables, ...projectData } = input;
+      const { boards, projectFinishes, projectSheetGoods, projectConsumables, images, ...projectData } = input;
 
       const project = await prisma.project.findUnique({
         where: { id },
@@ -224,81 +236,31 @@ export const projectResolvers = {
 
       requireOwnership(context, project.userId);
 
-      // Delete existing boards if boards are being updated
-      if (boards) {
-        await prisma.board.deleteMany({
-          where: { projectId: id },
-        });
-      }
+      return prisma.$transaction(async (tx) => {
+        if (boards) await tx.board.deleteMany({ where: { projectId: id } });
+        if (projectFinishes) await tx.projectFinish.deleteMany({ where: { projectId: id } });
+        if (projectSheetGoods) await tx.projectSheetGood.deleteMany({ where: { projectId: id } });
+        if (projectConsumables) await tx.projectConsumable.deleteMany({ where: { projectId: id } });
+        if (images) await tx.projectImage.deleteMany({ where: { projectId: id } });
 
-      // Delete existing project finishes if they are being updated
-      if (projectFinishes) {
-        await prisma.projectFinish.deleteMany({
-          where: { projectId: id },
+        return tx.project.update({
+          where: { id },
+          data: {
+            ...projectData,
+            ...(boards && { boards: { create: boards } }),
+            ...(projectFinishes && { projectFinishes: { create: projectFinishes } }),
+            ...(projectSheetGoods && { projectSheetGoods: { create: projectSheetGoods } }),
+            ...(projectConsumables && { projectConsumables: { create: projectConsumables } }),
+            ...(images && { images: { create: images } }),
+          },
+          include: {
+            boards: { include: { lumber: true } },
+            projectFinishes: { include: { finish: true } },
+            projectSheetGoods: { include: { sheetGood: true } },
+            projectConsumables: { include: { consumable: true } },
+            images: true,
+          },
         });
-      }
-
-      // Delete existing project sheet goods if they are being updated
-      if (projectSheetGoods) {
-        await prisma.projectSheetGood.deleteMany({
-          where: { projectId: id },
-        });
-      }
-
-      // Delete existing project consumables if they are being updated
-      if (projectConsumables) {
-        await prisma.projectConsumable.deleteMany({
-          where: { projectId: id },
-        });
-      }
-
-      return prisma.project.update({
-        where: { id },
-        data: {
-          ...projectData,
-          ...(boards && {
-            boards: {
-              create: boards,
-            },
-          }),
-          ...(projectFinishes && {
-            projectFinishes: {
-              create: projectFinishes,
-            },
-          }),
-          ...(projectSheetGoods && {
-            projectSheetGoods: {
-              create: projectSheetGoods,
-            },
-          }),
-          ...(projectConsumables && {
-            projectConsumables: {
-              create: projectConsumables,
-            },
-          }),
-        },
-        include: {
-          boards: {
-            include: {
-              lumber: true,
-            },
-          },
-          projectFinishes: {
-            include: {
-              finish: true,
-            },
-          },
-          projectSheetGoods: {
-            include: {
-              sheetGood: true,
-            },
-          },
-          projectConsumables: {
-            include: {
-              consumable: true,
-            },
-          },
-        },
       });
     },
 
@@ -337,6 +299,7 @@ export const projectResolvers = {
               consumable: true,
             },
           },
+          images: true,
         },
       });
     },
@@ -376,6 +339,7 @@ export const projectResolvers = {
               consumable: true,
             },
           },
+          images: true,
         },
       });
     },
@@ -394,6 +358,20 @@ export const projectResolvers = {
       await prisma.project.delete({
         where: { id },
       });
+      return true;
+    },
+
+    deleteProjectImage: async (_: any, { id }: { id: string }, context: any) => {
+      const image = await prisma.projectImage.findUnique({
+        where: { id },
+        include: { project: { select: { userId: true } } },
+      });
+
+      if (!image) throw new NotFoundError('Image not found');
+      requireOwnership(context, image.project.userId);
+
+      await deleteFromS3(image.url).catch(() => {});
+      await prisma.projectImage.delete({ where: { id } });
       return true;
     },
   },
@@ -486,6 +464,13 @@ export const projectResolvers = {
     finishId: (parent: any) => parent.finishId,
   },
 
+  ProjectImage: {
+    id: (parent: any) => parent.id,
+    url: (parent: any) => parent.url,
+    category: (parent: any) => parent.category,
+    createdAt: (parent: any) => parent.createdAt,
+  },
+
   // Field resolvers for SharedProject
   SharedProject: {
     totalBoardFeet: (parent: any) => {
@@ -573,9 +558,13 @@ export const projectResolvers = {
       );
     },
 
+    images: (parent: any) => parent.images || [],
+
     createdBy: (parent: any) => {
       return `${parent.user?.firstName || ''} ${parent.user?.lastName || ''}`.trim() || 'Unknown';
     },
+
+    username: (parent: any) => parent.user?.username || '',
 
     currency: (parent: any) => {
       return parent.user?.settings?.currency || 'USD';

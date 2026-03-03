@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ShareIcon from '@mui/icons-material/Share';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import { ProjectStatus } from '../../../types/project';
 
 interface ProjectHeaderProps {
@@ -32,6 +33,7 @@ interface ProjectHeaderProps {
   onEdit: () => void;
   onDelete: () => void;
   onShare: () => void;
+  onShareToFeed?: () => void;
   onStatusChange: (status: ProjectStatus) => void;
   onCutList: () => void;
 }
@@ -46,6 +48,7 @@ export function ProjectHeader({
   onEdit,
   onDelete,
   onShare,
+  onShareToFeed,
   onStatusChange,
   onCutList,
 }: ProjectHeaderProps) {
@@ -189,6 +192,21 @@ export function ProjectHeader({
               gap: 1,
             }}
           >
+            {onShareToFeed && (
+              <IconButton
+                onClick={onShareToFeed}
+                sx={{
+                  color: 'secondary.main',
+                  bgcolor: 'rgba(156, 39, 176, 0.08)',
+                  '&:hover': {
+                    bgcolor: 'rgba(156, 39, 176, 0.15)',
+                  },
+                }}
+                title={t('feed.shareToFeed')}
+              >
+                <DynamicFeedIcon />
+              </IconButton>
+            )}
             <IconButton
               onClick={onShare}
               sx={{

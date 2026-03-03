@@ -35,10 +35,14 @@ export const userResolvers = {
       });
     },
 
-    // Get user by ID
+    // Get user by ID (own account only)
     user: async (_: any, { id }: { id: string }, context: any) => {
       if (!context.user) {
         throw new AuthenticationError('Not authenticated');
+      }
+
+      if (context.user.userId !== id) {
+        throw new AuthenticationError('You can only view your own account');
       }
 
       return prisma.user.findUnique({
@@ -225,10 +229,14 @@ export const userResolvers = {
       });
     },
 
-    // Restore user (Private - admin)
+    // Restore user (own account only)
     restoreUser: async (_: any, { id }: { id: string }, context: any) => {
       if (!context.user) {
         throw new AuthenticationError('Not authenticated');
+      }
+
+      if (context.user.userId !== id) {
+        throw new AuthenticationError('You can only restore your own account');
       }
 
       return prisma.user.update({
